@@ -1,5 +1,7 @@
 package dk.pop.kitchenapp.models;
 
+import dk.pop.kitchenapp.models.enums.ObjectTypeEnum;
+
 /**
  * Created by dickow on 9/21/16.
  */
@@ -9,7 +11,7 @@ public class ExpenseActivity extends Activity {
     private Person responsible;
 
     public ExpenseActivity(Person responsible, Kitchen kitchen) {
-        super(kitchen);
+        super(kitchen, ObjectTypeEnum.EXPENSEACTIVITY);
         this.responsible = responsible;
     }
 
