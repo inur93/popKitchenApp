@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import dk.pop.kitchenapp.R;
 
-/**
+/***
  * A simple {@link Fragment} subclass.
  */
 public class LoginFragment extends Fragment {
