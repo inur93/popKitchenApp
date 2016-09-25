@@ -3,8 +3,12 @@ package dk.pop.kitchenapp;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -13,13 +17,23 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
+    private TextView txtReadKey;
+    private TextView txtReadValue;
+
+    private Button btnWrite;
+    private Button btnRead;
+
+    private EditText writeKey;
+    private EditText writeValue;
+
+    private Firebase fb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +44,45 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // example of creating a reference:
-        Firebase myFirebaseRef = new Firebase("https://dk.pop.kitchenApp.firebaseio.com/");
+        fb = new Firebase("https://kitchenapp-3d380.firebaseio.com/");
 
+        /*fb.authWithPassword("runivormadal@gmail.com", "gooInuR-2801", new Firebase.AuthResultHandler() {
+            @Override
+            public void onAuthenticated(AuthData authData) {
+                System.out.println("success: " + authData.getUid());
+            }
+
+            @Override
+            public void onAuthenticationError(FirebaseError firebaseError) {
+                System.out.println("firebase error: " + firebaseError.getMessage());
+            }
+        });*/
+
+        this.txtReadKey = (TextView) findViewById(R.id.dataKey);
+        this.txtReadValue = (TextView) findViewById(R.id.dataValue);
+        this.btnWrite = (Button) findViewById(R.id.btnInsert);
+        this.btnRead = (Button) findViewById(R.id.btnReadKey);
+        this.writeKey = (EditText) findViewById(R.id.inputKey);
+        this.writeValue = (EditText) findViewById(R.id.inputValue);
+
+        this.btnRead.setOnClickListener(this);
+        this.btnWrite.setOnClickListener(this);
+
+        //String token = fb.getAuth().getToken();
+        //System.out.println("token: " + token);
+        /*fb.authWithCustomToken(token, new Firebase.AuthResultHandler() {
+            @Override
+            public void onAuthenticated(AuthData authData) {
+                System.out.println("success: " + authData.getProvider());
+            }
+
+            @Override
+            public void onAuthenticationError(FirebaseError firebaseError) {
+                System.out.println("firebase error: " + firebaseError.getMessage());
+            }
+        });*/
         //example writing data:
-        myFirebaseRef.child("message").setValue("Do you have data? You'll love Firebase.");
+      /*  myFirebaseRef.child("message").setValue("Do you have data? You'll love Firebase.");
 
         //example of reading data:
         myFirebaseRef.child("message").addValueEventListener(new ValueEventListener() {
@@ -48,12 +97,13 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(FirebaseError error) {
             }
 
-        });
+        });*/
 
         // quickstart https://www.firebase.com/docs/android/quickstart.html
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
     }
 
     @Override
@@ -94,5 +144,35 @@ public class MainActivity extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btnInsert:
+                String key = this.writeKey.getText().toString();
+                String value = this.writeValue.getText().toString();
+               // fb.child(key).setValue(value);
+                System.out.println("writing: " + key + ":" + value);
+                break;
+            case R.id.btnReadKey:
+                String key1 = this.writeKey.getText().toString();
+                String value1 = this.writeValue.getText().toString();
+               /* fb.child(key1).addValueEventListener(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        txtReadValue.setText(snapshot.getValue().toString());
+                        txtReadKey.setText(snapshot.getKey());
+                        System.out.println("read value: " + snapshot.getValue());  //prints "Do you have data? You'll love Firebase."
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError error) {
+                    }
+
+                });*/
+                break;
+        }
     }
 }
