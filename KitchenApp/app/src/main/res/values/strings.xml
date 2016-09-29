@@ -3,4 +3,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="personalTabText">personal</string>
+    <string name="kitchenTabText">kitchen</string>
+    <string name="kitchen_overview_create_activity_btn_text">Create Activity</string>
+    <string name="kitchen_overview_show_calendar_btn_text">Show Calendar</string>
+    <string name="kitchen_overview_all_activities_text">All Activities</string>
 </resources>

@@ -1,0 +1,58 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="dk.pop.kitchenapp.fragments.GroupCreationFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:layout_below="@+id/loginImageView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="17dp"
+            android:id="@+id/groupCreationSearchField" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignStart="@+id/groupCreationLinearLayout"
+            android:layout_alignEnd="@+id/groupCreationSearchField"
+            android:layout_below="@+id/groupCreationLinearLayout"
+            android:id="@+id/groupCreationListView" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/groupCreationSearchField"
+            android:layout_alignParentStart="true"
+            android:id="@+id/groupCreationLinearLayout">
+
+            <Button
+                android:text="Create"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/loginSearchBtn"
+                android:layout_alignBottom="@+id/loginSearchBtn"
+                android:layout_alignEnd="@+id/loginListView"
+                android:layout_weight="1"
+                android:id="@+id/groupCreationCreateBtn" />
+
+            <Button
+                android:text="Search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/groupCreationSearchField"
+                android:layout_alignStart="@+id/groupCreationSearchField"
+                android:layout_weight="1"
+                android:id="@+id/groupCreationSearchBtn" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</FrameLayout>

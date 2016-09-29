@@ -8,16 +8,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.firebase.client.AuthData;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class FireBaseTestActivity extends AppCompatActivity implements View.OnClickListener{
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -41,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // initializing firebase
         // needs to be done before calling any firebase methods
         Firebase.setAndroidContext(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_firebase_test);
 
         // example of creating a reference:
         fb = new Firebase("https://kitchenapp-3d380.firebaseio.com/");
