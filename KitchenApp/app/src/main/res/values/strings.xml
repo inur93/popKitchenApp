@@ -8,4 +8,7 @@
     <string name="kitchen_overview_create_activity_btn_text">Create Activity</string>
     <string name="kitchen_overview_show_calendar_btn_text">Show Calendar</string>
     <string name="kitchen_overview_all_activities_text">All Activities</string>
+    <string name="personal_overview_my_activities_text">My Activities</string>
+    <string name="personal_overview_show_calendar_btn_txt">Show Calendar</string>
+    <string name="personal_overview_create_expense_btn_txt">Create Expense</string>
 </resources>

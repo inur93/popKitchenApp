@@ -46,6 +46,7 @@ public class KitchenOverviewFragment extends Fragment implements View.OnClickLis
                         .beginTransaction()
                         .replace(R.id.kitchen_overview_wrapper_fragment_placeholder,
                                 new KitchenOverviewActivityCreationFragment())
+                        .addToBackStack(null)
                         .commit();
                 break;
             case R.id.kitchenOverviewShowCalendarBtn:
@@ -54,6 +55,7 @@ public class KitchenOverviewFragment extends Fragment implements View.OnClickLis
                         .beginTransaction()
                         .replace(R.id.kitchen_overview_wrapper_fragment_placeholder,
                                 new KitchenOverviewCalendarFragment())
+                        .addToBackStack(null)
                         .commit();
                 break;
         }

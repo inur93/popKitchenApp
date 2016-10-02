@@ -3,9 +3,46 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:text="@string/personalTabText"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/personalTabBtn" />
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="@string/personal_overview_my_activities_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="14dp"
+            android:id="@+id/textView"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium.Inverse"
+            android:textColor="?attr/editTextColor" />
+        <ListView
+            android:id="@+id/personal_overview_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView"
+            android:layout_marginTop="11dp"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:text="@string/personal_overview_create_expense_btn_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/personal_overview_create_expense_btn"
+            android:layout_below="@id/personal_overview_listview"/>
+
+        <Button
+            android:text="@string/personal_overview_show_calendar_btn_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/personal_overview_show_calendar_btn"
+            android:layout_toEndOf="@+id/personal_overview_create_expense_btn"
+            android:layout_marginStart="27dp"
+            android:layout_below="@id/personal_overview_listview"/>
+
+    </RelativeLayout>
+
 </LinearLayout>
