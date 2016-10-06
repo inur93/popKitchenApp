@@ -8,11 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import dk.pop.kitchenapp.R;
+import dk.pop.kitchenapp.navigation.FragmentExtension;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class KitchenOverviewCalendarFragment extends Fragment {
+public class KitchenOverviewCalendarFragment extends FragmentExtension {
 
 
     public KitchenOverviewCalendarFragment() {

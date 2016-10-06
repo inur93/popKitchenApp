@@ -3,23 +3,19 @@ package dk.pop.kitchenapp.fragments.kitchen;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.androidquery.AQuery;
-
 import java.util.List;
 
 import dk.pop.kitchenapp.R;
-import dk.pop.kitchenapp.logging.LoggingTag;
+import dk.pop.kitchenapp.navigation.FragmentExtension;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class KitchenOverviewWrapperFragment extends Fragment{
+public class KitchenOverviewWrapperFragment extends FragmentExtension {
 
     public KitchenOverviewWrapperFragment() {
         // Required empty public constructor
@@ -42,6 +38,5 @@ public class KitchenOverviewWrapperFragment extends Fragment{
 
         return inflater.inflate(R.layout.fragment_kitchen_overview_wrapper, container, false);
     }
-
 
 }

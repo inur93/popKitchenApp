@@ -12,12 +12,12 @@ import com.androidquery.AQuery;
 
 import dk.pop.kitchenapp.R;
 import dk.pop.kitchenapp.logging.LoggingTag;
-import dk.pop.kitchenapp.models.Activity;
+import dk.pop.kitchenapp.navigation.FragmentExtension;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class KitchenOverviewActivityCreationFragment extends Fragment implements View.OnClickListener{
+public class KitchenOverviewActivityCreationFragment extends FragmentExtension implements View.OnClickListener{
 
 
     public KitchenOverviewActivityCreationFragment() {

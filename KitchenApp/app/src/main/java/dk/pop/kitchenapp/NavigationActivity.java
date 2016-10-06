@@ -8,8 +8,9 @@ import com.androidquery.AQuery;
 
 import dk.pop.kitchenapp.fragments.kitchen.KitchenOverviewWrapperFragment;
 import dk.pop.kitchenapp.fragments.personal.PersonalOverviewFragment;
+import dk.pop.kitchenapp.navigation.ActivityNavigation;
 
-public class NavigationActivity extends AppCompatActivity{
+public class NavigationActivity extends ActivityNavigation{
 
     FragmentTabHost tabHost;
 
