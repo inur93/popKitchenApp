@@ -9,12 +9,12 @@ import dk.pop.kitchenapp.models.enums.ObjectTypeEnum;
  * Created by dickow on 9/21/16.
  */
 
-public class CleaningActivity extends PlannableActivity {
+public class CleaningGroupActivity extends PlannableGroupActivity {
     private CleaningStatusEnum status;
     private ArrayList<Person> persons;
 
-    public CleaningActivity(ArrayList<Person> persons, Kitchen kitchen) throws IllegalArgumentException{
-        super(kitchen, ObjectTypeEnum.CLEANINGACTIVITY);
+    public CleaningGroupActivity(ArrayList<Person> persons, Kitchen kitchen, Person createdBy) throws IllegalArgumentException{
+        super(createdBy, kitchen, ObjectTypeEnum.CLEANINGACTIVITY);
 
         if(persons == null || persons.isEmpty()){
             throw new IllegalArgumentException("You must provide atleast one person for the cleaning");

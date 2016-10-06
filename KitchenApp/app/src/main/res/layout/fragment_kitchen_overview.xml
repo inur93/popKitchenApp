@@ -24,7 +24,7 @@
         android:layout_marginBottom="10dp" />
 
     <ListView
-        android:id="@+id/kitchenOverviewListView"
+        android:id="@+id/kitchen_overview_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/kitchen_overview_all_activities_text"
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/kitchenOverviewCreateActivityBtn"
-        android:layout_below="@+id/kitchenOverviewListView"
+        android:layout_below="@+id/kitchen_overview_list_view"
         android:layout_toEndOf="@+id/kitchenOverviewShowCalendarBtn"
         android:layout_marginStart="29dp" />
 </RelativeLayout>

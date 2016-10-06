@@ -43,7 +43,7 @@ public class KitchenOverviewActivityCreationFragment extends FragmentExtension i
         if(v.getId() == R.id.kitchen_overview_activity_creation_save_btn){
             Log.d(LoggingTag.INFO.name(), "You pressed the save button");
 
-            // Save the newly created Activity here here
+            // Save the newly created GroupActivity here here
 
             // Return to the previous fragment
         }

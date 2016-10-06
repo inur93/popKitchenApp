@@ -6,13 +6,14 @@ import dk.pop.kitchenapp.models.enums.ObjectTypeEnum;
  * Created by dickow on 9/21/16.
  */
 
-public class ExpenseActivity extends Activity {
+public class ExpenseGroupActivity extends GroupActivity {
     private float price;
     private Person responsible;
 
-    public ExpenseActivity(Person responsible, Kitchen kitchen) {
-        super(kitchen, ObjectTypeEnum.EXPENSEACTIVITY);
+    public ExpenseGroupActivity(Person responsible, Person createdBy, float price, Kitchen kitchen) {
+        super(kitchen, createdBy, ObjectTypeEnum.EXPENSEACTIVITY);
         this.responsible = responsible;
+        this.price = price;
     }
 
     public Person getResponsible() {

@@ -8,13 +8,13 @@ import dk.pop.kitchenapp.models.enums.ObjectTypeEnum;
  * Created by dickow on 9/21/16.
  */
 
-public class DinnerActivity extends PlannableActivity {
+public class DinnerGroupActivity extends PlannableGroupActivity {
     private float total;
-    private ArrayList<ExpenseActivity> expenses;
+    private ArrayList<ExpenseGroupActivity> expenses;
     private ArrayList<Person> participants;
 
-    public DinnerActivity(ArrayList<ExpenseActivity> expenses, Kitchen kitchen) throws IllegalArgumentException {
-        super(kitchen, ObjectTypeEnum.DINNERACTIVITY);
+    public DinnerGroupActivity(ArrayList<ExpenseGroupActivity> expenses, Kitchen kitchen, Person createdBy) throws IllegalArgumentException {
+        super(createdBy, kitchen, ObjectTypeEnum.DINNERACTIVITY);
 
         if(expenses == null || expenses.isEmpty()){
             throw new IllegalArgumentException("expenses was empty, you must provide at least one expense");
@@ -31,11 +31,11 @@ public class DinnerActivity extends PlannableActivity {
         this.total = total;
     }
 
-    public ArrayList<ExpenseActivity> getExpenses() {
+    public ArrayList<ExpenseGroupActivity> getExpenses() {
         return expenses;
     }
 
-    public void setExpenses(ArrayList<ExpenseActivity> expenses) {
+    public void setExpenses(ArrayList<ExpenseGroupActivity> expenses) {
         this.expenses = expenses;
     }
 

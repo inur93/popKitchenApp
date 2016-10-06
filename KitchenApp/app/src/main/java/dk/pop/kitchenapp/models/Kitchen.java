@@ -8,9 +8,14 @@ import java.util.ArrayList;
 
 public class Kitchen {
     private String name;
-    private ArrayList<Activity> activities;
+    private ArrayList<GroupActivity> activities;
+
+    public Kitchen(){
+        this.activities = new ArrayList<>();
+    }
 
     public Kitchen(String name){
+        this();
         this.name = name;
     }
 
@@ -18,7 +23,7 @@ public class Kitchen {
         return name;
     }
 
-    public ArrayList<Activity> getActivities() {
+    public ArrayList<GroupActivity> getActivities() {
         return activities;
     }
 }

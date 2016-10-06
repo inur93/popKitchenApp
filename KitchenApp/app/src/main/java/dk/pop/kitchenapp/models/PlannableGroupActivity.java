@@ -6,12 +6,12 @@ import dk.pop.kitchenapp.models.enums.ObjectTypeEnum;
  * Created by dickow on 9/21/16.
  */
 
-public abstract class PlannableActivity extends Activity {
+public abstract class PlannableGroupActivity extends GroupActivity {
     private boolean cancellable;
     private boolean cancelled;
 
-    public PlannableActivity(Kitchen kitchen, ObjectTypeEnum type) {
-        super(kitchen, type);
+    public PlannableGroupActivity(Person createdBy, Kitchen kitchen, ObjectTypeEnum type) {
+        super(kitchen, createdBy, type);
     }
 
     public boolean isCancellable() {
