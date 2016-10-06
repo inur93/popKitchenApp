@@ -1,27 +1,33 @@
 {
   "project_info": {
-    "project_number": "281239611753",
-    "firebase_url": "https://kitchenapp-3d380.firebaseio.com",
-    "project_id": "kitchenapp-3d380",
-    "storage_bucket": "kitchenapp-3d380.appspot.com"
+    "project_number": "711350165460",
+    "project_id": "kitchenapp-144912"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:281239611753:android:7591d0955a81be01",
+        "mobilesdk_app_id": "1:711350165460:android:5a5a54c5195b6a4b",
         "android_client_info": {
           "package_name": "dk.pop.kitchenapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "281239611753-r1s4m8rq6h3tt0075s2qukpeb7ikgvdu.apps.googleusercontent.com",
+          "client_id": "711350165460-aorimccuaufq8rgt4u8isijo6ulltg81.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dk.pop.kitchenapp",
+            "certificate_hash": "9BBE4876D29C7DAB5DB45103906E4B1CE176B758"
+          }
+        },
+        {
+          "client_id": "711350165460-konid2fu423amhfjvu1i3mb22ebh655j.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCgJaC_FKblnAXghaDuLcFEYUYnM0TL7rE"
+          "current_key": "AIzaSyAPLSdjJPhn9FrM9GYNa3z40YSmrjNlvBs"
         }
       ],
       "services": {
@@ -33,7 +39,7 @@
           "other_platform_oauth_client": []
         },
         "ads_service": {
-          "status": 2
+          "status": 1
         }
       }
     }

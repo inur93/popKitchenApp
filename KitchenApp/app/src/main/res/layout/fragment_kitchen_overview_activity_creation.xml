@@ -61,7 +61,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:inputType="textShortMessage"
-                        android:text="Title"
+                        android:text=""
+                        android:hint="Title"
                         android:ems="0"
                         android:id="@+id/activity_creation_title_edit"
                         android:layout_weight="1"
@@ -85,7 +86,8 @@
                 <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Description"
+                    android:text=""
+                    android:hint="Description"
                     android:ems="0"
                     android:id="@+id/activity_creation_description_edit"
                     android:layout_weight="1"
@@ -112,7 +114,8 @@
                         android:inputType="datetime"
                         android:id="@+id/activity_creation_date_edit"
                         android:layout_weight="1"
-                        android:text="Date"
+                        android:text=""
+                        android:hint="Date"
                         android:gravity="left"
                         android:layout_gravity="left" />
                 </LinearLayout>

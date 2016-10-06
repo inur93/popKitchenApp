@@ -3,6 +3,7 @@ package dk.pop.kitchenapp.data;
 import android.app.Application;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import dk.pop.kitchenapp.BuildConfig;
 import dk.pop.kitchenapp.models.CleaningGroupActivity;
@@ -19,6 +20,7 @@ public class DataStorage extends Application{
 
     private Kitchen kitchen;
     private Person person;
+    private List<Person> participants;
 
     public static DataStorage getInstance() {
         if(ourInstance == null){
@@ -32,12 +34,13 @@ public class DataStorage extends Application{
             // Setup kitchen
             kitchen = new Kitchen("Test Kitchen");
 
-            // Setup person
-            person = new Person();
-            person.getKitchens().add(kitchen);
-            person.setGoogleId("KlausBruun@gmail.com");
-            person.setActive(true);
-            person.setRoomNumber(200);
+
+            this.person = createPerson(kitchen, "KlausBruun@gmail.com", true, 200);
+
+            this.participants = new ArrayList<>();
+            this.participants.add(createPerson(kitchen, "jespergroenkjær@gmail.com", true, 47));
+            this.participants.add(createPerson(kitchen, "nicholascage@gmail.com", true, 43));
+            this.participants.add(createPerson(kitchen, "willsmith@gmail.com", true, 123));
 
 
             // Setup persons
@@ -69,6 +72,16 @@ public class DataStorage extends Application{
         }
     }
 
+    private Person createPerson(Kitchen kitchen, String id, boolean active, int roomNo){
+        // Setup person
+        person = new Person();
+        person.getKitchens().add(kitchen);
+        person.setActive(active);
+        person.setGoogleId(id);
+        person.setRoomNumber(roomNo);
+        return person;
+    }
+
     public Kitchen getKitchen() {
         return kitchen;
     }
@@ -83,6 +96,10 @@ public class DataStorage extends Application{
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public List<Person> getParticipants(){
+        return this.participants;
     }
 
     @Override
