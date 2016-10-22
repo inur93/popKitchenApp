@@ -1,15 +1,24 @@
 package dk.pop.kitchenapp.fragments.kitchen;
 
 
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.androidquery.AQuery;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import dk.pop.kitchenapp.R;
 import dk.pop.kitchenapp.adapters.ActivityPersonNameRoomNoAdapter;
@@ -25,6 +34,8 @@ public class KitchenOverviewActivityCreationFragment extends FragmentExtension i
 
     private ListView participants;
     private ListView responsibles;
+    private EditText datePicker;
+    private Calendar calendar;
 
     public KitchenOverviewActivityCreationFragment() {
         // Required empty public constructor
@@ -50,7 +61,56 @@ public class KitchenOverviewActivityCreationFragment extends FragmentExtension i
         this.responsibles.setAdapter(
                 new ActivityPersonNameRoomNoAdapter(view.getContext(), DataStorage.getInstance().getParticipants()));
 
+        datePicker = aq.id(R.id.activity_creation_date_edit).getEditText();
+        //datepicker.setOnClickListener();
+
+        calendar = Calendar.getInstance();
+
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, monthOfYear);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+
+        };
+
+        datePicker.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if(hasFocus) {
+                    InputMethodManager imm =  (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    System.out.println(v.getWindowToken());
+                    new DatePickerDialog(getContext(),
+                            date,
+                            calendar.get(Calendar.YEAR),
+                            calendar.get(Calendar.MONTH),
+                            calendar.get(Calendar.DAY_OF_MONTH)).show();
+                }
+                System.out.println("focus changed: " + hasFocus);
+            }
+        });
+
+
+
+
+
+
         return view;
+    }
+
+    private void updateLabel() {
+        String myFormat = "dd/MM/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);
+
+        datePicker.setText(sdf.format(calendar.getTime()));
     }
 
     @Override

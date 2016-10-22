@@ -117,7 +117,8 @@
                         android:text=""
                         android:hint="Date"
                         android:gravity="left"
-                        android:layout_gravity="left" />
+                        android:layout_gravity="left"
+                        android:onClick="showCalendar" />
                 </LinearLayout>
             </TableRow>
 
