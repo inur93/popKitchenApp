@@ -13,7 +13,7 @@ import com.androidquery.AQuery;
 
 import dk.pop.kitchenapp.R;
 import dk.pop.kitchenapp.adapters.KitchenActivitiesAdapter;
-import dk.pop.kitchenapp.data.DataStorage;
+import dk.pop.kitchenapp.data.DataManager;
 import dk.pop.kitchenapp.logging.LoggingTag;
 import dk.pop.kitchenapp.navigation.FragmentExtension;
 
@@ -36,7 +36,7 @@ public class KitchenOverviewFragment extends FragmentExtension implements View.O
 
         AQuery aq = new AQuery(view);
         this.allActivities = aq.id(R.id.kitchen_overview_list_view).getListView();
-        this.allActivities.setAdapter(new KitchenActivitiesAdapter(view.getContext(), DataStorage.getInstance().getKitchen().getActivities()));
+        this.allActivities.setAdapter(new KitchenActivitiesAdapter(view.getContext(), null));
         aq.id(R.id.kitchenOverviewCreateActivityBtn).clicked(this);
         aq.id(R.id.kitchenOverviewShowCalendarBtn).clicked(this);
         return view;
