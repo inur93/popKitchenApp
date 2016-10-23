@@ -3,6 +3,7 @@ package dk.pop.kitchenapp.data;
 import android.app.Application;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import dk.pop.kitchenapp.BuildConfig;
@@ -11,6 +12,8 @@ import dk.pop.kitchenapp.models.DinnerGroupActivity;
 import dk.pop.kitchenapp.models.ExpenseGroupActivity;
 import dk.pop.kitchenapp.models.Kitchen;
 import dk.pop.kitchenapp.models.Person;
+import dk.pop.kitchenapp.models.enums.ObjectTypeEnum;
+import dk.pop.kitchenapp.viewModels.PersonViewModel;
 
 /**
  * Created by dickow on 10/2/16.
@@ -20,7 +23,7 @@ public class DataStorage extends Application{
 
     private Kitchen kitchen;
     private Person person;
-    private List<Person> participants;
+    private List<PersonViewModel> participants;
 
     public static DataStorage getInstance() {
         if(ourInstance == null){
@@ -38,9 +41,9 @@ public class DataStorage extends Application{
             this.person = createPerson(kitchen, "KlausBruun@gmail.com", true, 200);
 
             this.participants = new ArrayList<>();
-            this.participants.add(createPerson(kitchen, "jespergroenkjær@gmail.com", true, 47));
-            this.participants.add(createPerson(kitchen, "nicholascage@gmail.com", true, 43));
-            this.participants.add(createPerson(kitchen, "willsmith@gmail.com", true, 123));
+            this.participants.add(createPersonViewModel(kitchen, "jespergroenkjær@gmail.com", true, 47, true));
+            this.participants.add(createPersonViewModel(kitchen, "nicholascage@gmail.com", true, 43, true));
+            this.participants.add(createPersonViewModel(kitchen, "willsmith@gmail.com", true, 123, true));
 
 
             // Setup persons
@@ -73,13 +76,18 @@ public class DataStorage extends Application{
     }
 
     private Person createPerson(Kitchen kitchen, String id, boolean active, int roomNo){
+        PersonViewModel person = createPersonViewModel(kitchen, id, active, roomNo, false);
+        return person.getPerson();
+    }
+    private PersonViewModel createPersonViewModel(Kitchen kitchen, String id, boolean active, int roomNo, boolean isSelected){
         // Setup person
         person = new Person();
         person.getKitchens().add(kitchen);
         person.setActive(active);
         person.setGoogleId(id);
         person.setRoomNumber(roomNo);
-        return person;
+
+        return new PersonViewModel(person, isSelected);
     }
 
     public Kitchen getKitchen() {
@@ -98,8 +106,31 @@ public class DataStorage extends Application{
         this.person = person;
     }
 
-    public List<Person> getParticipants(){
+    public List<PersonViewModel> getParticipants(boolean doCopy, boolean isSelected){
+        if(doCopy){
+            List<PersonViewModel> copy = new ArrayList<>();
+           for(PersonViewModel p : this.participants){
+               PersonViewModel nP = new PersonViewModel(p.getPerson(), isSelected);
+               copy.add(nP);
+           }
+            return copy;
+        }
         return this.participants;
+    }
+
+    public String createActivity(ObjectTypeEnum type, String title, String description, Date date, List<Person> responsibles, List<Person> participants){
+        switch (type){
+            case CLEANINGACTIVITY:
+
+                break;
+            case DINNERACTIVITY:
+
+                break;
+            case EXPENSEACTIVITY:
+
+                break;
+        }
+        return null;
     }
 
     @Override

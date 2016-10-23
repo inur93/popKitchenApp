@@ -4,6 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.v7.widget.AppCompatCheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/view_list_view_person_name_roomno_selected"
+        android:checked="true"/>
     <TextView
         android:text="Name"
         android:layout_width="wrap_content"

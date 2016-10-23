@@ -14,6 +14,7 @@ import com.androidquery.AQuery;
 import dk.pop.kitchenapp.R;
 import dk.pop.kitchenapp.adapters.KitchenActivitiesAdapter;
 import dk.pop.kitchenapp.data.DataStorage;
+import dk.pop.kitchenapp.fragments.kitchen.creation.KitchenOverviewActivityCreationFragment;
 import dk.pop.kitchenapp.logging.LoggingTag;
 import dk.pop.kitchenapp.navigation.FragmentExtension;
 
@@ -32,6 +33,7 @@ public class KitchenOverviewFragment extends FragmentExtension implements View.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        System.out.println("inflate kitchen overview");
         View view =  inflater.inflate(R.layout.fragment_kitchen_overview, container, false);
 
         AQuery aq = new AQuery(view);
