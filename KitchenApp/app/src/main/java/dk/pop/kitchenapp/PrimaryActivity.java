@@ -1,38 +1,42 @@
 package dk.pop.kitchenapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ListViewCompat;
+import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.Toast;
 
 import com.androidquery.AQuery;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
-public class PrimaryActivity extends AppCompatActivity implements View.OnClickListener{
+import dk.pop.kitchenapp.data.AuthenticationManager;
+import dk.pop.kitchenapp.data.DataManager;
+import dk.pop.kitchenapp.logging.LoggingTag;
+import dk.pop.kitchenapp.models.Kitchen;
 
-    private AQuery aq;
-    private EditText groupCreationSearchField;
-    private ListViewCompat groupCreationListView;
+public class PrimaryActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_primary);
-
-        aq = new AQuery(this);
-        groupCreationSearchField = aq.id(R.id.groupCreationSearchField).getEditText();
-        aq.id(R.id.groupCreationCreateBtn).clicked(this);
-        aq.id(R.id.groupCreationSearchBtn).clicked(this);
-        aq.id(R.id.groupCreationListView).getListView();
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.groupCreationSearchBtn:
-                break;
-            case R.id.groupCreationCreateBtn:
-                break;
+    protected void onStart() {
+        super.onStart();
+        if(AuthenticationManager.getInstance().getFirebaseUser() == null) {
+            Intent signInIntent = new Intent(this, SignInActivity.class);
+            startActivity(signInIntent);
+        }
+        else{
+            Toast.makeText(this, AuthenticationManager.getInstance().getFirebaseUser().getDisplayName(), Toast.LENGTH_SHORT).show();
+
+            // Get all kitchens
+            DataManager.getInstance().createKitchen(new Kitchen("Runi kitchen test"));
         }
     }
 }

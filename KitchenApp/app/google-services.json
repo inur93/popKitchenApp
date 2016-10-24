@@ -1,33 +1,35 @@
 {
   "project_info": {
-    "project_number": "711350165460",
-    "project_id": "kitchenapp-144912"
+    "project_number": "1020829164407",
+    "firebase_url": "https://kitchen-database.firebaseio.com",
+    "project_id": "kitchen-database",
+    "storage_bucket": "kitchen-database.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:711350165460:android:5a5a54c5195b6a4b",
+        "mobilesdk_app_id": "1:1020829164407:android:5a5a54c5195b6a4b",
         "android_client_info": {
           "package_name": "dk.pop.kitchenapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "711350165460-aorimccuaufq8rgt4u8isijo6ulltg81.apps.googleusercontent.com",
+          "client_id": "1020829164407-hna4q21c8hk3s5rf45otaj5uqq9v00ql.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "dk.pop.kitchenapp",
-            "certificate_hash": "9BBE4876D29C7DAB5DB45103906E4B1CE176B758"
+            "certificate_hash": "D191F1CC8D818BFDE3728D350CCD551A1C72F506"
           }
         },
         {
-          "client_id": "711350165460-konid2fu423amhfjvu1i3mb22ebh655j.apps.googleusercontent.com",
+          "client_id": "1020829164407-b09vmoepj2b59njc61sfdfvob6bprg90.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAPLSdjJPhn9FrM9GYNa3z40YSmrjNlvBs"
+          "current_key": "AIzaSyBZmBfisselbB8RgdknSOd-r5N_jZTF2iY"
         }
       ],
       "services": {
@@ -35,11 +37,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1020829164407-b09vmoepj2b59njc61sfdfvob6bprg90.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }

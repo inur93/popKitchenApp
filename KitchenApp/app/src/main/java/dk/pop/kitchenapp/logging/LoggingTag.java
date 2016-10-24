@@ -8,5 +8,6 @@ public enum LoggingTag {
     INFO,
     ERROR,
     WARNING,
-    VERBOSE
+    VERBOSE,
+    LOGIN
 }
