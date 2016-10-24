@@ -23,6 +23,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import java.util.ArrayList;
 
 import dk.pop.kitchenapp.BuildConfig;
+import dk.pop.kitchenapp.data.interfaces.Callback;
 import dk.pop.kitchenapp.logging.LoggingTag;
 import dk.pop.kitchenapp.models.CleaningGroupActivity;
 import dk.pop.kitchenapp.models.DinnerGroupActivity;
@@ -70,7 +71,7 @@ public class AuthenticationManager extends Application implements GoogleApiClien
 
     public FirebaseUser getFirebaseUser(){return this.firebaseAuth.getCurrentUser();}
 
-    public void authorizeWithFirebase(final Context ctx, GoogleSignInAccount acct){
+    public void authorizeWithFirebase(final Context ctx, GoogleSignInAccount acct, final Callback callback){
         Log.d(LoggingTag.LOGIN.name(), "firebaseAuthWithGooogle:" + acct.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -85,11 +86,10 @@ public class AuthenticationManager extends Application implements GoogleApiClien
                     Log.w(LoggingTag.LOGIN.name(), "signInWithCredential", task.getException());
                     Toast.makeText(ctx, "Authentication failed.",
                             Toast.LENGTH_SHORT).show();
+                    callback.onFailue();
                 }
                 else{
-                    // Get data for the application, and register event listeners for the data
-                    Kitchen kitchen = new Kitchen("First Kitchen");
-                    DataManager.getInstance().createKitchen(kitchen);
+                    callback.onSuccess();
                 }
             }
         });
