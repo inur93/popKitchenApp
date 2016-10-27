@@ -38,7 +38,7 @@ public class KitchenOverviewFragment extends FragmentExtension implements View.O
 
         AQuery aq = new AQuery(view);
         this.allActivities = aq.id(R.id.kitchen_overview_list_view).getListView();
-        this.allActivities.setAdapter(new KitchenActivitiesAdapter(view.getContext(), DataStorage.getInstance().getKitchen().getActivities()));
+        //this.allActivities.setAdapter(new KitchenActivitiesAdapter(view.getContext(), DataStorage.getInstance().getKitchen()));
         aq.id(R.id.kitchenOverviewCreateActivityBtn).clicked(this);
         aq.id(R.id.kitchenOverviewShowCalendarBtn).clicked(this);
         return view;

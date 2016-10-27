@@ -27,5 +27,4 @@ public class KitchenOverviewCalendarFragment extends FragmentExtension {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_kitchen_overview_calendar, container, false);
     }
-
 }

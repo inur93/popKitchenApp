@@ -31,7 +31,7 @@ public class MyGroupsFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_my_groups, container, false);
 
         AQuery aq = new AQuery(view);
-        groupsList = aq.id(R.id.groupCreationListView).getListView();
+        groupsList = aq.id(R.id.group_creation_list_view).getListView();
 
         return view;
     }

@@ -40,7 +40,8 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="170dp">
+                android:minHeight="170dp"
+                android:id="@+id/primary_activity_frame_layout">
 
             </FrameLayout>
         </TableRow>

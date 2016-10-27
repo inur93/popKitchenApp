@@ -1,6 +1,7 @@
 package dk.pop.kitchenapp.models;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import dk.pop.kitchenapp.models.enums.ObjectTypeEnum;
 
@@ -13,8 +14,8 @@ public class DinnerGroupActivity extends PlannableGroupActivity {
     private ArrayList<ExpenseGroupActivity> expenses;
     private ArrayList<Person> participants;
 
-    public DinnerGroupActivity(ArrayList<ExpenseGroupActivity> expenses, Kitchen kitchen, Person createdBy) throws IllegalArgumentException {
-        super(createdBy, kitchen, ObjectTypeEnum.DINNERACTIVITY);
+    public DinnerGroupActivity(ArrayList<ExpenseGroupActivity> expenses, Kitchen kitchen, Person createdBy, UUID id) throws IllegalArgumentException {
+        super(createdBy, kitchen, ObjectTypeEnum.DINNERACTIVITY, id);
 
         if(expenses == null || expenses.isEmpty()){
             throw new IllegalArgumentException("expenses was empty, you must provide at least one expense");

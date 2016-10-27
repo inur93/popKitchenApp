@@ -1,6 +1,7 @@
 package dk.pop.kitchenapp.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by dickow on 9/21/16.
@@ -8,10 +9,12 @@ import java.util.ArrayList;
 
 public class Kitchen {
     private String name;
-    private ArrayList<GroupActivity> activities;
+    private HashMap<String, String> activities;
+    private HashMap<String, String> persons;
+
 
     public Kitchen(){
-        this.activities = new ArrayList<>();
+        this.activities = new HashMap<>();
     }
 
     public Kitchen(String name){
@@ -23,7 +26,5 @@ public class Kitchen {
         return name;
     }
 
-    public ArrayList<GroupActivity> getActivities() {
-        return activities;
-    }
+
 }

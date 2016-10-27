@@ -1,5 +1,7 @@
 package dk.pop.kitchenapp.models;
 
+import java.util.UUID;
+
 import dk.pop.kitchenapp.models.enums.ObjectTypeEnum;
 
 /**
@@ -10,8 +12,8 @@ public abstract class PlannableGroupActivity extends GroupActivity {
     private boolean cancellable;
     private boolean cancelled;
 
-    public PlannableGroupActivity(Person createdBy, Kitchen kitchen, ObjectTypeEnum type) {
-        super(kitchen, createdBy, type);
+    public PlannableGroupActivity(Person createdBy, Kitchen kitchen, ObjectTypeEnum type, UUID id) {
+        super(kitchen, createdBy, type, id);
     }
 
     public boolean isCancellable() {

@@ -1,6 +1,9 @@
 package dk.pop.kitchenapp.models;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by dickow on 9/21/16.
@@ -8,18 +11,23 @@ import java.util.ArrayList;
 
 public class Person {
     private String googleId;
+    private String displayName;
     private boolean active;
     private int roomNumber;
-    private ArrayList<Kitchen> kitchens;
-    private ArrayList<DinnerGroupActivity> dinnerActivities;
-    private ArrayList<ExpenseGroupActivity> expenseActivities;
-    private ArrayList<CleaningGroupActivity> cleaningActivities;
+
+    private HashMap<String, Kitchen> kitchens;
+    private HashMap<String, GroupActivity> activities;
 
     public Person(){
-        this.kitchens = new ArrayList<Kitchen>();
-        this.dinnerActivities = new ArrayList<DinnerGroupActivity>();
-        this.expenseActivities = new ArrayList<ExpenseGroupActivity>();
-        this.cleaningActivities = new ArrayList<CleaningGroupActivity>();
+        this.kitchens = new HashMap<>();
+        this.activities = new HashMap<>();
+    }
+
+    public Person(String googleId, String displayName, boolean active){
+        this();
+        this.googleId = googleId;
+        this.displayName = displayName;
+        this.active = active;
     }
 
     public String getGoogleId() {
@@ -29,6 +37,10 @@ public class Person {
     public void setGoogleId(String googleId) {
         this.googleId = googleId;
     }
+
+    public String getDisplayName(){return this.displayName;}
+
+    public void setDisplayName(String displayName){this.displayName = displayName;}
 
     public boolean isActive() {
         return active;
@@ -46,35 +58,31 @@ public class Person {
         this.roomNumber = roomNumber;
     }
 
-    public ArrayList<Kitchen> getKitchens() {
-        return kitchens;
+    public ArrayList<Kitchen> getKitchensList() {
+        ArrayList<Kitchen> listKitchens = new ArrayList<>();
+        for (Kitchen kitch :
+                this.kitchens.values()) {
+                listKitchens.add(kitch);
+        }
+        return listKitchens;
     }
 
-    public void setKitchens(ArrayList<Kitchen> kitchens) {
+    public HashMap<String, Kitchen> getKitchens(){return this.kitchens;}
+
+    public void setKitchens(HashMap<String, Kitchen> kitchens) {
         this.kitchens = kitchens;
     }
 
-    public ArrayList<DinnerGroupActivity> getDinnerActivities() {
-        return dinnerActivities;
-    }
+    public void setActivities(HashMap<String, GroupActivity> activities) { this.activities = activities;}
 
-    public void setDinnerActivities(ArrayList<DinnerGroupActivity> dinnerActivities) {
-        this.dinnerActivities = dinnerActivities;
-    }
+    public HashMap<String, GroupActivity> getActivities(){return this.activities;}
 
-    public ArrayList<ExpenseGroupActivity> getExpenseActivities() {
-        return expenseActivities;
-    }
-
-    public void setExpenseActivities(ArrayList<ExpenseGroupActivity> expenseActivities) {
-        this.expenseActivities = expenseActivities;
-    }
-
-    public ArrayList<CleaningGroupActivity> getCleaningActivities() {
-        return cleaningActivities;
-    }
-
-    public void setCleaningActivities(ArrayList<CleaningGroupActivity> cleaningActivities) {
-        this.cleaningActivities = cleaningActivities;
+    public ArrayList<GroupActivity> getActivitiesList(){
+        ArrayList<GroupActivity> listActivities = new ArrayList<>();
+        for (GroupActivity act :
+                this.activities.values()) {
+            listActivities.add(act);
+        }
+        return listActivities;
     }
 }

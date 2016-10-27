@@ -28,7 +28,6 @@ public class KitchenOverviewWrapperFragment extends FragmentExtension {
         List<Fragment> fragments = getChildFragmentManager().getFragments();
 
         if(fragments == null || fragments.isEmpty()) {
-
             getChildFragmentManager()
                     .beginTransaction()
                     .add(R.id.kitchen_overview_wrapper_fragment_placeholder,
