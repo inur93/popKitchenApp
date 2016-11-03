@@ -17,8 +17,12 @@ import java.util.Date;
 import java.util.List;
 
 import dk.pop.kitchenapp.R;
+import dk.pop.kitchenapp.data.DataManager;
 import dk.pop.kitchenapp.logging.LoggingTag;
 import dk.pop.kitchenapp.models.ActivityType;
+import dk.pop.kitchenapp.models.DinnerGroupActivity;
+import dk.pop.kitchenapp.models.ExpenseGroupActivity;
+import dk.pop.kitchenapp.models.Kitchen;
 import dk.pop.kitchenapp.models.Person;
 import dk.pop.kitchenapp.navigation.FragmentExtension;
 import dk.pop.kitchenapp.viewModels.PersonViewModel;
@@ -32,15 +36,16 @@ public class KitchenOverviewActivityCreationFragment extends FragmentExtension i
     private List<Person> participants;
     private List<Person> responsibles;
 
-    private ActivityType type = null;
-    private String title = null;
-    private String description = null;
-    private Date date = null;
-    private boolean canBeCancelled = false;
+    private Person person = null;
+    private Kitchen kitchen = null;
 
-    private final String TAG_GENERAL_INFO = "GENERAL_INFO";
-    private final String TAG_SELECT_PARTICIPANTS = "SELECT_PARTICIPANTS";
-    private FragmentExtension selectParticipants = new KitchenOverviewCreationSelectParticipantsResponsibles();
+
+    public static final String TAG_GENERAL_INFO = "GENERAL_INFO";
+    public static final String TAG_SELECT_PARTICIPANTS = "SELECT_PARTICIPANTS";
+    public static final String TAG_DINNER_INFO = "DINNER_INFO";
+    public static final String TAG_EXPENSE_INFO = "EXPENSE_INFO";
+    public static final String TAG_CLEANING_INFO = "CLEANING_INFO";
+
 
 
     public KitchenOverviewActivityCreationFragment() {
@@ -64,14 +69,6 @@ public class KitchenOverviewActivityCreationFragment extends FragmentExtension i
                         new KitchenOverviewActivityCreationGeneralInfoFragment(),
                         TAG_GENERAL_INFO)
                 .commit();
-
-
-
-
-
-
-
-
 
 
         aq.id(R.id.activity_creation_next_fragment_btn).clicked(this);
@@ -104,102 +101,89 @@ public class KitchenOverviewActivityCreationFragment extends FragmentExtension i
             Log.d(LoggingTag.INFO.name(), "You pressed the next button");
 
             // get current fragment in fragment placeholder
-            Fragment activeFrag = getFragmentManager().findFragmentByTag(TAG_GENERAL_INFO);
-            //getFragmentManager().findFragmentById(R.id.activity_creation_content);
-            if(activeFrag == null || !activeFrag.isVisible()){
-                activeFrag = getFragmentManager().findFragmentByTag(TAG_SELECT_PARTICIPANTS);
+            Fragment generalInfo = getFragmentManager().findFragmentByTag(TAG_GENERAL_INFO);
+
+            AQuery aq = new AQuery(generalInfo.getView());
+            ActivityType type =(ActivityType) aq.id(R.id.activity_creation_type_spinner).getSpinner().getSelectedItem();
+            String title  = aq.id(R.id.activity_creation_title_edit).getText().toString();
+            String description = aq.id(R.id.activity_creation_description_edit).getText().toString();
+            String dateText = aq.id(R.id.activity_creation_date_edit).getText().toString();
+            Date date = null;
+            if(dateText != null && dateText.length() > 0){
+                date = new Date(dateText);
             }
 
-            AQuery aq = new AQuery(activeFrag.getView());
+            boolean canBeCancelled = aq.id(R.id.activity_creation_cancellable_switch).isChecked();
 
-            if(activeFrag.getTag().equals(TAG_GENERAL_INFO)){
 
-                ActivityType type =(ActivityType) aq.id(R.id.activity_creation_type_spinner).getSpinner().getSelectedItem();
-                if(type != null) this.type = type;
 
-                this.title  = aq.id(R.id.activity_creation_title_edit).getText().toString();
-                this.description = aq.id(R.id.activity_creation_description_edit).getText().toString();
-                String dateText = aq.id(R.id.activity_creation_date_edit).getText().toString();
-                if(dateText != null && dateText.length() > 0){
-                    this.date = new Date(dateText);
-                }
+            String toast = "";
+            if(title == null || title.length() == 0) toast += "title can not be empty. ";
+            if(date == null) toast += "you need to select a date. ";
 
-                this.canBeCancelled = aq.id(R.id.activity_creation_cancellable_switch).isChecked();
 
-                String toast = "";
-                if(title == null || title.length() == 0) toast += "title can not be empty. ";
-                if(date == null) toast += "you need to select a date. ";
-
-                if(toast.length() > 0) {
-                    resetValues();
-                    Toast.makeText(getContext(), toast, Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.activity_creation_content,
-                        selectParticipants,
-                                TAG_SELECT_PARTICIPANTS)
-                        .addToBackStack(null)
-                        .commit();
-            }else if(activeFrag.getTag().equals(TAG_SELECT_PARTICIPANTS)){
-                ListView responsiblesList = aq.id(R.id.activity_creation_responsible_list).getListView();
-                this.responsibles = getPersonList(responsiblesList);
-
-                String toast = "";
-                if(this.responsibles.size() == 0) toast += "You need to select at least one responsible.\n";
-
-                ListView participantsList = aq.id(R.id.activity_creation_participant_list).getListView();
-                this.participants = getPersonList(participantsList);
-
-                if(this.participants.size() == 0) toast += "You need to select at least one participant.";
-
-                if(toast.length() > 0){
-                    Toast.makeText(getContext(), toast, Toast.LENGTH_LONG).show();
-                }
-            }else{
-                Toast.makeText(getContext(), "not implemented yet", Toast.LENGTH_LONG).show();
+            if(toast.length() > 0) {
+                Toast.makeText(getContext(), toast, Toast.LENGTH_LONG).show();
+                return;
             }
 
-            //ActivityType item = (ActivityType) aq.id(R.id.activity_creation_type_spinner).getSpinner().getSelectedItem();
 
-            //System.out.println("selected item: " + item.name);
+            DataManager mgm = DataManager.getInstance();
+            switch (type.type){
+                case DINNERACTIVITY:
+                    String priceStr = aq.id(R.id.create_dinner_price_edit).getText().toString();
+                    float price = Float.valueOf(priceStr.isEmpty() ? "0" : priceStr);
+                    boolean isCancellable = aq.id(R.id.activity_creation_cancellable_switch).isChecked();
+                    ExpenseGroupActivity expense = new ExpenseGroupActivity(
+                            null,
+                            title,
+                            description,
+                            date,
+                            kitchen,
+                            person,
+                            person,
+                            price);
+                    List<ExpenseGroupActivity> expenses = new ArrayList<>();
+                    expenses.add(expense);
+                    mgm.createActivity(new DinnerGroupActivity(
+                            null,
+                            title,
+                            description,
+                            date,
+                            kitchen,
+                            person,
+                            isCancellable,
+                            price,
+                            null,
+                            responsibles
+                            ));
+                    break;
+                case CLEANINGACTIVITY:
+                    break;
+                case EXPENSEACTIVITY:
+                    break;
+            }
 
-/*
-
-            ObjectTypeEnum type = ((ActivityType) this.type.getSelectedItem()).type;
-            String title = this.title.getText().toString();
-            String description = this.description.getText().toString();
-            boolean canBeCancelled = this.canBeCancelled.isChecked();
-            System.out.println("is checked: " + canBeCancelled);
 
 
-            List<Person> selectedParticipants = getPersonList(this.participants);
-            List<Person> selectedResponsible = getPersonList(this.responsibles);
 
 
-            DataStorage.getInstance().createActivity(
-                    type,
-                    title,
-                    description,
-                    new Date(datePicker.getText().toString()),
-                    selectedResponsible,
-                    selectedParticipants);
+
             // Save the newly created GroupActivity here here
             //DataStorage.getInstance().createActivity();
             // Return to the previous fragment
 
-            */
+
         }
     }
 
-    public void resetValues(){
-        this.canBeCancelled = false;
-        this.title = null;
-        this.type = null;
-        this.description = null;
-        this.date = null;
+    public void setKitchen(Kitchen kitchen){
+        this.kitchen = kitchen;
     }
+    public void setPerson(Person person){
+        this.person = person;
+    }
+
     public List<Person> getPersonList(ListView list){
         List<Person> selectedParticipants = new ArrayList<>();
         if(list == null) return selectedParticipants;

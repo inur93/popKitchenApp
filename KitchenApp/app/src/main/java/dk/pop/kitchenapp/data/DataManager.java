@@ -1,7 +1,6 @@
 package dk.pop.kitchenapp.data;
 
 import android.support.annotation.NonNull;
-import android.telecom.Call;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -10,14 +9,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
-import dk.pop.kitchenapp.BuildConfig;
-import dk.pop.kitchenapp.data.interfaces.Callback;
 import dk.pop.kitchenapp.data.interfaces.FireBaseCallback;
-import dk.pop.kitchenapp.models.CleaningGroupActivity;
 import dk.pop.kitchenapp.models.DinnerGroupActivity;
-import dk.pop.kitchenapp.models.ExpenseGroupActivity;
 import dk.pop.kitchenapp.models.GroupActivity;
 import dk.pop.kitchenapp.models.Kitchen;
 import dk.pop.kitchenapp.models.Person;
@@ -99,6 +92,20 @@ public class DataManager {
         database.child(KITCHENRESOURCE).child(name).addListenerForSingleValueEvent(listener);
     }
 
+    public void getKitchen(String name){
+        database.child(KITCHENRESOURCE).child(name).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public void attachKitchenListener(ChildEventListener listener){
         database.child(KITCHENRESOURCE).addChildEventListener(listener);
     }
@@ -108,11 +115,16 @@ public class DataManager {
     }
 
     public void createActivity(GroupActivity activity){
-        database.child(ACTIVITIESRESOURCE).child(activity.getId().toString()).setValue(activity);
+        database.child(ACTIVITIESRESOURCE).child(activity.getId().toString()).setValue(activity.getValues());
+       // database.child(ACTIVITIESRESOURCE).child(activity.getId().toString()).setValue(activity);
         database.child(KITCHENRESOURCE).child(activity.getKitchen().getName()).child(ACTIVITIESRESOURCE).child(activity.getId().toString()).setValue(activity.getId().toString());
 
         switch (activity.getType()) {
             case DINNERACTIVITY:
+                if(activity instanceof DinnerGroupActivity){
+                    DinnerGroupActivity dinnerActivity = (DinnerGroupActivity) activity;
+
+                }
                 break;
             case CLEANINGACTIVITY:
                 break;
@@ -130,4 +142,26 @@ public class DataManager {
         database.child(KITCHENRESOURCE).child(kitchen.getName()).child(PERSONRESOURCE).child(person.getGoogleId()).removeValue();
         database.child(PERSONRESOURCE).child(person.getGoogleId()).child(KITCHENRESOURCE).child(kitchen.getName()).removeValue();
     }
+
+    public void setCurrentPerson(Person currentPerson) {
+        this.currentPerson = currentPerson;
+    }
+
+    private Kitchen currentKitchen = null;
+
+    public Kitchen getCurrentKitchen() {
+        return currentKitchen;
+    }
+
+    public Person getCurrentPerson() {
+        return currentPerson;
+    }
+
+    private Person currentPerson = null;
+
+    public void setCurrentKitchen(Kitchen kitchen){
+        this.currentKitchen = kitchen;
+    }
+
+
 }

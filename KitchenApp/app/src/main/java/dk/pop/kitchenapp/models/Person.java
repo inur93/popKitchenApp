@@ -1,9 +1,8 @@
 package dk.pop.kitchenapp.models;
 
-import com.google.firebase.database.Exclude;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by dickow on 9/21/16.
@@ -15,6 +14,9 @@ public class Person {
     private boolean active;
     private int roomNumber;
 
+
+    //basically lists with ids
+    private HashMap<String, String> kitchenIds;
     private HashMap<String, Kitchen> kitchens;
     private HashMap<String, GroupActivity> activities;
 
@@ -84,5 +86,17 @@ public class Person {
             listActivities.add(act);
         }
         return listActivities;
+    }
+
+    public void setKitchenIds(HashMap<String, String> kitchenIds){
+        this.kitchenIds = kitchenIds;
+    }
+
+    public List<String> getKitchenIds(){
+        List<String> vals = new ArrayList<>();
+        for(String s : this.kitchenIds.values()){
+            vals.add(s);
+        }
+        return vals;
     }
 }

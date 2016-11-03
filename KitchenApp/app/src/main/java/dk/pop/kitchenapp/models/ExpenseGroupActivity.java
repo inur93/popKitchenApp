@@ -1,5 +1,6 @@
 package dk.pop.kitchenapp.models;
 
+import java.util.Date;
 import java.util.UUID;
 
 import dk.pop.kitchenapp.models.enums.ObjectTypeEnum;
@@ -12,8 +13,18 @@ public class ExpenseGroupActivity extends GroupActivity {
     private float price;
     private Person responsible;
 
-    public ExpenseGroupActivity(Person responsible, Person createdBy, float price, Kitchen kitchen, UUID id) {
-        super(kitchen, createdBy, ObjectTypeEnum.EXPENSEACTIVITY, id);
+    public ExpenseGroupActivity(
+            UUID id,
+            String title,
+            String description,
+            Date date,
+            Kitchen kitchen,
+            Person createdBy,
+            Person responsible,
+            float price) {
+
+        super(id, title, description, date, kitchen, createdBy, ObjectTypeEnum.EXPENSEACTIVITY);
+
         this.responsible = responsible;
         this.price = price;
     }

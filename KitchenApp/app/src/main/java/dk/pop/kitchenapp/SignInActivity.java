@@ -1,9 +1,8 @@
 package dk.pop.kitchenapp;
 
 import android.content.Intent;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.google.android.gms.auth.api.Auth;
@@ -30,14 +29,17 @@ public class SignInActivity extends AppCompatActivity{
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == REQUESTCODE) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 AuthenticationManager.getInstance().authorizeWithFirebase(this, account, new Callback() {
                     @Override
                     public void onSuccess() {
+
                         Log.d(LoggingTag.LOGIN.name(), "Successfully authenticated");
-                        finish();
+                        Intent intent = new Intent(SignInActivity.this, NavigationActivity.class);
+                        startActivity(intent);
                     }
 
                     @Override
@@ -50,6 +52,10 @@ public class SignInActivity extends AppCompatActivity{
                 // Google Sign In failed
                 Log.e(LoggingTag.LOGIN.name(), "Google Sign In failed.");
             }
+        }else{
+
+            Intent intent = new Intent(this, NavigationActivity.class);
+            startActivity(intent);
         }
     }
 

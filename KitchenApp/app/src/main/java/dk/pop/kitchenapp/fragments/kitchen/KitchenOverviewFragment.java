@@ -10,12 +10,19 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.androidquery.AQuery;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
 
 import dk.pop.kitchenapp.R;
-import dk.pop.kitchenapp.adapters.KitchenActivitiesAdapter;
-import dk.pop.kitchenapp.data.DataStorage;
+import dk.pop.kitchenapp.data.DataManager;
 import dk.pop.kitchenapp.fragments.kitchen.creation.KitchenOverviewActivityCreationFragment;
 import dk.pop.kitchenapp.logging.LoggingTag;
+import dk.pop.kitchenapp.models.Kitchen;
+import dk.pop.kitchenapp.models.Person;
 import dk.pop.kitchenapp.navigation.FragmentExtension;
 
 /**
@@ -50,10 +57,48 @@ public class KitchenOverviewFragment extends FragmentExtension implements View.O
         switch (v.getId()){
             case R.id.kitchenOverviewCreateActivityBtn:
                 Log.d(LoggingTag.INFO.name(), "create activity btn was clicked");
+                final KitchenOverviewActivityCreationFragment frag = new KitchenOverviewActivityCreationFragment();
+                // single read
+                DataManager.getInstance().getPerson(
+                        FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Object value = dataSnapshot.getValue();
+                                Person p = dataSnapshot.getValue(Person.class);
+                                frag.setPerson(p);
+                                List<String> kitchens = p.getKitchenIds();
+                                if(kitchens.size() > 0) {
+                                    DataManager.getInstance().getKitchen(
+                                            kitchens.get(0),
+                                            new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    Kitchen k = dataSnapshot.getValue(Kitchen.class);
+                                                    frag.setKitchen(k);
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            }
+                                    );
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        }
+                );
+
+
                 getFragmentManager()
                         .beginTransaction()
                         .replace(R.id.kitchen_overview_wrapper_fragment_placeholder,
-                                new KitchenOverviewActivityCreationFragment())
+                               frag)
                         .addToBackStack(null)
                         .commit();
                 break;

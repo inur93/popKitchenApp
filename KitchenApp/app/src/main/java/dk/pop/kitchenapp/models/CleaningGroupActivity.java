@@ -1,6 +1,7 @@
 package dk.pop.kitchenapp.models;
 
-import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import dk.pop.kitchenapp.models.enums.CleaningStatusEnum;
@@ -12,10 +13,24 @@ import dk.pop.kitchenapp.models.enums.ObjectTypeEnum;
 
 public class CleaningGroupActivity extends PlannableGroupActivity {
     private CleaningStatusEnum status;
-    private ArrayList<Person> persons;
+    private List<Person> persons;
 
-    public CleaningGroupActivity(ArrayList<Person> persons, Kitchen kitchen, Person createdBy, UUID id) throws IllegalArgumentException{
-        super(createdBy, kitchen, ObjectTypeEnum.CLEANINGACTIVITY, id);
+    public CleaningGroupActivity(
+            UUID id,
+            String title,
+            String description,
+            Date date,
+            Kitchen kitchen,
+            Person createdBy,
+            boolean isCancellable,
+            List<Person> participants,
+            CleaningStatusEnum status
+            ) throws IllegalArgumentException{
+
+        super(id, title, description, date, kitchen, createdBy, ObjectTypeEnum.CLEANINGACTIVITY, isCancellable);
+
+        this.status = status == null ? CleaningStatusEnum.SCHEDULED : status;
+        this.persons = participants;
 
         if(persons == null || persons.isEmpty()){
             throw new IllegalArgumentException("You must provide atleast one person for the cleaning");
@@ -32,7 +47,7 @@ public class CleaningGroupActivity extends PlannableGroupActivity {
         this.status = status;
     }
 
-    public ArrayList<Person> getPersons() {
+    public List<Person> getPersons() {
         return persons;
     }
 }
