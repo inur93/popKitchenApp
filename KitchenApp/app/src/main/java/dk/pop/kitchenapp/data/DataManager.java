@@ -31,6 +31,7 @@ public class DataManager {
     public final String KITCHENRESOURCE = "kitchens/";
     public final String PERSONRESOURCE = "persons/";
     public final String ACTIVITIESRESOURCE = "activities/";
+    private Person currentPerson;
 
     private DatabaseReference database;
 
@@ -129,5 +130,13 @@ public class DataManager {
     public void disAssociateFromKitchen(Kitchen kitchen, Person person){
         database.child(KITCHENRESOURCE).child(kitchen.getName()).child(PERSONRESOURCE).child(person.getGoogleId()).removeValue();
         database.child(PERSONRESOURCE).child(person.getGoogleId()).child(KITCHENRESOURCE).child(kitchen.getName()).removeValue();
+    }
+
+    public Person getCurrentPerson() {
+        return currentPerson;
+    }
+
+    public void setCurrentPerson(Person currentPerson) {
+        this.currentPerson = currentPerson;
     }
 }

@@ -47,6 +47,7 @@ public class PrimaryActivity extends AppCompatActivity{
             DataManager.getInstance().createPerson(new Person(user.getUid(), user.getDisplayName(), true), new FireBaseCallback<Person>() {
                 @Override
                 public void onSuccessCreate(Person entity) {
+                    DataManager.getInstance().setCurrentPerson(entity);
                     getSupportFragmentManager().beginTransaction().add(R.id.primary_activity_frame_layout, new GroupCreationFragment()).addToBackStack(null).commit();
                 }
 
@@ -57,6 +58,7 @@ public class PrimaryActivity extends AppCompatActivity{
 
                 @Override
                 public void onExists(Person entity) {
+                    DataManager.getInstance().setCurrentPerson(entity);
                     if(entity.getKitchens().isEmpty()){
                         // Route to first time fragment
                         getSupportFragmentManager().beginTransaction().add(R.id.primary_activity_frame_layout, new GroupCreationFragment()).addToBackStack(null).commit();

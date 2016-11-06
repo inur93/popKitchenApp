@@ -2,6 +2,7 @@ package dk.pop.kitchenapp.models;
 
 import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -9,7 +10,7 @@ import java.util.HashMap;
  * Created by dickow on 9/21/16.
  */
 
-public class Person {
+public class Person implements Serializable{
     private String googleId;
     private String displayName;
     private boolean active;

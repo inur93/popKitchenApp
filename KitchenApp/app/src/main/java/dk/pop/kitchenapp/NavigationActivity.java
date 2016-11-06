@@ -1,13 +1,17 @@
 package dk.pop.kitchenapp;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.androidquery.AQuery;
 
+import dk.pop.kitchenapp.data.dataPassing.DataPassingEnum;
 import dk.pop.kitchenapp.fragments.kitchen.KitchenOverviewWrapperFragment;
 import dk.pop.kitchenapp.fragments.personal.PersonalOverviewFragment;
+import dk.pop.kitchenapp.models.Kitchen;
+import dk.pop.kitchenapp.models.Person;
 import dk.pop.kitchenapp.navigation.ActivityNavigation;
 
 public class NavigationActivity extends ActivityNavigation{
@@ -17,6 +21,15 @@ public class NavigationActivity extends ActivityNavigation{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        // TODO
+        /*
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        Kitchen kitchen = (Kitchen)extras.getSerializable(DataPassingEnum.KITCHEN.name());
+        Person person = (Person)extras.getSerializable(DataPassingEnum.PERSON.name());*/
+
         setContentView(R.layout.activity_navigation);
 
         AQuery aq = new AQuery(this);
