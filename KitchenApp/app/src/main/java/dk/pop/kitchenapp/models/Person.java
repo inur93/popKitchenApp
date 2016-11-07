@@ -1,5 +1,8 @@
 package dk.pop.kitchenapp.models;
 
+import com.google.firebase.database.Exclude;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,17 +11,14 @@ import java.util.List;
  * Created by dickow on 9/21/16.
  */
 
-public class Person {
+public class Person implements Serializable{
     private String googleId;
     private String displayName;
     private boolean active;
     private int roomNumber;
 
-
-    //basically lists with ids
-    private HashMap<String, String> kitchenIds;
-    private HashMap<String, Kitchen> kitchens;
-    private HashMap<String, GroupActivity> activities;
+    private HashMap<String, String> kitchens;
+    private HashMap<String, String> activities;
 
     public Person(){
         this.kitchens = new HashMap<>();
@@ -60,43 +60,13 @@ public class Person {
         this.roomNumber = roomNumber;
     }
 
-    public ArrayList<Kitchen> getKitchensList() {
-        ArrayList<Kitchen> listKitchens = new ArrayList<>();
-        for (Kitchen kitch :
-                this.kitchens.values()) {
-                listKitchens.add(kitch);
-        }
-        return listKitchens;
-    }
+    public HashMap<String, String> getKitchens(){return this.kitchens;}
 
-    public HashMap<String, Kitchen> getKitchens(){return this.kitchens;}
-
-    public void setKitchens(HashMap<String, Kitchen> kitchens) {
+    public void setKitchens(HashMap<String, String> kitchens) {
         this.kitchens = kitchens;
     }
 
-    public void setActivities(HashMap<String, GroupActivity> activities) { this.activities = activities;}
+    public void setActivities(HashMap<String, String> activities) { this.activities = activities;}
 
-    public HashMap<String, GroupActivity> getActivities(){return this.activities;}
-
-    public ArrayList<GroupActivity> getActivitiesList(){
-        ArrayList<GroupActivity> listActivities = new ArrayList<>();
-        for (GroupActivity act :
-                this.activities.values()) {
-            listActivities.add(act);
-        }
-        return listActivities;
-    }
-
-    public void setKitchenIds(HashMap<String, String> kitchenIds){
-        this.kitchenIds = kitchenIds;
-    }
-
-    public List<String> getKitchenIds(){
-        List<String> vals = new ArrayList<>();
-        for(String s : this.kitchenIds.values()){
-            vals.add(s);
-        }
-        return vals;
-    }
+    public HashMap<String, String> getActivities(){return this.activities;}
 }

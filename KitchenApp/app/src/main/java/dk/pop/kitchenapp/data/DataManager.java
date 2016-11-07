@@ -1,12 +1,15 @@
 package dk.pop.kitchenapp.data;
 
 import android.support.annotation.NonNull;
+import android.telecom.Call;
+import android.util.Log;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import dk.pop.kitchenapp.data.interfaces.FireBaseCallback;
@@ -24,6 +27,8 @@ public class DataManager {
     public final String KITCHENRESOURCE = "kitchens/";
     public final String PERSONRESOURCE = "persons/";
     public final String ACTIVITIESRESOURCE = "activities/";
+    private Person currentPerson;
+    private Kitchen currentKitchen;
 
     private DatabaseReference database;
 
@@ -92,20 +97,6 @@ public class DataManager {
         database.child(KITCHENRESOURCE).child(name).addListenerForSingleValueEvent(listener);
     }
 
-    public void getKitchen(String name){
-        database.child(KITCHENRESOURCE).child(name).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
     public void attachKitchenListener(ChildEventListener listener){
         database.child(KITCHENRESOURCE).addChildEventListener(listener);
     }
@@ -143,25 +134,24 @@ public class DataManager {
         database.child(PERSONRESOURCE).child(person.getGoogleId()).child(KITCHENRESOURCE).child(kitchen.getName()).removeValue();
     }
 
-    public void setCurrentPerson(Person currentPerson) {
-        this.currentPerson = currentPerson;
-    }
-
-    private Kitchen currentKitchen = null;
-
-    public Kitchen getCurrentKitchen() {
-        return currentKitchen;
+    public void getKitchensForPerson(Person person, ChildEventListener listener){
+        Query query = database.child(KITCHENRESOURCE).orderByChild(String.format("%s/%s",PERSONRESOURCE, person.getGoogleId())).equalTo(person.getGoogleId());
+        query.addChildEventListener(listener);
     }
 
     public Person getCurrentPerson() {
         return currentPerson;
     }
 
-    private Person currentPerson = null;
-
-    public void setCurrentKitchen(Kitchen kitchen){
-        this.currentKitchen = kitchen;
+    public void setCurrentPerson(Person currentPerson) {
+        this.currentPerson = currentPerson;
     }
 
+    public Kitchen getCurrentKitchen() {
+        return currentKitchen;
+    }
 
+    public void setCurrentKitchen(Kitchen currentKitchen) {
+        this.currentKitchen = currentKitchen;
+    }
 }

@@ -66,13 +66,13 @@ public class DataStorage extends Application{
             ArrayList<Person> thisPerson = new ArrayList<>();
             thisPerson.add(person);
 
-            person.getActivitiesList().add(new CleaningGroupActivity(thisPerson, this.kitchen, this.person, UUID.randomUUID()));
+            /*person.getActivitiesList().add(new CleaningGroupActivity(thisPerson, this.kitchen, this.person, UUID.randomUUID()));*/
 
             ArrayList<ExpenseGroupActivity> expenses = new ArrayList<>();
-            expenses.add(new ExpenseGroupActivity(this.person, this.person, 245.05f, this.kitchen, null));
-            expenses.add(new ExpenseGroupActivity(this.person, this.person, 202.95f, this.kitchen, null));
-            expenses.add(new ExpenseGroupActivity(this.person, this.person, 865.95f, this.kitchen, null));
-            person.getActivitiesList().add(new DinnerGroupActivity(expenses, this.kitchen, this.person, UUID.randomUUID()));
+            /*expenses.add(new ExpenseGroupActivity(this.person, this.person, 245.05f, this.kitchen));
+            expenses.add(new ExpenseGroupActivity(this.person, this.person, 202.95f, this.kitchen));
+            expenses.add(new ExpenseGroupActivity(this.person, this.person, 865.95f, this.kitchen));*/
+            /*person.getActivitiesList().add(new DinnerGroupActivity(expenses, this.kitchen, this.person, UUID.randomUUID()));*/
         }
     }
 
@@ -83,7 +83,7 @@ public class DataStorage extends Application{
     private PersonViewModel createPersonViewModel(Kitchen kitchen, String id, boolean active, int roomNo, boolean isSelected){
         // Setup person
         person = new Person();
-        person.getKitchensList().add(kitchen);
+        /*person.getKitchensList().add(kitchen);*/
         person.setActive(active);
         person.setGoogleId(id);
         person.setRoomNumber(roomNo);

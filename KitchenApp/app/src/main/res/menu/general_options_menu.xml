@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:icon="@drawable/users"
+        android:title="Create Groups"
+        android:id="@+id/general_options_menu_group_creation"/>
+    <item
+        android:icon="@drawable/users"
+        android:title="My Groups"
+        android:id="@+id/general_options_menu_my_groups"/>
+    <item
+        android:icon="@drawable/ic_exit_to_app_black_24dp"
+        android:title="Log out"
+        android:id="@+id/general_options_menu_logout"/>
+</menu>

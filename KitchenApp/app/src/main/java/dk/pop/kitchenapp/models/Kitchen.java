@@ -1,5 +1,6 @@
 package dk.pop.kitchenapp.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -7,7 +8,7 @@ import java.util.HashMap;
  * Created by dickow on 9/21/16.
  */
 
-public class Kitchen {
+public class Kitchen implements Serializable{
     private String name;
     private HashMap<String, String> activities;
     private HashMap<String, String> persons;
