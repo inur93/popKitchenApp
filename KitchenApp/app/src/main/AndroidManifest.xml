@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NavigationActivity">
+        <activity android:name=".PrimaryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,6 +28,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".SignInActivity"></activity>
+        <activity android:name=".NavigationActivity"/>
     </application>
 
 </manifest>
