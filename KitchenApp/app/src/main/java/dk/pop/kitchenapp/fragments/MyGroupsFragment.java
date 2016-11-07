@@ -11,6 +11,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.androidquery.AQuery;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
 
@@ -35,14 +38,42 @@ public class MyGroupsFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_my_groups, container, false);
         kitchens = new ArrayList<>();
 
         AQuery aq = new AQuery(view);
-        groupsList = aq.id(R.id.group_creation_list_view).getListView();
+        groupsList = aq.id(R.id.my_groups_list_view).getListView();
         groupsList.setAdapter(new KitchenListAdapter(kitchens, getContext()));
         groupsList.setOnItemClickListener(this);
+        DataManager.getInstance().getKitchensForPerson(DataManager.getInstance().getCurrentPerson(), new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                kitchens.add(dataSnapshot.getValue(Kitchen.class));
+                ((KitchenListAdapter)groupsList.getAdapter()).getFilter().filter("");
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                kitchens.indexOf(dataSnapshot.getValue(Kitchen.class));
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                kitchens.remove(dataSnapshot.getValue(Kitchen.class));
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         return view;
     }

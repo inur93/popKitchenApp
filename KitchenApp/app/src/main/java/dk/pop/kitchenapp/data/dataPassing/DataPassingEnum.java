@@ -6,5 +6,6 @@ package dk.pop.kitchenapp.data.dataPassing;
 
 public enum DataPassingEnum {
     PERSON,
-    KITCHEN
+    KITCHEN,
+    STATE
 }

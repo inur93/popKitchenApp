@@ -44,14 +44,14 @@
                 android:layout_weight="1"
                 android:id="@+id/group_creation_create_btn" />
 
-            <Button
+            <!--<Button
                 android:text="Search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/group_creation_search_field"
                 android:layout_alignStart="@+id/group_creation_search_field"
                 android:layout_weight="1"
-                android:id="@+id/group_creation_search_btn" />
+                android:id="@+id/group_creation_search_btn" />-->
         </LinearLayout>
     </RelativeLayout>
 

@@ -16,8 +16,8 @@ public class Person implements Serializable{
     private boolean active;
     private int roomNumber;
 
-    private HashMap<String, Kitchen> kitchens;
-    private HashMap<String, GroupActivity> activities;
+    private HashMap<String, String> kitchens;
+    private HashMap<String, String> activities;
 
     public Person(){
         this.kitchens = new HashMap<>();
@@ -59,31 +59,13 @@ public class Person implements Serializable{
         this.roomNumber = roomNumber;
     }
 
-    public ArrayList<Kitchen> getKitchensList() {
-        ArrayList<Kitchen> listKitchens = new ArrayList<>();
-        for (Kitchen kitch :
-                this.kitchens.values()) {
-                listKitchens.add(kitch);
-        }
-        return listKitchens;
-    }
+    public HashMap<String, String> getKitchens(){return this.kitchens;}
 
-    public HashMap<String, Kitchen> getKitchens(){return this.kitchens;}
-
-    public void setKitchens(HashMap<String, Kitchen> kitchens) {
+    public void setKitchens(HashMap<String, String> kitchens) {
         this.kitchens = kitchens;
     }
 
-    public void setActivities(HashMap<String, GroupActivity> activities) { this.activities = activities;}
+    public void setActivities(HashMap<String, String> activities) { this.activities = activities;}
 
-    public HashMap<String, GroupActivity> getActivities(){return this.activities;}
-
-    public ArrayList<GroupActivity> getActivitiesList(){
-        ArrayList<GroupActivity> listActivities = new ArrayList<>();
-        for (GroupActivity act :
-                this.activities.values()) {
-            listActivities.add(act);
-        }
-        return listActivities;
-    }
+    public HashMap<String, String> getActivities(){return this.activities;}
 }
