@@ -58,42 +58,6 @@ public class KitchenOverviewFragment extends FragmentExtension implements View.O
             case R.id.kitchenOverviewCreateActivityBtn:
                 Log.d(LoggingTag.INFO.name(), "create activity btn was clicked");
                 final KitchenOverviewActivityCreationFragment frag = new KitchenOverviewActivityCreationFragment();
-                // single read
-                DataManager.getInstance().getPerson(
-                        FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                        new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                Object value = dataSnapshot.getValue();
-                                Person p = dataSnapshot.getValue(Person.class);
-                                frag.setPerson(p);
-                                List<String> kitchens = p.getKitchenIds();
-                                if(kitchens.size() > 0) {
-                                    DataManager.getInstance().getKitchen(
-                                            kitchens.get(0),
-                                            new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                                    Kitchen k = dataSnapshot.getValue(Kitchen.class);
-                                                    frag.setKitchen(k);
-                                                }
-
-                                                @Override
-                                                public void onCancelled(DatabaseError databaseError) {
-
-                                                }
-                                            }
-                                    );
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        }
-                );
-
 
                 getFragmentManager()
                         .beginTransaction()
