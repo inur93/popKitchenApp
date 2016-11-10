@@ -10,24 +10,19 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.androidquery.AQuery;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 
-import java.security.acl.Group;
 import java.util.ArrayList;
-import java.util.List;
 
 import dk.pop.kitchenapp.R;
 import dk.pop.kitchenapp.adapters.ActivityListAdapter;
 import dk.pop.kitchenapp.data.DataManager;
+import dk.pop.kitchenapp.fragments.kitchen.calendar.KitchenOverviewCalendarFragment;
 import dk.pop.kitchenapp.fragments.kitchen.creation.KitchenOverviewActivityCreationFragment;
 import dk.pop.kitchenapp.logging.LoggingTag;
 import dk.pop.kitchenapp.models.GroupActivity;
-import dk.pop.kitchenapp.models.Kitchen;
-import dk.pop.kitchenapp.models.Person;
 import dk.pop.kitchenapp.models.factories.ActivityFactory;
 import dk.pop.kitchenapp.navigation.FragmentExtension;
 
