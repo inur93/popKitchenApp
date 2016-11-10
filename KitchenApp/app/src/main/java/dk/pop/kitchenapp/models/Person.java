@@ -15,7 +15,7 @@ public class Person implements Serializable{
     private String googleId;
     private String displayName;
     private boolean active;
-    private int roomNumber;
+    private String roomNumber;
 
     private HashMap<String, String> kitchens;
     private HashMap<String, String> activities;
@@ -52,11 +52,11 @@ public class Person implements Serializable{
         this.active = active;
     }
 
-    public int getRoomNumber() {
+    public String getRoomNumber() {
         return roomNumber;
     }
 
-    public void setRoomNumber(int roomNumber) {
+    public void setRoomNumber(String roomNumber) {
         this.roomNumber = roomNumber;
     }
 

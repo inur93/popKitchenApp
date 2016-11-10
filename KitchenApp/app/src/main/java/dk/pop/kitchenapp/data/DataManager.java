@@ -10,7 +10,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 import dk.pop.kitchenapp.data.interfaces.FireBaseCallback;
+import dk.pop.kitchenapp.extensions.StringExtensions;
 import dk.pop.kitchenapp.models.DinnerGroupActivity;
 import dk.pop.kitchenapp.models.GroupActivity;
 import dk.pop.kitchenapp.models.Kitchen;
@@ -96,6 +99,19 @@ public class DataManager implements IDataManager {
         database.child(PERSONRESOURCE)
                 .child(googleId)
                 .addListenerForSingleValueEvent(listener);
+    }
+
+    @Override
+    public void updatePerson(String googleId, String name, String roomNumber){
+        HashMap<String, Object> values = new HashMap<>();
+        if(!StringExtensions.isNullOrEmpty(name)){
+            values.put("displayName", name);
+        }
+        if(!StringExtensions.isNullOrEmpty(roomNumber)){
+            values.put("roomNumber", roomNumber);
+        }
+
+        database.child(PERSONRESOURCE).child(googleId).updateChildren(values);
     }
 
     @Override

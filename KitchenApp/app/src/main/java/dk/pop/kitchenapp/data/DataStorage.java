@@ -39,12 +39,12 @@ public class DataStorage extends Application{
             kitchen = new Kitchen("Test Kitchen");
 
 
-            this.person = createPerson(kitchen, "KlausBruun@gmail.com", true, 200);
+            this.person = createPerson(kitchen, "KlausBruun@gmail.com", true, "200");
 
             this.participants = new ArrayList<>();
-            this.participants.add(createPersonViewModel(kitchen, "jespergroenkjær@gmail.com", true, 47, true));
-            this.participants.add(createPersonViewModel(kitchen, "nicholascage@gmail.com", true, 43, true));
-            this.participants.add(createPersonViewModel(kitchen, "willsmith@gmail.com", true, 123, true));
+            this.participants.add(createPersonViewModel(kitchen, "jespergroenkjær@gmail.com", true, "47", true));
+            this.participants.add(createPersonViewModel(kitchen, "nicholascage@gmail.com", true, "43", true));
+            this.participants.add(createPersonViewModel(kitchen, "willsmith@gmail.com", true, "123", true));
 
 
             // Setup persons
@@ -76,11 +76,11 @@ public class DataStorage extends Application{
         }
     }
 
-    private Person createPerson(Kitchen kitchen, String id, boolean active, int roomNo){
+    private Person createPerson(Kitchen kitchen, String id, boolean active, String roomNo){
         PersonViewModel person = createPersonViewModel(kitchen, id, active, roomNo, false);
         return person.getPerson();
     }
-    private PersonViewModel createPersonViewModel(Kitchen kitchen, String id, boolean active, int roomNo, boolean isSelected){
+    private PersonViewModel createPersonViewModel(Kitchen kitchen, String id, boolean active, String roomNo, boolean isSelected){
         // Setup person
         person = new Person();
         /*person.getKitchensList().add(kitchen);*/

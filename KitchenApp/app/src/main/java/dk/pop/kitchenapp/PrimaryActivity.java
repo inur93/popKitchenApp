@@ -113,6 +113,10 @@ public class PrimaryActivity extends AppCompatActivity{
                  Intent signInIntent = new Intent(this, SignInActivity.class);
                  startActivity(signInIntent);
                  break;
+             case R.id.general_options_menu_personal_info:
+                 Intent personalPageInten = new Intent(this, PersonalPageActivity.class);
+                 startActivity(personalPageInten);
+                 break;
          }
         return super.onOptionsItemSelected(item);
      }
