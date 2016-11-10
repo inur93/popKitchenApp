@@ -14,8 +14,8 @@ import dk.pop.kitchenapp.models.enums.ObjectTypeEnum;
 
 public class DinnerGroupActivity extends PlannableGroupActivity {
     private float total;
-    private List<ExpenseGroupActivity> expenses;
-    private List<Person> participants;
+    private HashMap<String, String> expenses = new HashMap<>();
+    private HashMap<String, String> participants = new HashMap<>();
 
     public DinnerGroupActivity(
             UUID id,
@@ -36,8 +36,12 @@ public class DinnerGroupActivity extends PlannableGroupActivity {
             throw new IllegalArgumentException("expenses was empty, you must provide at least one expense");
         }*/
         this.total = total;
-        this.expenses = expenses;
-        this.participants = participants;
+        for(ExpenseGroupActivity e : expenses) {
+            this.expenses.put(e.getId(), e.getId());
+        }
+        for(Person p : participants){
+            this.participants.put(p.getGoogleId(), p.getGoogleId());
+        }
     }
 
     public float getTotal() {
@@ -48,41 +52,25 @@ public class DinnerGroupActivity extends PlannableGroupActivity {
         this.total = total;
     }
 
-    public List<ExpenseGroupActivity> getExpenses() {
+    public HashMap<String, String> getExpenses() {
         return expenses;
     }
 
     public void setExpenses(ArrayList<ExpenseGroupActivity> expenses) {
-        this.expenses = expenses;
+        this.expenses.clear();
+        for(ExpenseGroupActivity e : expenses){
+            this.expenses.put(e.getId(), e.getId());
+        }
     }
 
-    public List<Person> getParticipants() {
+    public HashMap<String, String> getParticipants() {
         return participants;
     }
 
     public void setParticipants(ArrayList<Person> participants) {
-        this.participants = participants;
-    }
-
-    public HashMap<String, Object> getValues(){
-       HashMap<String, Object> vals = super.getValues();
-        vals.put("total", total);
-
-        if(this.expenses != null) {
-            HashMap<String, Object> expenses = new HashMap<>();
-
-            for (ExpenseGroupActivity e : this.expenses) {
-                expenses.put(e.getId().toString(), e.getId().toString());
-            }
-            vals.put("expenses", expenses);
+        this.participants.clear();
+        for(Person p : participants){
+            this.participants.put(p.getGoogleId(), p.getGoogleId());
         }
-        if(this.participants != null){
-            HashMap<String, Object> participants = new HashMap<>();
-            for(Person p : this.participants){
-                participants.put(p.getGoogleId(), p.getGoogleId());
-            }
-            vals.put("participants", participants);
-        }
-        return vals;
     }
 }

@@ -11,7 +11,7 @@ import dk.pop.kitchenapp.models.enums.ObjectTypeEnum;
 
 public class ExpenseGroupActivity extends GroupActivity {
     private float price;
-    private Person responsible;
+    private String responsible;
 
     public ExpenseGroupActivity(
             UUID id,
@@ -25,17 +25,18 @@ public class ExpenseGroupActivity extends GroupActivity {
 
         super(id, title, description, date, kitchen, createdBy, ObjectTypeEnum.EXPENSEACTIVITY);
 
-        this.responsible = responsible;
+        this.responsible = responsible.getGoogleId();
         this.price = price;
     }
 
-    public Person getResponsible() {
+    public String getResponsible() {
         return responsible;
     }
 
     public void setResponsible(Person responsible) {
-        this.responsible = responsible;
+        this.responsible = responsible.getGoogleId();
     }
+    public void setResponsible(String responsible){this.responsible = responsible; }
 
     public float getPrice() {
         return price;
@@ -44,4 +45,6 @@ public class ExpenseGroupActivity extends GroupActivity {
     public void setPrice(float price) {
         this.price = price;
     }
+
+
 }
