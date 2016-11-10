@@ -49,7 +49,7 @@ public class PrimaryActivity extends AppCompatActivity{
     @Override
     protected void onStart() {
         super.onStart();
-        if(state != null){
+        if(state != null && AuthenticationManager.getInstance().getFirebaseUser() != null){
             switch (state){
                 case GROUPCREATION:
                     getSupportFragmentManager().beginTransaction().add(R.id.primary_activity_frame_layout, new GroupCreationFragment()).addToBackStack(null).commit();

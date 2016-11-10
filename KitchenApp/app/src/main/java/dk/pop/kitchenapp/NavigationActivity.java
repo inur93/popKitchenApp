@@ -39,16 +39,16 @@ public class NavigationActivity extends ActivityNavigation{
         else{
             Intent intent = getIntent();
             Bundle extras = intent.getExtras();
-            Kitchen kitchen = (Kitchen)extras.getSerializable(DataPassingEnum.KITCHEN.name());
-            Person person = (Person)extras.getSerializable(DataPassingEnum.PERSON.name());
+            if(extras != null){
+                Kitchen kitchen = (Kitchen)extras.getSerializable(DataPassingEnum.KITCHEN.name());
+                Person person = (Person)extras.getSerializable(DataPassingEnum.PERSON.name());
 
-            DataManager.getInstance().setCurrentPerson(person);
-            DataManager.getInstance().setCurrentKitchen(kitchen);
+                DataManager.getInstance().setCurrentPerson(person);
+                DataManager.getInstance().setCurrentKitchen(kitchen);
+            }
         }
 
         setContentView(R.layout.activity_navigation);
-
-        AQuery aq = new AQuery(this);
 
         // Setup the tab bar
         tabHost = (FragmentTabHost) findViewById(R.id.navigationActivityTabHost);

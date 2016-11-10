@@ -114,7 +114,6 @@ public class DataManager {
             case DINNERACTIVITY:
                 if(activity instanceof DinnerGroupActivity){
                     DinnerGroupActivity dinnerActivity = (DinnerGroupActivity) activity;
-
                 }
                 break;
             case CLEANINGACTIVITY:
