@@ -29,6 +29,7 @@ dependencies {
     compile 'com.google.firebase:firebase-core:9.6.1'
     compile 'com.google.firebase:firebase-database:9.6.1'
     compile 'com.google.firebase:firebase-auth:9.6.1'
+    compile 'com.github.SundeepK:CompactCalendarView:166ab2a933'
     testCompile 'junit:junit:4.12'
 }
 

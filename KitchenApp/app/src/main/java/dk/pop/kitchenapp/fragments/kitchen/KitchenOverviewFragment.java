@@ -132,5 +132,6 @@ public class KitchenOverviewFragment extends FragmentExtension implements View.O
     public void onStop() {
         super.onStop();
         DataManager.getInstance().detachActivitiesForKitchen(DataManager.getInstance().getCurrentKitchen(), listener);
+        activities.clear();
     }
 }

@@ -136,20 +136,7 @@ public class DataManager implements IDataManager {
     @Override
     public void createActivity(GroupActivity activity){
         database.child(ACTIVITIESRESOURCE).child(activity.getId().toString()).setValue(activity);
-       // database.child(ACTIVITIESRESOURCE).child(activity.getId().toString()).setValue(activity);
         database.child(KITCHENRESOURCE).child(activity.getKitchen()).child(ACTIVITIESRESOURCE).child(activity.getId().toString()).setValue(activity.getId().toString());
-
-        switch (activity.getType()) {
-            case DINNERACTIVITY:
-                if(activity instanceof DinnerGroupActivity){
-                    DinnerGroupActivity dinnerActivity = (DinnerGroupActivity) activity;
-                }
-                break;
-            case CLEANINGACTIVITY:
-                break;
-            case EXPENSEACTIVITY:
-                break;
-        }
     }
 
     @Override
@@ -202,7 +189,12 @@ public class DataManager implements IDataManager {
     @Override
     public void getActivitiesForPerson(@NonNull Person person, ChildEventListener listener) {
         database.child(ACTIVITIESRESOURCE)
-                .orderByChild(String.format("%s/%s",PERSONRESOURCE, person.getGoogleId()))
+                .orderByChild(String.format("%s/%s","participants", person.getGoogleId()))
+                .equalTo(person.getGoogleId())
+                .addChildEventListener(listener);
+
+        database.child(ACTIVITIESRESOURCE)
+                .orderByChild(String.format("%s%s", PERSONRESOURCE, person.getGoogleId()))
                 .equalTo(person.getGoogleId())
                 .addChildEventListener(listener);
     }
@@ -210,7 +202,12 @@ public class DataManager implements IDataManager {
     @Override
     public void detachActivitiesForPerson(@NonNull Person person, ChildEventListener listener) {
         database.child(ACTIVITIESRESOURCE)
-                .orderByChild(String.format("%s/%s",PERSONRESOURCE, person.getGoogleId()))
+                .orderByChild(String.format("%s/%s","participants", person.getGoogleId()))
+                .equalTo(person.getGoogleId())
+                .removeEventListener(listener);
+
+        database.child(ACTIVITIESRESOURCE)
+                .orderByChild(String.format("%s%s", PERSONRESOURCE, person.getGoogleId()))
                 .equalTo(person.getGoogleId())
                 .removeEventListener(listener);
     }
@@ -236,6 +233,15 @@ public class DataManager implements IDataManager {
                 .orderByChild(String.format("%s/%s", KITCHENRESOURCE, kitchen.getName()))
                 .equalTo(kitchen.getName())
                 .addChildEventListener(listener);
+    }
+
+    @Override
+    public void attachPersonEventListener(@NonNull Person person, ValueEventListener listener) {
+        database.child(PERSONRESOURCE).child(person.getGoogleId()).addValueEventListener(listener);
+    }
+
+    public void detachPersonEventListener(@NonNull Person person, ValueEventListener listener){
+        database.child(PERSONRESOURCE).child(person.getGoogleId()).removeEventListener(listener);
     }
 
     public void detachPersonsFromKitchen(@NonNull Kitchen kitchen, ChildEventListener listener){
