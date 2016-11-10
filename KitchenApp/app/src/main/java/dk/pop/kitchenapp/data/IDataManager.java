@@ -32,7 +32,17 @@ public interface IDataManager {
 
     void disAssociateFromKitchen(Kitchen kitchen, Person person);
 
-    void getKitchensForPerson(Person person, ChildEventListener listener);
+    void getKitchensForPerson(@NonNull Person person, ChildEventListener listener);
+
+    void detachKitchensForPerson(@NonNull Person person, ChildEventListener listener);
+
+    void getActivitiesForPerson(@NonNull Person person, ChildEventListener listener);
+
+    void detachActivitiesForPerson(@NonNull Person person, ChildEventListener listener);
+
+    void getActivitiesForKitchen(@NonNull Kitchen kitchen, ChildEventListener listener);
+
+    void detachActivitiesForKitchen(@NonNull Kitchen kitchen, ChildEventListener listener);
 
     Person getCurrentPerson();
 

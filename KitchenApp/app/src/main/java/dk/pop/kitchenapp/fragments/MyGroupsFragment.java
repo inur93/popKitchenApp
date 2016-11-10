@@ -30,6 +30,7 @@ import dk.pop.kitchenapp.models.Kitchen;
 public class MyGroupsFragment extends Fragment implements AdapterView.OnItemClickListener{
     private ListView groupsList;
     private ArrayList<Kitchen> kitchens;
+    ChildEventListener listener;
 
     public MyGroupsFragment() {
         // Required empty public constructor
@@ -42,12 +43,7 @@ public class MyGroupsFragment extends Fragment implements AdapterView.OnItemClic
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_my_groups, container, false);
         kitchens = new ArrayList<>();
-
-        AQuery aq = new AQuery(view);
-        groupsList = aq.id(R.id.my_groups_list_view).getListView();
-        groupsList.setAdapter(new KitchenListAdapter(kitchens, getContext()));
-        groupsList.setOnItemClickListener(this);
-        DataManager.getInstance().getKitchensForPerson(DataManager.getInstance().getCurrentPerson(), new ChildEventListener() {
+        listener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 kitchens.add(dataSnapshot.getValue(Kitchen.class));
@@ -73,7 +69,13 @@ public class MyGroupsFragment extends Fragment implements AdapterView.OnItemClic
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        };
+
+        AQuery aq = new AQuery(view);
+        groupsList = aq.id(R.id.my_groups_list_view).getListView();
+        groupsList.setAdapter(new KitchenListAdapter(kitchens, getContext()));
+        groupsList.setOnItemClickListener(this);
+        DataManager.getInstance().getKitchensForPerson(DataManager.getInstance().getCurrentPerson(), listener);
 
         return view;
     }
@@ -85,5 +87,11 @@ public class MyGroupsFragment extends Fragment implements AdapterView.OnItemClic
         intent.putExtra(DataPassingEnum.KITCHEN.name(), clickedKitchen);
         intent.putExtra(DataPassingEnum.PERSON.name(), DataManager.getInstance().getCurrentPerson());
         startActivity(intent);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        DataManager.getInstance().detachKitchensForPerson(DataManager.getInstance().getCurrentPerson(), listener);
     }
 }

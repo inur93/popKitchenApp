@@ -117,9 +117,9 @@ public class DataManager implements IDataManager {
 
     @Override
     public void createActivity(GroupActivity activity){
-        database.child(ACTIVITIESRESOURCE).child(activity.getId().toString()).setValue(activity.getValues());
+        database.child(ACTIVITIESRESOURCE).child(activity.getId().toString()).setValue(activity);
        // database.child(ACTIVITIESRESOURCE).child(activity.getId().toString()).setValue(activity);
-        database.child(KITCHENRESOURCE).child(activity.getKitchen().getName()).child(ACTIVITIESRESOURCE).child(activity.getId().toString()).setValue(activity.getId().toString());
+        database.child(KITCHENRESOURCE).child(activity.getKitchen()).child(ACTIVITIESRESOURCE).child(activity.getId().toString()).setValue(activity.getId().toString());
 
         switch (activity.getType()) {
             case DINNERACTIVITY:
@@ -166,11 +166,65 @@ public class DataManager implements IDataManager {
     }
 
     @Override
-    public void getKitchensForPerson(Person person, ChildEventListener listener){
+    public void getKitchensForPerson(@NonNull Person person, ChildEventListener listener){
         Query query = database.child(KITCHENRESOURCE)
                 .orderByChild(String.format("%s/%s",PERSONRESOURCE, person.getGoogleId()))
                 .equalTo(person.getGoogleId());
         query.addChildEventListener(listener);
+    }
+
+    @Override
+    public void detachKitchensForPerson(@NonNull Person person, ChildEventListener listener) {
+        Query query = database.child(KITCHENRESOURCE)
+                .orderByChild(String.format("%s/%s",PERSONRESOURCE, person.getGoogleId()))
+                .equalTo(person.getGoogleId());
+        query.removeEventListener(listener);
+    }
+
+    @Override
+    public void getActivitiesForPerson(@NonNull Person person, ChildEventListener listener) {
+        database.child(ACTIVITIESRESOURCE)
+                .orderByChild(String.format("%s/%s",PERSONRESOURCE, person.getGoogleId()))
+                .equalTo(person.getGoogleId())
+                .addChildEventListener(listener);
+    }
+
+    @Override
+    public void detachActivitiesForPerson(@NonNull Person person, ChildEventListener listener) {
+        database.child(ACTIVITIESRESOURCE)
+                .orderByChild(String.format("%s/%s",PERSONRESOURCE, person.getGoogleId()))
+                .equalTo(person.getGoogleId())
+                .removeEventListener(listener);
+    }
+
+    @Override
+    public void getActivitiesForKitchen(@NonNull Kitchen kitchen, ChildEventListener listener) {
+        database.child(ACTIVITIESRESOURCE)
+                .orderByChild(String.format("%s/%s", KITCHENRESOURCE, kitchen.getName()))
+                .equalTo(kitchen.getName())
+                .addChildEventListener(listener);
+    }
+
+    @Override
+    public void detachActivitiesForKitchen(@NonNull Kitchen kitchen, ChildEventListener listener) {
+        database.child(ACTIVITIESRESOURCE)
+                .orderByChild(String.format("%s/%s", KITCHENRESOURCE, kitchen.getName()))
+                .equalTo(kitchen.getName())
+                .removeEventListener(listener);
+    }
+
+    public void getPersonsFromKitchen(@NonNull Kitchen kitchen, ChildEventListener listener){
+        database.child(PERSONRESOURCE)
+                .orderByChild(String.format("%s/%s", KITCHENRESOURCE, kitchen.getName()))
+                .equalTo(kitchen.getName())
+                .addChildEventListener(listener);
+    }
+
+    public void detachPersonsFromKitchen(@NonNull Kitchen kitchen, ChildEventListener listener){
+        database.child(PERSONRESOURCE)
+                .orderByChild(String.format("%s/%s", KITCHENRESOURCE, kitchen.getName()))
+                .equalTo(kitchen.getName())
+                .removeEventListener(listener);
     }
 
     @Override

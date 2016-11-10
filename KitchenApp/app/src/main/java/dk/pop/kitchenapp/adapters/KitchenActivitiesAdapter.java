@@ -31,7 +31,7 @@ public class KitchenActivitiesAdapter extends ArrayAdapter<GroupActivity> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_kitchen_overview_list_view_activities, parent, false);
         }
         AQuery aq = new AQuery(convertView);
-        aq.id(R.id.kitchen_overview_list_view_person).text(act.getCreatedBy().getGoogleId());
+        aq.id(R.id.kitchen_overview_list_view_person).text(act.getCreatedBy());
         aq.id(R.id.kitchen_overview_list_view_title).text(act.getTitle());
         aq.id(R.id.kitchen_overview_list_view_date).text(act.getDate().toString());
 

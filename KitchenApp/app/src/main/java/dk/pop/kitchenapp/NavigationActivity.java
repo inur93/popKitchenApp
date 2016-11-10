@@ -84,4 +84,11 @@ public class NavigationActivity extends ActivityNavigation{
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(DataPassingEnum.KITCHEN.name(), DataManager.getInstance().getCurrentKitchen());
+        outState.putSerializable(DataPassingEnum.PERSON.name(), DataManager.getInstance().getCurrentPerson());
+    }
 }
