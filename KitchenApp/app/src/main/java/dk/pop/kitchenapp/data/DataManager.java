@@ -28,7 +28,7 @@ public class DataManager implements IDataManager {
     public final String KITCHENRESOURCE = "kitchens/";
     public final String PERSONRESOURCE = "persons/";
     public final String ACTIVITIESRESOURCE = "activities/";
-    public final String ACTIVITYKITCHENRESOURCE = "kitchen/";
+    public final String ACTIVITYKITCHENRESOURCE = "kitchen";
 
     private Person currentPerson;
     private Kitchen currentKitchen;
@@ -218,7 +218,7 @@ public class DataManager implements IDataManager {
     @Override
     public void getActivitiesForKitchen(@NonNull Kitchen kitchen, ChildEventListener listener) {
         database.child(ACTIVITIESRESOURCE)
-                .orderByChild(String.format("%s/%s", ACTIVITYKITCHENRESOURCE, kitchen.getName()))
+                .orderByChild(String.format("%s", ACTIVITYKITCHENRESOURCE))
                 .equalTo(kitchen.getName())
                 .addChildEventListener(listener);
     }
@@ -226,7 +226,7 @@ public class DataManager implements IDataManager {
     @Override
     public void detachActivitiesForKitchen(@NonNull Kitchen kitchen, ChildEventListener listener) {
         database.child(ACTIVITIESRESOURCE)
-                .orderByChild(String.format("%s/%s", ACTIVITYKITCHENRESOURCE, kitchen.getName()))
+                .orderByChild(String.format("%s", ACTIVITYKITCHENRESOURCE))
                 .equalTo(kitchen.getName())
                 .removeEventListener(listener);
     }
