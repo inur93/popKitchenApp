@@ -35,7 +35,7 @@ public class DataManager implements IDataManager {
 
     private DatabaseReference database;
 
-    public static DataManager getInstance() {
+    public static IDataManager getInstance() {
         if(ourInstance == null){
             ourInstance = new DataManager();
         }
@@ -218,7 +218,7 @@ public class DataManager implements IDataManager {
     @Override
     public void getActivitiesForKitchen(@NonNull Kitchen kitchen, ChildEventListener listener) {
         database.child(ACTIVITIESRESOURCE)
-                .orderByChild(String.format("%s/%s", ACTIVITYKITCHENRESOURCE, kitchen.getName()))
+                .orderByChild(String.format("%s", ACTIVITYKITCHENRESOURCE))
                 .equalTo(kitchen.getName())
                 .addChildEventListener(listener);
     }

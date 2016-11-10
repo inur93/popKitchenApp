@@ -36,7 +36,6 @@ public class ExpenseGroupActivity extends GroupActivity {
     public void setResponsible(Person responsible) {
         this.responsible = responsible.getGoogleId();
     }
-    public void setResponsible(String responsible){this.responsible = responsible; }
 
     public float getPrice() {
         return price;

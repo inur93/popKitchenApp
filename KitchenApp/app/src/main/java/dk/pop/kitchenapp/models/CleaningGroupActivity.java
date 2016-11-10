@@ -31,6 +31,7 @@ public class CleaningGroupActivity extends PlannableGroupActivity {
         super(id, title, description, date, kitchen, createdBy, ObjectTypeEnum.CLEANINGACTIVITY, isCancellable);
 
         this.status = status == null ? CleaningStatusEnum.SCHEDULED : status;
+        if(participants != null)
         for(Person p : participants) {
             this.persons.put(p.getGoogleId(), p.getGoogleId());
         }
