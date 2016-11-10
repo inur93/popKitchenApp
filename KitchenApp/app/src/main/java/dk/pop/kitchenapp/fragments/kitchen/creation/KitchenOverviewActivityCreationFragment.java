@@ -17,13 +17,18 @@ import java.util.Date;
 import java.util.List;
 
 import dk.pop.kitchenapp.R;
+import dk.pop.kitchenapp.adapters.ActivityPersonNameRoomNoAdapter;
 import dk.pop.kitchenapp.data.DataManager;
+import dk.pop.kitchenapp.data.IDataManager;
+import dk.pop.kitchenapp.fragments.kitchen.KitchenOverviewFragment;
 import dk.pop.kitchenapp.logging.LoggingTag;
 import dk.pop.kitchenapp.models.ActivityType;
+import dk.pop.kitchenapp.models.CleaningGroupActivity;
 import dk.pop.kitchenapp.models.DinnerGroupActivity;
 import dk.pop.kitchenapp.models.ExpenseGroupActivity;
 import dk.pop.kitchenapp.models.Kitchen;
 import dk.pop.kitchenapp.models.Person;
+import dk.pop.kitchenapp.models.enums.CleaningStatusEnum;
 import dk.pop.kitchenapp.navigation.FragmentExtension;
 import dk.pop.kitchenapp.viewModels.PersonViewModel;
 
@@ -33,8 +38,6 @@ import dk.pop.kitchenapp.viewModels.PersonViewModel;
 public class KitchenOverviewActivityCreationFragment extends FragmentExtension implements View.OnClickListener{
 
 
-    private List<Person> participants;
-    private List<Person> responsibles;
 
     private Person person = null;
     private Kitchen kitchen = null;
@@ -63,13 +66,16 @@ public class KitchenOverviewActivityCreationFragment extends FragmentExtension i
         AQuery aq = new AQuery(view);
 
 
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.activity_creation_content,
-                        new KitchenOverviewActivityCreationGeneralInfoFragment(),
-                        TAG_GENERAL_INFO)
-                .commit();
-
+        try {
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.activity_creation_content,
+                            new KitchenOverviewActivityCreationGeneralInfoFragment(),
+                            TAG_GENERAL_INFO)
+                    .commit();
+        }catch (Throwable e){
+            System.out.println("failed to start generalinfofragment in activityCreationFragmentuh");
+        }
 
         aq.id(R.id.activity_creation_next_fragment_btn).clicked(this);
 
@@ -92,7 +98,7 @@ public class KitchenOverviewActivityCreationFragment extends FragmentExtension i
 
     @Override
     public void onClick(View v) {
-        System.out.println("ids: content=" + R.id.activity_creation_content + "; generalInfo=" + R.layout.fragment_kitchen_overview_activity_creation_general_info);
+        //System.out.println("ids: content=" + R.id.activity_creation_content + "; generalInfo=" + R.layout.fragment_kitchen_overview_activity_creation_general_info);
 
         //getFragmentManager().findFragmentByTag(TAG_GENERAL_INFO).isVisible();
         //getFragmentManager().findFragmentById(R.id.activity_creation_content);
@@ -101,13 +107,19 @@ public class KitchenOverviewActivityCreationFragment extends FragmentExtension i
             Log.d(LoggingTag.INFO.name(), "You pressed the next button");
 
             // get current fragment in fragment placeholder
-            Fragment generalInfo = getFragmentManager().findFragmentByTag(TAG_GENERAL_INFO);
+            Fragment generalInfo = null;
+            try {
+                generalInfo = getFragmentManager().findFragmentByTag(TAG_GENERAL_INFO);
+            }catch (Exception e){
+                return;
+            }
 
             AQuery aq = new AQuery(generalInfo.getView());
             ActivityType type =(ActivityType) aq.id(R.id.activity_creation_type_spinner).getSpinner().getSelectedItem();
             String title  = aq.id(R.id.activity_creation_title_edit).getText().toString();
             String description = aq.id(R.id.activity_creation_description_edit).getText().toString();
             String dateText = aq.id(R.id.activity_creation_date_edit).getText().toString();
+            boolean isCancellable = aq.id(R.id.activity_creation_cancellable_switch).isChecked();
             Date date = null;
             if(dateText != null && dateText.length() > 0){
                 date = new Date(dateText);
@@ -127,13 +139,21 @@ public class KitchenOverviewActivityCreationFragment extends FragmentExtension i
                 return;
             }
 
+            person = DataManager.getInstance().getCurrentPerson();
+            kitchen = DataManager.getInstance().getCurrentKitchen();
 
-            DataManager mgm = DataManager.getInstance();
+
+
+
+            IDataManager mgm = DataManager.getInstance();
             switch (type.type){
                 case DINNERACTIVITY:
                     String priceStr = aq.id(R.id.create_dinner_price_edit).getText().toString();
                     float price = Float.valueOf(priceStr.isEmpty() ? "0" : priceStr);
-                    boolean isCancellable = aq.id(R.id.activity_creation_cancellable_switch).isChecked();
+
+                    ActivityPersonNameRoomNoAdapter adapterDinner = (ActivityPersonNameRoomNoAdapter) aq.id(R.id.activity_creation_dinner_participant_list).getListView().getAdapter();
+                    List<Person> responsiblesDinner = adapterDinner.getSelectedPersons();
+
                     ExpenseGroupActivity expense = new ExpenseGroupActivity(
                             null,
                             title,
@@ -145,6 +165,7 @@ public class KitchenOverviewActivityCreationFragment extends FragmentExtension i
                             price);
                     List<ExpenseGroupActivity> expenses = new ArrayList<>();
                     expenses.add(expense);
+
                     mgm.createActivity(new DinnerGroupActivity(
                             null,
                             title,
@@ -155,23 +176,48 @@ public class KitchenOverviewActivityCreationFragment extends FragmentExtension i
                             isCancellable,
                             price,
                             null,
-                            responsibles
+                            responsiblesDinner
                             ));
                     break;
                 case CLEANINGACTIVITY:
+                    ActivityPersonNameRoomNoAdapter adapter = (ActivityPersonNameRoomNoAdapter) aq.id(R.id.activity_creation_cleaning_participant_list).getListView().getAdapter();
+                    List<Person> responsibles = adapter.getSelectedPersons();
+                    mgm.createActivity(new CleaningGroupActivity(null,
+                            title,
+                            description,
+                            date,
+                            kitchen,
+                            person,
+                            isCancellable,
+                            responsibles,
+                            CleaningStatusEnum.SCHEDULED));
                     break;
                 case EXPENSEACTIVITY:
+                    float expPrice = Float.valueOf(aq.id(R.id.create_expense_price_edit).getText().toString());
+                    mgm.createActivity(new ExpenseGroupActivity(null,
+                            title,
+                            description,
+                            date,
+                            kitchen,
+                            person,
+                            person,
+                            expPrice));
                     break;
             }
 
+            try {
+                Fragment frag = getFragmentManager().findFragmentByTag(TAG_GENERAL_INFO);
+                getFragmentManager().beginTransaction().remove(frag).commit();
+            }catch (Exception e){
+                System.out.println("error removing general info fragment");
+            }
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.kitchen_overview_wrapper_fragment_placeholder,
+                            new KitchenOverviewFragment(),
+                            null)
+                    .commit();
 
-
-
-
-
-            // Save the newly created GroupActivity here here
-            //DataStorage.getInstance().createActivity();
-            // Return to the previous fragment
 
 
         }

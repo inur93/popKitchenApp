@@ -36,11 +36,15 @@ public class DinnerGroupActivity extends PlannableGroupActivity {
             throw new IllegalArgumentException("expenses was empty, you must provide at least one expense");
         }*/
         this.total = total;
-        for(ExpenseGroupActivity e : expenses) {
-            this.expenses.put(e.getId(), e.getId());
+        if(expenses != null) {
+            for (ExpenseGroupActivity e : expenses) {
+                this.expenses.put(e.getId(), e.getId());
+            }
         }
-        for(Person p : participants){
-            this.participants.put(p.getGoogleId(), p.getGoogleId());
+        if(participants != null) {
+            for (Person p : participants) {
+                this.participants.put(p.getGoogleId(), p.getGoogleId());
+            }
         }
     }
 

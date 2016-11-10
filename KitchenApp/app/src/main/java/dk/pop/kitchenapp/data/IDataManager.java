@@ -53,4 +53,6 @@ public interface IDataManager {
     Kitchen getCurrentKitchen();
 
     void setCurrentKitchen(Kitchen currentKitchen);
+
+    void getPersonsFromKitchen(@NonNull Kitchen kitchen, ChildEventListener listener);
 }

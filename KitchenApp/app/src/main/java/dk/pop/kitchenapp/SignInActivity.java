@@ -38,7 +38,7 @@ public class SignInActivity extends AppCompatActivity{
                     public void onSuccess() {
 
                         Log.d(LoggingTag.LOGIN.name(), "Successfully authenticated");
-                        Intent intent = new Intent(SignInActivity.this, NavigationActivity.class);
+                        Intent intent = new Intent(SignInActivity.this, PrimaryActivity.class);
                         startActivity(intent);
                     }
 

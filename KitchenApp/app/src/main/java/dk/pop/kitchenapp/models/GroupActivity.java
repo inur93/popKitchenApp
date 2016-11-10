@@ -62,7 +62,6 @@ public abstract class GroupActivity {
     public void setDate(Date date) {
         this.date = date.toString();
     }
-    public void setDate(String date) {this.date = date; }
 
     public String getKitchen() {
         return kitchen;

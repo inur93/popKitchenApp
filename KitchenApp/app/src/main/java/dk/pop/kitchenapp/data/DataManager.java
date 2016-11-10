@@ -35,7 +35,7 @@ public class DataManager implements IDataManager {
 
     private DatabaseReference database;
 
-    public static DataManager getInstance() {
+    public static IDataManager getInstance() {
         if(ourInstance == null){
             ourInstance = new DataManager();
         }

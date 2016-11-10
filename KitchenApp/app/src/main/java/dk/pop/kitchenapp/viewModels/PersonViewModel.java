@@ -19,6 +19,8 @@ public class PersonViewModel {
         return this.person;
     }
 
+    public void setPerson(Person person){this.person = person;}
+
     public boolean isSelected(){
         return this.isSelected;
     }
