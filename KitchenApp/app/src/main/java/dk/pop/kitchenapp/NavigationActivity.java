@@ -1,9 +1,8 @@
 package dk.pop.kitchenapp;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentTabHost;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTabHost;
 import android.view.Menu;
 import android.view.MenuInflater;
 
@@ -13,8 +12,6 @@ import dk.pop.kitchenapp.data.AuthenticationManager;
 import dk.pop.kitchenapp.data.DataManager;
 import dk.pop.kitchenapp.data.dataPassing.DataPassingEnum;
 import dk.pop.kitchenapp.data.dataPassing.PrimaryActivityStateEnum;
-import dk.pop.kitchenapp.fragments.GroupCreationFragment;
-import dk.pop.kitchenapp.fragments.MyGroupsFragment;
 import dk.pop.kitchenapp.fragments.kitchen.KitchenOverviewWrapperFragment;
 import dk.pop.kitchenapp.fragments.personal.PersonalOverviewFragment;
 import dk.pop.kitchenapp.models.Kitchen;
@@ -39,12 +36,14 @@ public class NavigationActivity extends ActivityNavigation{
         else{
             Intent intent = getIntent();
             Bundle extras = intent.getExtras();
-            if(extras != null){
-                Kitchen kitchen = (Kitchen)extras.getSerializable(DataPassingEnum.KITCHEN.name());
-                Person person = (Person)extras.getSerializable(DataPassingEnum.PERSON.name());
+            if(extras != null) {
+                Kitchen kitchen = (Kitchen) extras.getSerializable(DataPassingEnum.KITCHEN.name());
+                Person person = (Person) extras.getSerializable(DataPassingEnum.PERSON.name());
 
                 DataManager.getInstance().setCurrentPerson(person);
                 DataManager.getInstance().setCurrentKitchen(kitchen);
+            }else{
+                System.out.println("error extras is null");
             }
         }
 

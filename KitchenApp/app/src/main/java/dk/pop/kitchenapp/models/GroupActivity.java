@@ -1,7 +1,6 @@
 package dk.pop.kitchenapp.models;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.UUID;
 
 import dk.pop.kitchenapp.models.enums.ObjectTypeEnum;
@@ -13,11 +12,11 @@ import dk.pop.kitchenapp.models.enums.ObjectTypeEnum;
 public abstract class GroupActivity {
     private String title;
     private String description;
-    private Date date;
-    private Kitchen kitchen;
-    private Person createdBy;
+    private String date;
+    private String kitchen;
+    private String createdBy;
     private final ObjectTypeEnum type;
-    private final UUID id;
+    private final String id;
 
     public GroupActivity(
             UUID id,
@@ -28,12 +27,12 @@ public abstract class GroupActivity {
             Person createdBy,
             ObjectTypeEnum type
             ){
-        this.id = id == null ? UUID.randomUUID() : id;
+        this.id = id == null ? UUID.randomUUID().toString() : id.toString();
         this.title = title;
         this.description = description;
-        this.date = date;
-        this.kitchen = kitchen;
-        this.createdBy = createdBy;
+        this.date = date.toString();
+        this.kitchen = kitchen.getName();
+        this.createdBy = createdBy.getGoogleId();
         this.type = type;
 
     }
@@ -42,7 +41,7 @@ public abstract class GroupActivity {
         return title;
     }
 
-    public UUID getId(){return this.id;}
+    public String getId(){return this.id;}
 
     public void setTitle(String title) {
         this.title = title;
@@ -56,15 +55,16 @@ public abstract class GroupActivity {
         this.description = description;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.date = date.toString();
     }
+    public void setDate(String date) {this.date = date; }
 
-    public Kitchen getKitchen() {
+    public String getKitchen() {
         return kitchen;
     }
 
@@ -72,22 +72,6 @@ public abstract class GroupActivity {
         return type;
     }
 
-    public Person getCreatedBy() {return createdBy;}
+    public String getCreatedBy() {return createdBy;}
 
-    // easy access to get data that we want to save.
-    public HashMap<String, Object> getValues(){
-        HashMap<String, Object> vals = new HashMap<>();
-        vals.put("title", title);
-        vals.put("description", description);
-        vals.put("date", date == null ? "" : date.toString());
-        vals.put("id", id);
-        vals.put("kitchen", kitchen == null ? null : kitchen.getName());
-        vals.put("type", type);
-        vals.put("createdBy", createdBy.getGoogleId());
-        return vals;
-    }
-
-    public void mapValues(HashMap<String, Object> values){
-        //TODO
-    }
 }

@@ -1,6 +1,7 @@
 package dk.pop.kitchenapp.models;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,7 +14,7 @@ import dk.pop.kitchenapp.models.enums.ObjectTypeEnum;
 
 public class CleaningGroupActivity extends PlannableGroupActivity {
     private CleaningStatusEnum status;
-    private List<Person> persons;
+    private HashMap<String, String> persons = new HashMap<>();
 
     public CleaningGroupActivity(
             UUID id,
@@ -30,7 +31,9 @@ public class CleaningGroupActivity extends PlannableGroupActivity {
         super(id, title, description, date, kitchen, createdBy, ObjectTypeEnum.CLEANINGACTIVITY, isCancellable);
 
         this.status = status == null ? CleaningStatusEnum.SCHEDULED : status;
-        this.persons = participants;
+        for(Person p : participants) {
+            this.persons.put(p.getGoogleId(), p.getGoogleId());
+        }
 
         if(persons == null || persons.isEmpty()){
             throw new IllegalArgumentException("You must provide atleast one person for the cleaning");
@@ -47,7 +50,8 @@ public class CleaningGroupActivity extends PlannableGroupActivity {
         this.status = status;
     }
 
-    public List<Person> getPersons() {
+    public HashMap<String, String> getPersons() {
         return persons;
     }
+
 }
