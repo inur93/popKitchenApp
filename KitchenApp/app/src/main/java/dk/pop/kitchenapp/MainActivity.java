@@ -255,8 +255,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(signInIntent);
                 break;
             case R.id.general_options_menu_personal_info:
-                Intent personalPageInten = new Intent(this, PersonalPageFragment.class);
-                startActivity(personalPageInten);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.drawer_navigation_main_content, new PersonalPageFragment())
+                        .addToBackStack(null)
+                        .commit();
                 break;
         }
         return super.onOptionsItemSelected(item);

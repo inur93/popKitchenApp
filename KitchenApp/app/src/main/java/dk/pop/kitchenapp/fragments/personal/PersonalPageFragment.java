@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.androidquery.AQuery;
 
@@ -46,11 +47,19 @@ public class PersonalPageFragment extends Fragment implements View.OnClickListen
             String newRoom = roomField.getText().toString();
 
             // Do not let the user save empty values
-            newName = StringExtensions.isNullOrEmpty(newName) ? null : newName;
-            newRoom = StringExtensions.isNullOrEmpty(newRoom) ? null : newRoom;
+            newName = StringExtensions.isNullOrEmpty(newName) ? null : newName.trim();
+            newRoom = StringExtensions.isNullOrEmpty(newRoom) ? null : newRoom.trim();
 
             // Save the update to the database
             DataManager.getInstance().updatePerson(currentPerson.getGoogleId(), newName, newRoom);
+
+            if(!currentPerson.getDisplayName().equals(newName))
+                Toast.makeText(getContext(), "name changed to " + newName, Toast.LENGTH_LONG).show();
+            if(!currentPerson.getRoomNumber().equals(newRoom))
+                Toast.makeText(getContext(), "room number changed to " + newRoom, Toast.LENGTH_LONG).show();
+
+            getFragmentManager()
+                   .popBackStack();
         }
     }
 }
