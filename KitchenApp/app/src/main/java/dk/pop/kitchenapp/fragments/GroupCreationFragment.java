@@ -3,7 +3,6 @@ package dk.pop.kitchenapp.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,11 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Filter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidquery.AQuery;
@@ -25,7 +20,7 @@ import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
 
-import dk.pop.kitchenapp.NavigationActivity;
+import dk.pop.kitchenapp.MainActivity;
 import dk.pop.kitchenapp.R;
 import dk.pop.kitchenapp.adapters.KitchenListAdapter;
 import dk.pop.kitchenapp.data.DataManager;
@@ -156,7 +151,7 @@ public class GroupCreationFragment extends Fragment implements View.OnClickListe
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Kitchen kitchen = (Kitchen)this.kitchenList.getAdapter().getItem(position);
         DataManager.getInstance().associateToKitchen(kitchen, DataManager.getInstance().getCurrentPerson());
-        Intent intent = new Intent(getActivity(), NavigationActivity.class);
+        Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.putExtra(DataPassingEnum.KITCHEN.name(), kitchen);
         intent.putExtra(DataPassingEnum.PERSON.name(), DataManager.getInstance().getCurrentPerson());
         startActivity(intent);

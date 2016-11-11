@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dk.pop.kitchenapp.fragments.MyGroupsFragment">
+    tools:context="dk.pop.kitchenapp.MyGroupsActivity">
 
     <!-- TODO: Update blank fragment layout -->
 

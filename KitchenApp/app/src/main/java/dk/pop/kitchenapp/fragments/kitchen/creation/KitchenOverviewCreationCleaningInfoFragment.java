@@ -31,7 +31,7 @@ public class KitchenOverviewCreationCleaningInfoFragment extends FragmentExtensi
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(
-                R.layout.fragment_kitchen_overview_activity_creation_cleaning_info,
+                R.layout.fragment_activity_creation_cleaning_info,
                 container,
                 false);
         AQuery aq = new AQuery(view);

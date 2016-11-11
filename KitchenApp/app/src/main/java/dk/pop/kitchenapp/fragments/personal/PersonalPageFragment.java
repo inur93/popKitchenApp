@@ -1,28 +1,33 @@
-package dk.pop.kitchenapp;
+package dk.pop.kitchenapp.fragments.personal;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.androidquery.AQuery;
 
+import dk.pop.kitchenapp.R;
 import dk.pop.kitchenapp.data.DataManager;
 import dk.pop.kitchenapp.extensions.StringExtensions;
 import dk.pop.kitchenapp.models.Person;
 
-public class PersonalPageActivity extends AppCompatActivity implements View.OnClickListener{
+public class PersonalPageFragment extends Fragment implements View.OnClickListener{
 
     private AQuery aq;
     private EditText nameField, roomField;
     private Person currentPerson;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_personal_page);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_personal_info, container, false);
 
-        aq = new AQuery(this);
+
+        aq = new AQuery(view);
         aq.id(R.id.personal_page_save_btn).clicked(this);
         nameField = aq.id(R.id.personal_page_name_field).getEditText();
         roomField = aq.id(R.id.personal_page_room_text).getEditText();
@@ -30,6 +35,7 @@ public class PersonalPageActivity extends AppCompatActivity implements View.OnCl
 
         nameField.setText(currentPerson.getDisplayName());
         roomField.setText(currentPerson.getRoomNumber());
+        return view;
     }
 
     @Override

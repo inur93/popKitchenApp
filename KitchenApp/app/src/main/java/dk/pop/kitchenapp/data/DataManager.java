@@ -48,6 +48,7 @@ public class DataManager implements IDataManager {
 
     @Override
     public void createKitchen(@NonNull final Kitchen kitchen, final FireBaseCallback<Kitchen> callback){
+        if(kitchen == null) return;
         database.child(KITCHENRESOURCE).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

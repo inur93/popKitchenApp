@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PrimaryActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,8 +28,9 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".SignInActivity" />
-        <activity android:name=".NavigationActivity" />
-        <activity android:name=".PersonalPageActivity"></activity>
+        <activity android:name=".fragments.personal.PersonalPageFragment"></activity>
+        <activity android:name=".MyGroupsActivity"/>
+
     </application>
 
 </manifest>

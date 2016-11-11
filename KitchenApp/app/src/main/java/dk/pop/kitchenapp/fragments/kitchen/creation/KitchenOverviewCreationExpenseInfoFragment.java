@@ -20,7 +20,7 @@ public class KitchenOverviewCreationExpenseInfoFragment extends FragmentExtensio
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(
-                R.layout.fragment_kitchen_overview_activity_expense_info,
+                R.layout.fragment_activity_expense_info,
                 container,
                 false);
         return view;
