@@ -6,7 +6,7 @@
     <TextView
         android:id="@+id/activity_creation_participant_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_weight="1"
         android:text="Ansvarlige"
         android:textAlignment="viewStart"

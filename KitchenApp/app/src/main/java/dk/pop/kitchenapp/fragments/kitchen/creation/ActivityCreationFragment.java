@@ -126,23 +126,10 @@ public class ActivityCreationFragment extends FragmentExtension implements View.
 
     @Override
     public void onClick(View v) {
-        //System.out.println("ids: content=" + R.id.activity_creation_content + "; generalInfo=" + R.layout.fragment_kitchen_overview_activity_creation_general_info);
-
-        //getFragmentManager().findFragmentByTag(TAG_GENERAL_INFO).isVisible();
-        //getFragmentManager().findFragmentById(R.id.activity_creation_content);
-
         if(v.getId() == R.id.activity_creation_next_fragment_btn){
             Log.d(LoggingTag.INFO.name(), "You pressed the next button");
 
-            // get current fragment in fragment placeholder
-            Fragment generalInfo = null;
-            try {
-                generalInfo = getFragmentManager().findFragmentByTag(TAG_GENERAL_INFO);
-            }catch (Exception e){
-                return;
-            }
-
-            AQuery aq = new AQuery(generalInfo.getView());
+            AQuery aq = new AQuery(getView());
             ActivityType type =(ActivityType) aq.id(R.id.activity_creation_type_spinner).getSpinner().getSelectedItem();
             String title  = aq.id(R.id.activity_creation_title_edit).getText().toString();
             String description = aq.id(R.id.activity_creation_description_edit).getText().toString();
@@ -205,7 +192,7 @@ public class ActivityCreationFragment extends FragmentExtension implements View.
                             price,
                             null,
                             responsiblesDinner
-                            ));
+                    ));
                     break;
                 case CLEANINGACTIVITY:
                     ActivityPersonNameRoomNoAdapter adapter = (ActivityPersonNameRoomNoAdapter) aq.id(R.id.activity_creation_cleaning_participant_list).getListView().getAdapter();
@@ -233,15 +220,10 @@ public class ActivityCreationFragment extends FragmentExtension implements View.
                     break;
             }
 
-            try {
-                Fragment frag = getFragmentManager().findFragmentByTag(TAG_GENERAL_INFO);
-                getFragmentManager().beginTransaction().remove(frag).commit();
-            }catch (Exception e){
-                System.out.println("error removing general info fragment");
-            }
+
             getFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.kitchen_overview_wrapper_fragment_placeholder,
+                    .replace(R.id.drawer_navigation_main_content,
                             new KitchenOverviewFragment(),
                             null)
                     .commit();
@@ -250,6 +232,7 @@ public class ActivityCreationFragment extends FragmentExtension implements View.
 
         }
     }
+
 
     public List<Person> getPersonList(ListView list){
         List<Person> selectedParticipants = new ArrayList<>();

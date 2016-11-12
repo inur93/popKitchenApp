@@ -28,15 +28,17 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="left">
+                    android:gravity="left"
+                    android:weightSum="1">
 
                     <Spinner
                         android:layout_width="match_parent"
-                        android:layout_height="30dp"
+                        android:layout_height="50dp"
                         android:id="@+id/activity_creation_type_spinner"
                         android:spinnerMode="dropdown"
                         android:layout_gravity="right"
-                        android:gravity="right" />
+                        android:gravity="right"
+                        android:layout_weight="1" />
 
                 </LinearLayout>
             </TableRow>
@@ -53,7 +55,7 @@
 
                     <EditText
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:inputType="textShortMessage"
                         android:text=""
                         android:hint="Title"
@@ -79,7 +81,7 @@
 
                     <EditText
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:text=""
                         android:hint="Description"
                         android:ems="0"
@@ -104,7 +106,7 @@
 
                     <Button
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:inputType="none"
                         style="@style/Base.Widget.AppCompat.EditText"
                         android:id="@+id/activity_creation_date_edit"
@@ -130,7 +132,7 @@
                     <Switch
                         android:text="Can be cancelled"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_weight="0"
                         android:id="@+id/activity_creation_cancellable_switch"
                         android:switchMinWidth="0dp"

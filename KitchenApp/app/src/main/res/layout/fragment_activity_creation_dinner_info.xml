@@ -5,7 +5,7 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:inputType="numberDecimal"
         android:ems="10"
         android:id="@+id/create_dinner_price_edit"
