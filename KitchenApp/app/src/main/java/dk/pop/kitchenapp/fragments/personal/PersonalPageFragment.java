@@ -84,7 +84,7 @@ public class PersonalPageFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         DataManager.getInstance().detachPersonEventListener(currentPerson, listener);
     }
