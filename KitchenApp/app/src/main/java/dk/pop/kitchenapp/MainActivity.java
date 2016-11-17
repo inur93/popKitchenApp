@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         if(DataManager.getInstance().getCurrentPerson() != null
-                && DataManager.getInstance().getCurrentKitchen() != null){
+                && DataManager.getInstance().getCurrentKitchen() != null && getSupportFragmentManager().getFragments().size() == 0){
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.drawer_navigation_main_content, new KitchenOverviewFragment())

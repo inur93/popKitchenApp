@@ -49,8 +49,14 @@ public class PersonalOverviewFragment extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 GroupActivity act = ActivityFactory.CreateActivity(dataSnapshot);
+                // If the kitchen of the activity does not equal the current kitchen return
+                if(!(act.getKitchen().equals(DataManager.getInstance().getCurrentKitchen().getName()))){
+                    return;
+                }
+
                 for(int i = 0; i < activities.size(); i++){
-                    if(activities.get(i).getId().equals(act.getId()) || !act.getKitchen().equals(DataManager.getInstance().getCurrentKitchen().getName())){
+                    // If activites already contains the activity return
+                    if(activities.get(i).getId().equals(act.getId())){
                         return;
                     }
                 }
