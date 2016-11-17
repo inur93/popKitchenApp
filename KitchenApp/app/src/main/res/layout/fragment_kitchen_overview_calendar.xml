@@ -1,13 +1,31 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dk.pop.kitchenapp.fragments.kitchen.KitchenOverviewCalendarFragment">
+    android:orientation="vertical"
+    tools:context="dk.pop.kitchenapp.fragments.kitchen.calendar.KitchenOverviewCalendarFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:text="TextView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Calendar fragment here" />
+        android:layout_height="wrap_content"
+        android:id="@+id/kitchen_overview_calendar_header"
+        android:textStyle="normal|bold"
+        android:textSize="30sp"
+        android:textAlignment="center" />
 
-</FrameLayout>
+    <com.github.sundeepk.compactcalendarview.CompactCalendarView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/kitchen_overview_calendar_view"
+        android:layout_width="fill_parent"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:layout_height="match_parent"
+        app:compactCalendarTextSize="12sp"
+        app:compactCalendarBackgroundColor="#ef5350"
+        app:compactCalendarTextColor="#fff"
+        app:compactCalendarCurrentSelectedDayBackgroundColor="#E57373"
+        app:compactCalendarCurrentDayBackgroundColor="#B71C1C"
+        app:compactCalendarMultiEventIndicatorColor="#fff"
+        />
+</LinearLayout>

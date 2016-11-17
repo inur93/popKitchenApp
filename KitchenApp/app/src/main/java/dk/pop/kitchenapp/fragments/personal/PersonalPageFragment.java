@@ -9,6 +9,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.androidquery.AQuery;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import dk.pop.kitchenapp.R;
 import dk.pop.kitchenapp.data.DataManager;
@@ -20,7 +23,7 @@ public class PersonalPageFragment extends Fragment implements View.OnClickListen
     private AQuery aq;
     private EditText nameField, roomField;
     private Person currentPerson;
-
+    private ValueEventListener listener;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,7 +39,24 @@ public class PersonalPageFragment extends Fragment implements View.OnClickListen
 
         nameField.setText(currentPerson.getDisplayName());
         roomField.setText(currentPerson.getRoomNumber());
+
+        listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                currentPerson = dataSnapshot.getValue(Person.class);
+                nameField.setText(currentPerson.getDisplayName());
+                roomField.setText(currentPerson.getRoomNumber());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        DataManager.getInstance().attachPersonEventListener(currentPerson, listener);
         return view;
+
     }
 
     @Override
@@ -61,5 +81,11 @@ public class PersonalPageFragment extends Fragment implements View.OnClickListen
             getFragmentManager()
                    .popBackStack();
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        DataManager.getInstance().detachPersonEventListener(currentPerson, listener);
     }
 }

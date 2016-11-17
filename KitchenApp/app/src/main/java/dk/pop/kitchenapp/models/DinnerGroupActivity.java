@@ -17,6 +17,10 @@ public class DinnerGroupActivity extends PlannableGroupActivity {
     private HashMap<String, String> expenses = new HashMap<>();
     private HashMap<String, String> participants = new HashMap<>();
 
+    public DinnerGroupActivity(){
+        super(null, null, null, null, null, null, null, false);
+    }
+
     public DinnerGroupActivity(
             UUID id,
             String title,
@@ -60,21 +64,15 @@ public class DinnerGroupActivity extends PlannableGroupActivity {
         return expenses;
     }
 
-    public void setExpenses(ArrayList<ExpenseGroupActivity> expenses) {
-        this.expenses.clear();
-        for(ExpenseGroupActivity e : expenses){
-            this.expenses.put(e.getId(), e.getId());
-        }
+    public void setExpenses(HashMap<String, String> expenses) {
+        this.expenses = expenses;
     }
 
     public HashMap<String, String> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(ArrayList<Person> participants) {
-        this.participants.clear();
-        for(Person p : participants){
-            this.participants.put(p.getGoogleId(), p.getGoogleId());
-        }
+    public void setParticipants(HashMap<String, String> participants) {
+        this.participants = participants;
     }
 }

@@ -13,6 +13,10 @@ public class ExpenseGroupActivity extends GroupActivity {
     private float price;
     private String responsible;
 
+    public ExpenseGroupActivity(){
+
+    }
+
     public ExpenseGroupActivity(
             UUID id,
             String title,

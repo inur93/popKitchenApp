@@ -38,4 +38,11 @@ public class KitchenOverviewFragment extends Fragment implements View.OnClickLis
     @Override
     public void onClick(View v) {
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        DataManager.getInstance().detachActivitiesForKitchen(DataManager.getInstance().getCurrentKitchen(), listener);
+        activities.clear();
+    }
 }

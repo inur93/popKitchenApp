@@ -16,6 +16,11 @@ public class CleaningGroupActivity extends PlannableGroupActivity {
     private CleaningStatusEnum status;
     private HashMap<String, String> persons = new HashMap<>();
 
+    public CleaningGroupActivity(){
+        super(null, null, null, null, null, null, null, false);
+
+    }
+
     public CleaningGroupActivity(
             UUID id,
             String title,
@@ -53,6 +58,10 @@ public class CleaningGroupActivity extends PlannableGroupActivity {
 
     public HashMap<String, String> getPersons() {
         return persons;
+    }
+
+    public void setPersons(HashMap<String, String> persons){
+        this.persons = persons;
     }
 
 }

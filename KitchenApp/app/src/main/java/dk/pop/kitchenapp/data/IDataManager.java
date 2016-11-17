@@ -55,4 +55,8 @@ public interface IDataManager {
     void setCurrentKitchen(Kitchen currentKitchen);
 
     void getPersonsFromKitchen(@NonNull Kitchen kitchen, ChildEventListener listener);
+
+    void attachPersonEventListener(@NonNull Person person, ValueEventListener listener);
+
+    void detachPersonEventListener(@NonNull Person person, ValueEventListener listener);
 }
