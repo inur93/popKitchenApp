@@ -1,4 +1,4 @@
-package dk.pop.kitchenapp.fragments.kitchen.calendar;
+package dk.pop.kitchenapp.utilities.view;
 
 import android.content.Context;
 import android.view.View;

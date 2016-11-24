@@ -2,18 +2,18 @@ package dk.pop.kitchenapp.fragments.kitchen.creation;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import dk.pop.kitchenapp.R;
-import dk.pop.kitchenapp.navigation.FragmentExtension;
 
 /**
  * Created by Runi on 23-10-2016.
  */
 
-public class KitchenOverviewCreationExpenseInfoFragment extends FragmentExtension {
+public class KitchenOverviewCreationExpenseInfoFragment extends Fragment {
 
     @Nullable
     @Override

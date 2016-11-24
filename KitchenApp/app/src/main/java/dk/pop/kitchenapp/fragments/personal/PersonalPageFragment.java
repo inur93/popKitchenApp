@@ -54,7 +54,6 @@ public class PersonalPageFragment extends Fragment implements View.OnClickListen
             }
         };
 
-        DataManager.getInstance().attachPersonEventListener(currentPerson, listener);
         return view;
 
     }
@@ -81,6 +80,12 @@ public class PersonalPageFragment extends Fragment implements View.OnClickListen
             getFragmentManager()
                    .popBackStack();
         }
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        DataManager.getInstance().attachPersonEventListener(currentPerson, listener);
     }
 
     @Override

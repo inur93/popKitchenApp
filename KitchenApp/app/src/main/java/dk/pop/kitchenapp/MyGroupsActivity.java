@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.androidquery.AQuery;
 import com.google.firebase.database.ChildEventListener;
@@ -27,6 +28,7 @@ import dk.pop.kitchenapp.models.Kitchen;
 public class MyGroupsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
     private ListView groupsList;
     private ArrayList<Kitchen> kitchens;
+    private ProgressBar spinner;
     ChildEventListener listener;
 
     public MyGroupsActivity() {
@@ -38,11 +40,14 @@ public class MyGroupsActivity extends AppCompatActivity implements AdapterView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_groups);
 
+        spinner = (ProgressBar)findViewById(R.id.my_groups_spinner);
+
         // Inflate the layout for this fragment
         kitchens = new ArrayList<>();
         listener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                spinner.setVisibility(View.GONE);
                 kitchens.add(dataSnapshot.getValue(Kitchen.class));
                 ((KitchenListAdapter)groupsList.getAdapter()).getFilter().filter("");
             }
@@ -84,6 +89,12 @@ public class MyGroupsActivity extends AppCompatActivity implements AdapterView.O
         intent.putExtra(DataPassingEnum.KITCHEN.name(), clickedKitchen);
         intent.putExtra(DataPassingEnum.PERSON.name(), DataManager.getInstance().getCurrentPerson());
         startActivity(intent);
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        spinner.setVisibility(View.VISIBLE);
     }
 
     @Override

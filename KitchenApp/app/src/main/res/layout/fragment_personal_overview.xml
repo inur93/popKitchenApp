@@ -20,6 +20,13 @@
             android:textAlignment="center"
             android:textColor="?attr/editTextColor" />
 
+        <ProgressBar
+            android:id="@+id/personal_overview_spinner"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true" />
+
         <ListView
             android:id="@+id/personal_overview_listview"
             android:layout_width="match_parent"

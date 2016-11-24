@@ -2,6 +2,7 @@ package dk.pop.kitchenapp.fragments.kitchen.creation;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +13,12 @@ import com.androidquery.AQuery;
 import dk.pop.kitchenapp.R;
 import dk.pop.kitchenapp.adapters.ActivityPersonNameRoomNoAdapter;
 import dk.pop.kitchenapp.data.DataStorage;
-import dk.pop.kitchenapp.navigation.FragmentExtension;
 
 /**
  * Created by Runi on 22-10-2016.
  */
 
-public class KitchenOverviewCreationSelectParticipantsResponsibles extends FragmentExtension implements View.OnClickListener {
+public class KitchenOverviewCreationSelectParticipantsResponsibles extends Fragment implements View.OnClickListener {
 
     @Nullable
     @Override

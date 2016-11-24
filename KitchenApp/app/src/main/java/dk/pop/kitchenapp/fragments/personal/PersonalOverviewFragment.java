@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.androidquery.AQuery;
@@ -31,6 +32,7 @@ public class PersonalOverviewFragment extends Fragment {
     private ListView activityList;
     private ArrayList<GroupActivity> activities = new ArrayList<>();
     private ChildEventListener listener;
+    private ProgressBar spinner;
 
     public PersonalOverviewFragment() {
         // Required empty public constructor
@@ -45,6 +47,7 @@ public class PersonalOverviewFragment extends Fragment {
         AQuery aq = new AQuery(view);
         activityList = aq.id(R.id.personal_overview_listview).getListView();
         activityList.setAdapter(adapter);
+        spinner = aq.id(R.id.personal_overview_spinner).getProgressBar();
         listener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -60,6 +63,8 @@ public class PersonalOverviewFragment extends Fragment {
                         return;
                     }
                 }
+
+                spinner.setVisibility(View.GONE);
                 activities.add(act);
                 adapter.notifyDataSetChanged();
             }
@@ -97,9 +102,14 @@ public class PersonalOverviewFragment extends Fragment {
             }
         };
 
-        DataManager.getInstance().getActivitiesForPerson(DataManager.getInstance().getCurrentPerson(), listener);
-
         return view;
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        spinner.setVisibility(View.VISIBLE);
+        DataManager.getInstance().getActivitiesForPerson(DataManager.getInstance().getCurrentPerson(), listener);
     }
 
     @Override

@@ -39,13 +39,12 @@ import dk.pop.kitchenapp.models.ExpenseGroupActivity;
 import dk.pop.kitchenapp.models.Kitchen;
 import dk.pop.kitchenapp.models.Person;
 import dk.pop.kitchenapp.models.enums.CleaningStatusEnum;
-import dk.pop.kitchenapp.navigation.FragmentExtension;
 import dk.pop.kitchenapp.viewModels.PersonViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ActivityCreationFragment extends FragmentExtension implements View.OnClickListener{
+public class ActivityCreationFragment extends Fragment implements View.OnClickListener{
 
     private Spinner type;
     private EditText title;
