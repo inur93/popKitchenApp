@@ -13,18 +13,9 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:layout_below="@+id/loginImageView"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="17dp"
             android:id="@+id/group_creation_search_field" />
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignStart="@+id/groupCreationLinearLayout"
-            android:layout_alignEnd="@+id/group_creation_search_field"
-            android:layout_below="@+id/groupCreationLinearLayout"
-            android:id="@+id/group_creation_list_view" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -43,16 +34,22 @@
                 android:layout_alignEnd="@+id/loginListView"
                 android:layout_weight="1"
                 android:id="@+id/group_creation_create_btn" />
-
-            <!--<Button
-                android:text="Search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/group_creation_search_field"
-                android:layout_alignStart="@+id/group_creation_search_field"
-                android:layout_weight="1"
-                android:id="@+id/group_creation_search_btn" />-->
         </LinearLayout>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignStart="@+id/groupCreationLinearLayout"
+            android:layout_alignEnd="@+id/group_creation_search_field"
+            android:layout_below="@+id/groupCreationLinearLayout"
+            android:id="@+id/group_creation_list_view" />
+
+        <ProgressBar
+            android:id="@+id/group_creation_spinner"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
 </FrameLayout>

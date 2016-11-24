@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.androidquery.AQuery;
@@ -39,6 +40,7 @@ public class GroupCreationFragment extends Fragment implements View.OnClickListe
     private ArrayList<Kitchen> kitchens;
     private View view;
     private KitchenListAdapter adapter;
+    private ProgressBar spinner;
 
     public GroupCreationFragment() {
     }
@@ -48,13 +50,16 @@ public class GroupCreationFragment extends Fragment implements View.OnClickListe
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         this.view = inflater.inflate(R.layout.fragment_group_creation, container, false);
+        aq = new AQuery(view);
 
+        spinner = aq.id(R.id.group_creation_spinner).getProgressBar();
         kitchens = new ArrayList<>();
 
         // Required empty public constructor
         listener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                spinner.setVisibility(View.GONE);
                 kitchens.add(dataSnapshot.getValue(Kitchen.class));
                 adapter.getFilter().filter("");
             }
@@ -66,7 +71,12 @@ public class GroupCreationFragment extends Fragment implements View.OnClickListe
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                kitchens.remove(dataSnapshot.getValue(Kitchen.class));
+                Kitchen removedKitchen = dataSnapshot.getValue(Kitchen.class);
+                for(int i = 0; i < kitchens.size(); i++){
+                    if(kitchens.get(i).getName().equals(removedKitchen.getName())){
+                        kitchens.remove(i);
+                    }
+                }
             }
 
             @Override
@@ -80,7 +90,7 @@ public class GroupCreationFragment extends Fragment implements View.OnClickListe
             }
         };
 
-        aq = new AQuery(view);
+
         aq.id(R.id.group_creation_create_btn).clicked(this);
         kitchenList = aq.id(R.id.group_creation_list_view).getListView();
         kitchenList.setOnItemClickListener(this);
@@ -138,6 +148,7 @@ public class GroupCreationFragment extends Fragment implements View.OnClickListe
     @Override
     public void onStart() {
         super.onStart();
+        spinner.setVisibility(View.VISIBLE);
         DataManager.getInstance().attachKitchenListener(this.listener);
     }
 

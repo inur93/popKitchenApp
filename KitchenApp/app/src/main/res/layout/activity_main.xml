@@ -7,19 +7,20 @@
     tools:context=".MainActivity">
 
     <!-- The main content view -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/drawer_navigation_main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="10dp"/>
-    </ScrollView>
+        android:paddingRight="10dp"/>
 
+    <ProgressBar
+        android:id="@+id/main_activity_spinner"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" />
 
     <!-- The navigation drawer -->
     <RelativeLayout
@@ -29,7 +30,6 @@
         android:layout_gravity="start">
 
         <!-- Profile Box -->
-
         <RelativeLayout
             android:id="@+id/drawer_navigation_profile_box"
             android:layout_width="match_parent"

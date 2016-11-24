@@ -2,21 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="dk.pop.kitchenapp.fragments.kitchen.calendar.KitchenOverviewCalendarFragment">
+    tools:context="dk.pop.kitchenapp.fragments.personal.calendar.PersonalOverviewCalendarFragment"
+    android:orientation="vertical">
 
     <TextView
         android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/kitchen_overview_calendar_header"
+        android:id="@+id/personal_overview_calendar_header"
         android:textStyle="normal|bold"
         android:textSize="30sp"
         android:textAlignment="center" />
 
     <com.github.sundeepk.compactcalendarview.CompactCalendarView
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/kitchen_overview_calendar_view"
+        android:id="@+id/personal_overview_calendar_view"
         android:layout_width="match_parent"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
@@ -28,4 +28,5 @@
         app:compactCalendarCurrentDayBackgroundColor="#B71C1C"
         app:compactCalendarMultiEventIndicatorColor="#fff"
         />
+
 </LinearLayout>

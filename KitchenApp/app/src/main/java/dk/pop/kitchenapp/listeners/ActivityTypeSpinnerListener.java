@@ -10,12 +10,10 @@ import dk.pop.kitchenapp.fragments.kitchen.creation.KitchenOverviewCreationClean
 import dk.pop.kitchenapp.fragments.kitchen.creation.KitchenOverviewCreationDinnerInfoFragment;
 import dk.pop.kitchenapp.fragments.kitchen.creation.KitchenOverviewCreationExpenseInfoFragment;
 import dk.pop.kitchenapp.models.ActivityType;
-import dk.pop.kitchenapp.navigation.FragmentExtension;
 
 /**
  * Created by Runi on 10-11-2016.
  */
-
 public class ActivityTypeSpinnerListener implements AdapterView.OnItemSelectedListener {
 
     private Fragment fragment;
@@ -26,7 +24,6 @@ public class ActivityTypeSpinnerListener implements AdapterView.OnItemSelectedLi
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         System.out.println("item selected: " + parent.getCount() + ";" + position + ";" +  id);
         ActivityType type = (ActivityType) parent.getItemAtPosition(position);
-        FragmentExtension fragment = null;
         String tag = null;
         System.out.println("type selected: " + type.name);
         switch (type.type){
