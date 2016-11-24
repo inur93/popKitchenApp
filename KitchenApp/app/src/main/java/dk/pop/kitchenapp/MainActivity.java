@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         navItems.add(new NavItem(NavItem.NAV_ITEM_TYPE.EDIT_PERSONAL_INFO, "Edit Personal Information", R.drawable.user));
         navItems.add(new NavItem(NavItem.NAV_ITEM_TYPE.PERSONAL_CALENDAR, "Personal Calendar", R.drawable.personal_calendar));
         navItems.add(new NavItem(NavItem.NAV_ITEM_TYPE.KITCHEN_CALENDAR, "Kitchen Calendar", R.drawable.kitchen_calendar));
-
         spinner = (ProgressBar)findViewById(R.id.main_activity_spinner);
         setupDrawer();
     }
@@ -90,67 +89,73 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
             setTitle(navItems.get(0).title);
             spinner.setVisibility(View.GONE);
+
+            // Activate the home button
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
             return;
         }
-
-        final FirebaseUser user = AuthenticationManager.getInstance().getFirebaseUser();
-        Toast.makeText(this, AuthenticationManager.getInstance().getFirebaseUser().getDisplayName(), Toast.LENGTH_SHORT).show();
-        DataManager.getInstance()
-                .createPerson(
-                        new Person(user.getUid(), user.getDisplayName(), true), new FireBaseCallback<Person>() {
-                            @Override
-                            public void onSuccessCreate(Person entity) {
-                                DataManager.getInstance().setCurrentPerson(entity);
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .add(R.id.drawer_navigation_main_content, new GroupCreationFragment())
-                                        .addToBackStack(null)
-                                        .commit();
-                            }
-
-                            @Override
-                            public void onFailureCreate() {
-                                Log.e(LoggingTag.ERROR.name(), "Could not create the person... FATAL ERROR");
-                            }
-
-                            @Override
-                            public void onExists(Person entity) {
-                                DataManager.getInstance().setCurrentPerson(entity);
-                                if (entity.getKitchens().isEmpty()) {
-                                    // Route to first personal_calendar fragment
+        else
+        {
+            final FirebaseUser user = AuthenticationManager.getInstance().getFirebaseUser();
+            Toast.makeText(this, AuthenticationManager.getInstance().getFirebaseUser().getDisplayName(), Toast.LENGTH_SHORT).show();
+            DataManager.getInstance()
+                    .createPerson(
+                            new Person(user.getUid(), user.getDisplayName(), true), new FireBaseCallback<Person>() {
+                                @Override
+                                public void onSuccessCreate(Person entity) {
+                                    DataManager.getInstance().setCurrentPerson(entity);
                                     getSupportFragmentManager()
                                             .beginTransaction()
                                             .add(R.id.drawer_navigation_main_content, new GroupCreationFragment())
                                             .addToBackStack(null)
                                             .commit();
-                                } else if(entity.getKitchens().size() == 1) {
-                                    String kitchenName = entity.getKitchens().values().iterator().next();
-                                    DataManager.getInstance().getKitchen(kitchenName, new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            Kitchen kitchen = dataSnapshot.getValue(Kitchen.class);
-                                            DataManager.getInstance().setCurrentKitchen(kitchen);
-                                            getSupportFragmentManager()
-                                                    .beginTransaction()
-                                                    .replace(R.id.drawer_navigation_main_content, new KitchenOverviewFragment())
-                                                    .commit();
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    });
-
-                                }else{
-                                    // Route to my groups
-                                    Intent intent = new Intent(MainActivity.this, MyGroupsActivity.class);
-                                    startActivity(intent);
-
                                 }
 
-                            }
-                        });
+                                @Override
+                                public void onFailureCreate() {
+                                    Log.e(LoggingTag.ERROR.name(), "Could not create the person... FATAL ERROR");
+                                }
+
+                                @Override
+                                public void onExists(Person entity) {
+                                    DataManager.getInstance().setCurrentPerson(entity);
+                                    if (entity.getKitchens().isEmpty()) {
+                                        // Route to first personal_calendar fragment
+                                        getSupportFragmentManager()
+                                                .beginTransaction()
+                                                .add(R.id.drawer_navigation_main_content, new GroupCreationFragment())
+                                                .addToBackStack(null)
+                                                .commit();
+                                    } else if(entity.getKitchens().size() == 1) {
+                                        String kitchenName = entity.getKitchens().values().iterator().next();
+                                        DataManager.getInstance().getKitchen(kitchenName, new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                Kitchen kitchen = dataSnapshot.getValue(Kitchen.class);
+                                                DataManager.getInstance().setCurrentKitchen(kitchen);
+                                                getSupportFragmentManager()
+                                                        .beginTransaction()
+                                                        .replace(R.id.drawer_navigation_main_content, new KitchenOverviewFragment())
+                                                        .commit();
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+
+                                    }else{
+                                        // Route to my groups
+                                        Intent intent = new Intent(MainActivity.this, MyGroupsActivity.class);
+                                        startActivity(intent);
+
+                                    }
+
+                                }
+                            });
+        }
     }
 
     /*
@@ -273,8 +278,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         drawerLayout.setDrawerListener(mDrawerToggle);
 

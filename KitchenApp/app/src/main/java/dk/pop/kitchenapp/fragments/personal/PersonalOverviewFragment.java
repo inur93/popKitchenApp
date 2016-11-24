@@ -102,8 +102,6 @@ public class PersonalOverviewFragment extends Fragment {
             }
         };
 
-        DataManager.getInstance().getActivitiesForPerson(DataManager.getInstance().getCurrentPerson(), listener);
-
         return view;
     }
 
@@ -111,6 +109,7 @@ public class PersonalOverviewFragment extends Fragment {
     public void onStart(){
         super.onStart();
         spinner.setVisibility(View.VISIBLE);
+        DataManager.getInstance().getActivitiesForPerson(DataManager.getInstance().getCurrentPerson(), listener);
     }
 
     @Override

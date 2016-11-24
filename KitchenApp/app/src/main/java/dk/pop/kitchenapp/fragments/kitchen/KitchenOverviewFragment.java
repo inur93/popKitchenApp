@@ -86,7 +86,6 @@ public class KitchenOverviewFragment extends Fragment{
 
             }
         };
-        DataManager.getInstance().getActivitiesForKitchen(DataManager.getInstance().getCurrentKitchen(), listener);
 
         return view;
     }
@@ -95,6 +94,7 @@ public class KitchenOverviewFragment extends Fragment{
     public void onStart(){
         super.onStart();
         spinner.setVisibility(View.VISIBLE);
+        DataManager.getInstance().getActivitiesForKitchen(DataManager.getInstance().getCurrentKitchen(), listener);
     }
 
     @Override
