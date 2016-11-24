@@ -95,6 +95,7 @@ public class KitchenOverviewFragment extends Fragment{
         super.onStart();
         spinner.setVisibility(View.VISIBLE);
         DataManager.getInstance().getActivitiesForKitchen(DataManager.getInstance().getCurrentKitchen(), listener);
+        getActivity().setTitle(getString(R.string.kitchen_overview_title));
     }
 
     @Override

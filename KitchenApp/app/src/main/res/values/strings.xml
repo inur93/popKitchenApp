@@ -14,4 +14,10 @@
     <string name="my_groups">My Groups</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+    <string name="group_creation_title">Create Group</string>
+    <string name="personal_page_title">Personal Page</string>
+    <string name="personal_overview_title">Personal Overview</string>
+    <string name="kitchen_overview_title">Kitchen Overview</string>
+    <string name="activity_creation_title">Create Activity</string>
+    <string name="kitchen_overview_calendar_title">@string/kitchen_overview_title</string>
 </resources>

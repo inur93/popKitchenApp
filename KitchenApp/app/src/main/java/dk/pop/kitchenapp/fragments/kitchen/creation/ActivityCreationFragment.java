@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.androidquery.AQuery;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -135,8 +137,15 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
             String dateText = aq.id(R.id.activity_creation_date_edit).getText().toString();
             boolean isCancellable = aq.id(R.id.activity_creation_cancellable_switch).isChecked();
             Date date = null;
+            boolean invalidDate = false;
             if(dateText != null && dateText.length() > 0){
-                date = new Date(dateText);
+                DateFormat format = new SimpleDateFormat("dd/MM/yy");
+                try {
+                    date = format.parse(dateText.toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    invalidDate = true;
+                }
             }
 
             boolean canBeCancelled = aq.id(R.id.activity_creation_cancellable_switch).isChecked();
@@ -145,7 +154,7 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
 
             String toast = "";
             if(title == null || title.length() == 0) toast += "title can not be empty. ";
-            if(date == null) toast += "you need to select a date. ";
+            if(invalidDate) toast += "you need to select a date. ";
 
 
             if(toast.length() > 0) {
@@ -167,7 +176,10 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
 
                     ActivityPersonNameRoomNoAdapter adapterDinner = (ActivityPersonNameRoomNoAdapter) aq.id(R.id.activity_creation_dinner_participant_list).getListView().getAdapter();
                     List<Person> responsiblesDinner = adapterDinner.getSelectedPersons();
-
+                    if(responsiblesDinner == null || responsiblesDinner.size() == 0){
+                        Toast.makeText(getContext(), "At least one person must be selected for the dinner", Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     ExpenseGroupActivity expense = new ExpenseGroupActivity(
                             null,
                             title,
@@ -196,6 +208,10 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
                 case CLEANINGACTIVITY:
                     ActivityPersonNameRoomNoAdapter adapter = (ActivityPersonNameRoomNoAdapter) aq.id(R.id.activity_creation_cleaning_participant_list).getListView().getAdapter();
                     List<Person> responsibles = adapter.getSelectedPersons();
+                    if(responsibles == null || responsibles.size() == 0){
+                        Toast.makeText(getContext(), "You need to select at least one responsible for cleaning", Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     mgm.createActivity(new CleaningGroupActivity(null,
                             title,
                             description,
@@ -228,10 +244,15 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
                     .commit();
 
 
-
         }
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getActivity().setTitle(getString(R.string.activity_creation_title));
+    }
 
     public List<Person> getPersonList(ListView list){
         List<Person> selectedParticipants = new ArrayList<>();

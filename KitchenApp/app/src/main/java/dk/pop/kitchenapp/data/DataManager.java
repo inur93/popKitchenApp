@@ -14,7 +14,6 @@ import java.util.HashMap;
 
 import dk.pop.kitchenapp.data.interfaces.FireBaseCallback;
 import dk.pop.kitchenapp.extensions.StringExtensions;
-import dk.pop.kitchenapp.models.DinnerGroupActivity;
 import dk.pop.kitchenapp.models.GroupActivity;
 import dk.pop.kitchenapp.models.Kitchen;
 import dk.pop.kitchenapp.models.Person;
@@ -100,6 +99,20 @@ public class DataManager implements IDataManager {
         database.child(PERSONRESOURCE)
                 .child(googleId)
                 .addListenerForSingleValueEvent(listener);
+    }
+
+    @Override
+    public void addPersonListener(String googleId, ValueEventListener listener){
+        database.child(PERSONRESOURCE)
+                .child(googleId)
+                .addValueEventListener(listener);
+    }
+
+    @Override
+    public void removePersonListener(String googleId, ValueEventListener listener){
+        database.child(PERSONRESOURCE)
+                .child(googleId)
+                .removeEventListener(listener);
     }
 
     @Override

@@ -86,6 +86,7 @@ public class PersonalPageFragment extends Fragment implements View.OnClickListen
     public void onStart(){
         super.onStart();
         DataManager.getInstance().attachPersonEventListener(currentPerson, listener);
+        getActivity().setTitle(R.string.personal_page_title);
     }
 
     @Override
@@ -93,4 +94,5 @@ public class PersonalPageFragment extends Fragment implements View.OnClickListen
         super.onStop();
         DataManager.getInstance().detachPersonEventListener(currentPerson, listener);
     }
+
 }

@@ -149,6 +149,7 @@ public class GroupCreationFragment extends Fragment implements View.OnClickListe
     public void onStart() {
         super.onStart();
         spinner.setVisibility(View.VISIBLE);
+        getActivity().setTitle(getString(R.string.group_creation_title));
         DataManager.getInstance().attachKitchenListener(this.listener);
     }
 

@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -51,10 +52,28 @@ public class MainActivity extends AppCompatActivity {
     RelativeLayout drawerNavigationPane;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout drawerLayout;
+    private ValueEventListener personListener;
+
     private ProgressBar spinner;
 
     ArrayList<NavItem> navItems = new ArrayList<NavItem>();
 
+    public MainActivity(){
+       this.personListener =  new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                TextView usernameText = (TextView) findViewById(R.id.drawer_navigation_username);
+
+                usernameText.setText(dataSnapshot.getValue(Person.class).getDisplayName());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +100,26 @@ public class MainActivity extends AppCompatActivity {
             spinner.setVisibility(View.GONE);
             return;
         }
+
+        DataManager.getInstance()
+                .addPersonListener(AuthenticationManager
+                        .getInstance()
+                        .getFirebaseUser()
+                        .getUid(),personListener);
+
+        TextView viewProfileText = (TextView) findViewById(R.id.drawer_navigation_view_profile);
+        viewProfileText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.this.getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.drawer_navigation_main_content, new PersonalPageFragment())
+                        .addToBackStack(null)
+                        .commit();
+                drawerLayout.closeDrawer(drawerNavigationPane);
+            }
+        });
+
         if(DataManager.getInstance().getCurrentPerson() != null
                 && DataManager.getInstance().getCurrentKitchen() != null && getSupportFragmentManager().getFragments() == null){
             getSupportFragmentManager()
@@ -198,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
 
         drawerNavigationList.setItemChecked(position, true);
-        setTitle(selectedItem.title);
+
 
         // Close the drawer
         drawerLayout.closeDrawer(drawerNavigationPane);
@@ -294,5 +333,16 @@ public class MainActivity extends AppCompatActivity {
                 selectItemFromDrawer(position);
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        String googleId = AuthenticationManager.getInstance().getFirebaseUser().getUid();
+        if(googleId != null) {
+            DataManager
+                    .getInstance()
+                    .removePersonListener(googleId, personListener);
+        }
     }
 }

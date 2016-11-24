@@ -104,6 +104,7 @@ public class KitchenOverviewCalendarFragment extends Fragment {
     public void onStart(){
         super.onStart();
         DataManager.getInstance().getActivitiesForKitchen(DataManager.getInstance().getCurrentKitchen(), listener);
+        getActivity().setTitle(getString(R.string.kitchen_overview_calendar_title));
     }
 
     @Override

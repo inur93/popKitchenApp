@@ -18,6 +18,10 @@ public interface IDataManager {
 
     void createPerson(@NonNull Person person, FireBaseCallback<Person> callback);
 
+    void addPersonListener(String googleId, ValueEventListener listener);
+
+    void removePersonListener(String googleId, ValueEventListener listener);
+
     void updatePerson(String googleId, String name, String roomNumber);
 
     void getPerson(String googleId, ValueEventListener listener);

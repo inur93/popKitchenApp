@@ -106,8 +106,9 @@ public class PersonalOverviewFragment extends Fragment {
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
+        getActivity().setTitle(getString(R.string.personal_overview_title));
         spinner.setVisibility(View.VISIBLE);
         DataManager.getInstance().getActivitiesForPerson(DataManager.getInstance().getCurrentPerson(), listener);
     }
