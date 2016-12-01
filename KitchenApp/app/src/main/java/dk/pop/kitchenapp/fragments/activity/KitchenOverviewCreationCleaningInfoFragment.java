@@ -1,4 +1,4 @@
-package dk.pop.kitchenapp.fragments.kitchen.creation;
+package dk.pop.kitchenapp.fragments.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,6 +24,8 @@ import dk.pop.kitchenapp.viewModels.PersonViewModel;
  */
 
 public class KitchenOverviewCreationCleaningInfoFragment extends Fragment {
+
+    private ParticipantListViewListener listener;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -34,13 +36,14 @@ public class KitchenOverviewCreationCleaningInfoFragment extends Fragment {
         AQuery aq = new AQuery(view);
         final ListView participants = aq.id(R.id.activity_creation_cleaning_participant_list).getListView();
         final List<PersonViewModel> persons = new ArrayList<>();
+
         final ActivityPersonNameRoomNoAdapter adapter = new ActivityPersonNameRoomNoAdapter(
                 getContext(), persons);
+        this.listener = new ParticipantListViewListener(persons, adapter);
         participants.setAdapter(adapter);
         DataManager.getInstance()
                 .getPersonsFromKitchen(
-                        DataManager.getInstance().getCurrentKitchen(),
-                        new ParticipantListViewListener(persons, adapter));
+                        DataManager.getInstance().getCurrentKitchen(),listener);
         return view;
     }
 
@@ -52,5 +55,13 @@ public class KitchenOverviewCreationCleaningInfoFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        DataManager.getInstance().removePersonsFromKitchenListener(
+                DataManager.getInstance().getCurrentKitchen(), listener
+        );
     }
 }

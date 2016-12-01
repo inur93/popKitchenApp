@@ -5,10 +5,10 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import dk.pop.kitchenapp.R;
-import dk.pop.kitchenapp.fragments.kitchen.creation.ActivityCreationFragment;
-import dk.pop.kitchenapp.fragments.kitchen.creation.KitchenOverviewCreationCleaningInfoFragment;
-import dk.pop.kitchenapp.fragments.kitchen.creation.KitchenOverviewCreationDinnerInfoFragment;
-import dk.pop.kitchenapp.fragments.kitchen.creation.KitchenOverviewCreationExpenseInfoFragment;
+import dk.pop.kitchenapp.fragments.activity.ActivityCreationFragment;
+import dk.pop.kitchenapp.fragments.activity.KitchenOverviewCreationCleaningInfoFragment;
+import dk.pop.kitchenapp.fragments.activity.KitchenOverviewCreationDinnerInfoFragment;
+import dk.pop.kitchenapp.fragments.activity.KitchenOverviewCreationExpenseInfoFragment;
 import dk.pop.kitchenapp.models.ActivityType;
 
 /**
@@ -16,15 +16,15 @@ import dk.pop.kitchenapp.models.ActivityType;
  */
 public class ActivityTypeSpinnerListener implements AdapterView.OnItemSelectedListener {
 
-    private Fragment fragment;
+    private Fragment parentFragment;
     public ActivityTypeSpinnerListener(Fragment fragment){
-        this.fragment = fragment;
+        this.parentFragment = fragment;
     }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        System.out.println("item selected: " + parent.getCount() + ";" + position + ";" +  id);
         ActivityType type = (ActivityType) parent.getItemAtPosition(position);
         String tag = null;
+        Fragment fragment = null;
         System.out.println("type selected: " + type.name);
         switch (type.type){
             case CLEANINGACTIVITY:
@@ -44,18 +44,19 @@ public class ActivityTypeSpinnerListener implements AdapterView.OnItemSelectedLi
                 break;
             case PERSON:
                 System.out.println("person selected. it is not valid");
+                break;
             default:
                 System.out.println("wrong value selected: " + type.name + ";" + type.type);
         }
         if(tag != null && fragment != null) {
-            this.fragment.getChildFragmentManager()
+            this.parentFragment.getChildFragmentManager()
                     .beginTransaction()
                     .replace(R.id.activity_creation_custom_content,
                             fragment,
                             tag)
                     .commit();
         }else{
-            this.fragment.getChildFragmentManager()
+            this.parentFragment.getChildFragmentManager()
                     .beginTransaction()
                     .replace(R.id.activity_creation_custom_content,
                             null)

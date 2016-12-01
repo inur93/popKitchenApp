@@ -1,12 +1,13 @@
 package dk.pop.kitchenapp.listeners;
 
+import android.widget.ArrayAdapter;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.List;
 
-import dk.pop.kitchenapp.adapters.ActivityPersonNameRoomNoAdapter;
 import dk.pop.kitchenapp.models.Person;
 import dk.pop.kitchenapp.viewModels.PersonViewModel;
 
@@ -17,8 +18,8 @@ import dk.pop.kitchenapp.viewModels.PersonViewModel;
 public class ParticipantListViewListener implements ChildEventListener {
 
     private List<PersonViewModel> persons;
-    private ActivityPersonNameRoomNoAdapter adapter;
-    public ParticipantListViewListener(List<PersonViewModel> persons, ActivityPersonNameRoomNoAdapter adapter){
+    private ArrayAdapter adapter;
+    public ParticipantListViewListener(List<PersonViewModel> persons, ArrayAdapter adapter){
         this.adapter = adapter;
         this.persons = persons;
     }

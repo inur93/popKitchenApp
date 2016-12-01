@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dk.pop.kitchenapp.fragments.kitchen.creation.ActivityCreationFragment">
+    tools:context="dk.pop.kitchenapp.fragments.activity.ActivityCreationFragment">
 
     <!--
    <FrameLayout
@@ -35,10 +35,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:id="@+id/activity_creation_type_spinner"
-                        android:spinnerMode="dropdown"
                         android:layout_gravity="right"
                         android:gravity="right"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:paddingTop="10dp" />
 
                 </LinearLayout>
             </TableRow>

@@ -17,7 +17,6 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
-import java.security.acl.Group;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -101,7 +100,7 @@ public class PersonalOverviewCalendarFragment extends Fragment {
                 if(!events.isEmpty()){
                     PopupWindow popup = new PopupWindow(getContext());
                     popup.setFocusable(true);
-                    popup.setContentView(new CalendarPopup(date).getView(getContext(), events));
+                    popup.setContentView(new CalendarPopup(date).getView(PersonalOverviewCalendarFragment.this, events, popup));
                     popup.showAtLocation(getView(), Gravity.CENTER, 10, 10);
                 }
             }

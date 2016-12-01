@@ -1,5 +1,6 @@
 package dk.pop.kitchenapp.data;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import com.google.firebase.database.ChildEventListener;
@@ -28,6 +29,8 @@ public class DataManager implements IDataManager {
     public final String PERSONRESOURCE = "persons/";
     public final String ACTIVITIESRESOURCE = "activities/";
     public final String ACTIVITYKITCHENRESOURCE = "kitchen";
+    public final String EXPENSESRESOURCE = "expenses/";
+    private Bitmap profilePicture;
 
     private Person currentPerson;
     private Kitchen currentKitchen;
@@ -112,6 +115,13 @@ public class DataManager implements IDataManager {
     public void removePersonListener(String googleId, ValueEventListener listener){
         database.child(PERSONRESOURCE)
                 .child(googleId)
+                .removeEventListener(listener);
+    }
+
+    public void removeCurrentPersonListener(ValueEventListener listener){
+        if(currentPerson == null) return;
+        database.child(PERSONRESOURCE)
+                .child(currentPerson.getGoogleId())
                 .removeEventListener(listener);
     }
 
@@ -242,12 +252,38 @@ public class DataManager implements IDataManager {
                 .removeEventListener(listener);
     }
 
+    @Override
     public void getPersonsFromKitchen(@NonNull Kitchen kitchen, ChildEventListener listener){
         database.child(PERSONRESOURCE)
                 .orderByChild(String.format("%s/%s", KITCHENRESOURCE, kitchen.getName()))
                 .equalTo(kitchen.getName())
                 .addChildEventListener(listener);
     }
+
+    @Override
+    public void getExpensesForActivity(GroupActivity activity, ChildEventListener listener){
+        database.child(ACTIVITIESRESOURCE)
+                .child(activity.getId())
+                .child(EXPENSESRESOURCE)
+                .addChildEventListener(listener);
+    }
+
+    @Override
+    public void removeExpenseForActivityListener(GroupActivity activity, ChildEventListener listener){
+        database.child(ACTIVITIESRESOURCE)
+                .child(activity.getId())
+                .child(EXPENSESRESOURCE)
+                .removeEventListener(listener);
+    }
+
+    @Override
+    public void removePersonsFromKitchenListener(Kitchen kitchen, ChildEventListener listener){
+        database.child(PERSONRESOURCE)
+                .orderByChild(String.format("%s/%s", KITCHENRESOURCE, kitchen.getName()))
+                .equalTo(kitchen.getName())
+                .removeEventListener(listener);
+    }
+
 
     @Override
     public void attachPersonEventListener(@NonNull Person person, ValueEventListener listener) {
@@ -284,4 +320,26 @@ public class DataManager implements IDataManager {
     public void setCurrentKitchen(Kitchen currentKitchen) {
         this.currentKitchen = currentKitchen;
     }
+
+    @Override
+    public void setProfilePicture(Bitmap picture) {
+        this.profilePicture = picture;
+    }
+
+    @Override
+    public Bitmap getProfilePicture(){
+        return this.profilePicture;
+    }
+
+    /*
+    private ExpenseGroupActivity expenseGroupActivity;
+
+    @Override
+    public void setExpenseToShow(ExpenseGroupActivity activity) {
+        this.expenseGroupActivity = activity;
+    }
+
+    public ExpenseGroupActivity getExpenseToShow(){
+        return this.expenseGroupActivity;
+    }*/
 }

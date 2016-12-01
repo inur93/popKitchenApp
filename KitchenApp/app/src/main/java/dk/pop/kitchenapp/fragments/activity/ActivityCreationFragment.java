@@ -1,4 +1,4 @@
-package dk.pop.kitchenapp.fragments.kitchen.creation;
+package dk.pop.kitchenapp.fragments.activity;
 
 
 import android.app.DatePickerDialog;

@@ -48,7 +48,6 @@ public class ActivityPersonNameRoomNoAdapter extends ArrayAdapter<PersonViewMode
        // System.out.println("setting: get is checked: " + act.getPerson().getGoogleId() + "=>"+ act.isSelected());
         isSelectedCheckBox.setChecked(act.isSelected());
 
-        //TODO fixme there is some strange behaviour with this one
         isSelectedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             int pos = position;
             @Override

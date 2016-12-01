@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical">
+        <TableRow>
+
+            <ImageView android:id="@+id/activity_info_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/dinner"
+                android:cropToPadding="false"
+                android:adjustViewBounds="false"
+                android:layout_margin="10dp" />
+
+            <TableLayout
+                android:stretchColumns="*"
+                android:orientation="vertical"
+                android:layout_width="wrap_content">
+                <TableRow>
+                    <TextView
+                        android:id="@+id/activity_info_title"
+                        android:text="title"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:id="@+id/activity_info_date"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="01/01/2016"
+                        />
+                </TableRow>
+                <TableRow>
+                    <CheckBox
+                        android:id="@+id/activity_info_can_be_cancelled"
+                        android:enabled="false"
+                        android:text="@string/activity_info_can_be_cancelled_text"/>
+                </TableRow>
+            </TableLayout>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/activity_info_description"
+                android:layout_marginTop="10dp"
+                android:layout_span="2"
+                android:minLines="5"
+                android:text="this is a description test to
+                see how it looks like with a long description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+    </TableLayout>
+    <FrameLayout
+        android:id="@+id/activity_info_extra_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </FrameLayout>
+
+</LinearLayout>

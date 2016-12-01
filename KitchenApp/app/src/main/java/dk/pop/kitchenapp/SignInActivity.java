@@ -2,6 +2,7 @@ package dk.pop.kitchenapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -28,7 +29,7 @@ public class SignInActivity extends AppCompatActivity{
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == REQUESTCODE) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            final GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
@@ -38,7 +39,16 @@ public class SignInActivity extends AppCompatActivity{
                     public void onSuccess() {
 
                         Log.d(LoggingTag.LOGIN.name(), "Successfully authenticated");
+
                         Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                        String pictureUrl = result.getSignInAccount().getPhotoUrl().toString();
+                        System.out.println("image url: " + pictureUrl);
+                        intent.putExtra(getString(R.string.user_profile_picture_url), pictureUrl);
+                        PreferenceManager
+                                .getDefaultSharedPreferences(SignInActivity.this)
+                                .edit()
+                                .putString(getString(R.string.user_profile_picture_url), pictureUrl)
+                                .commit();
                         startActivity(intent);
                     }
 

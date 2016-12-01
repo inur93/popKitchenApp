@@ -2,17 +2,19 @@ package dk.pop.kitchenapp;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -29,16 +31,17 @@ import java.util.ArrayList;
 import dk.pop.kitchenapp.adapters.DrawerListAdapter;
 import dk.pop.kitchenapp.data.AuthenticationManager;
 import dk.pop.kitchenapp.data.DataManager;
-import dk.pop.kitchenapp.data.interfaces.FireBaseCallback;
+import dk.pop.kitchenapp.extensions.BitmapHelper;
+import dk.pop.kitchenapp.firebase.callbacks.UserLoggedInCallback;
 import dk.pop.kitchenapp.fragments.GroupCreationFragment;
 import dk.pop.kitchenapp.fragments.kitchen.KitchenOverviewFragment;
 import dk.pop.kitchenapp.fragments.kitchen.calendar.KitchenOverviewCalendarFragment;
-import dk.pop.kitchenapp.fragments.kitchen.creation.ActivityCreationFragment;
+import dk.pop.kitchenapp.fragments.activity.ActivityCreationFragment;
 import dk.pop.kitchenapp.fragments.personal.PersonalOverviewFragment;
 import dk.pop.kitchenapp.fragments.personal.PersonalPageFragment;
-import dk.pop.kitchenapp.logging.LoggingTag;
-import dk.pop.kitchenapp.models.Kitchen;
+import dk.pop.kitchenapp.fragments.personal.UserProfileFragment;
 import dk.pop.kitchenapp.models.Person;
+import dk.pop.kitchenapp.tasks.DownloadImageTask;
 import dk.pop.kitchenapp.viewModels.NavItem;
 
 /**
@@ -48,30 +51,26 @@ import dk.pop.kitchenapp.viewModels.NavItem;
 public class MainActivity extends AppCompatActivity {
     private static String TAG = MainActivity.class.getSimpleName();
 
-    ListView drawerNavigationList;
-    RelativeLayout drawerNavigationPane;
-    private ActionBarDrawerToggle mDrawerToggle;
+    private TextView viewProfileText;
+    private ListView drawerNavigationList;
+    private RelativeLayout drawerNavigationPane;
+    private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
     private ValueEventListener personListener;
 
     private ProgressBar spinner;
 
-    ArrayList<NavItem> navItems = new ArrayList<NavItem>();
+    private ArrayList<NavItem> navItems = new ArrayList<NavItem>();
 
     public MainActivity(){
        this.personListener =  new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TextView usernameText = (TextView) findViewById(R.id.drawer_navigation_username);
-
                 usernameText.setText(dataSnapshot.getValue(Person.class).getDisplayName());
-
             }
-
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         };
     }
     @Override
@@ -85,6 +84,44 @@ public class MainActivity extends AppCompatActivity {
         navItems.add(new NavItem(NavItem.NAV_ITEM_TYPE.PERSONAL_CALENDAR, "Personal Calendar", R.drawable.personal_calendar));
         navItems.add(new NavItem(NavItem.NAV_ITEM_TYPE.KITCHEN_CALENDAR, "Kitchen Calendar", R.drawable.kitchen_calendar));
         spinner = (ProgressBar)findViewById(R.id.main_activity_spinner);
+        String url = getIntent().getStringExtra(getString(R.string.user_profile_picture_url));
+        if(url != null){
+            PreferenceManager
+                    .getDefaultSharedPreferences(this)
+                    .edit()
+                    .putString(getString(R.string.user_profile_picture_url), url).commit();
+        }else{
+            url = PreferenceManager.getDefaultSharedPreferences(this)
+                    .getString(getString(R.string.user_profile_picture_url), null);
+        }
+        Bitmap picture = DataManager.getInstance().getProfilePicture();
+
+        //first try
+        if(picture != null) { //true if image is in memory
+            ((ImageView) findViewById(R.id.user_profile_image)).setImageBitmap(picture);
+        }//second try. true if image is saved in file
+        else if((picture = BitmapHelper.loadBitmap(this, "profilepicture.jpg")) != null){
+            ((ImageView) findViewById(R.id.user_profile_image)).setImageBitmap(picture);
+        }else{
+            // last resort is to try download image
+            new DownloadImageTask((ImageView) findViewById(R.id.user_profile_image), this).execute(url);
+        }
+
+        System.out.println("profile picture: " + url);
+
+        viewProfileText = (TextView) findViewById(R.id.drawer_navigation_view_profile);
+        viewProfileText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.this.getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.drawer_navigation_main_content, new UserProfileFragment())
+                        .addToBackStack(null)
+                        .commit();
+                drawerLayout.closeDrawer(drawerNavigationPane);
+            }
+        });
+
         setupDrawer();
     }
 
@@ -94,107 +131,44 @@ public class MainActivity extends AppCompatActivity {
         spinner.setVisibility(View.VISIBLE);
 
         // Check if a user is already present via FireBase
-        if (AuthenticationManager.getInstance().getFirebaseUser() == null) {
+        if (AuthenticationManager.getInstance().getFirebaseUser() != null) {
+            DataManager.getInstance()
+                    .addPersonListener(AuthenticationManager
+                            .getInstance()
+                            .getFirebaseUser()
+                            .getUid(), personListener);
+
+        }else {
+            //if not we go to sign in activity and return.
             Intent signInIntent = new Intent(this, SignInActivity.class);
             startActivity(signInIntent);
             spinner.setVisibility(View.GONE);
             return;
         }
 
-        DataManager.getInstance()
-                .addPersonListener(AuthenticationManager
-                        .getInstance()
-                        .getFirebaseUser()
-                        .getUid(),personListener);
+        // if user not logged in properly, we'll do it now
+        if(DataManager.getInstance().getCurrentPerson() == null) {
+            final FirebaseUser user = AuthenticationManager.getInstance().getFirebaseUser();
+            Toast.makeText(this, AuthenticationManager.getInstance().getFirebaseUser().getDisplayName(), Toast.LENGTH_SHORT).show();
+            //listener determines which view to show.
+            DataManager.getInstance()
+                    .createPerson(
+                            new Person(user.getUid(), user.getDisplayName(), true), new UserLoggedInCallback(this));
 
-        TextView viewProfileText = (TextView) findViewById(R.id.drawer_navigation_view_profile);
-        viewProfileText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity.this.getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.drawer_navigation_main_content, new PersonalPageFragment())
-                        .addToBackStack(null)
-                        .commit();
-                drawerLayout.closeDrawer(drawerNavigationPane);
-            }
-        });
-
-        if(DataManager.getInstance().getCurrentPerson() != null
-                && DataManager.getInstance().getCurrentKitchen() != null && getSupportFragmentManager().getFragments() == null){
+        }
+        // if user has selected a kitchen but no fragment is shown we'll give him the kitchen overview
+        else if(DataManager.getInstance().getCurrentKitchen() != null
+                && getSupportFragmentManager().getFragments() == null){
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.drawer_navigation_main_content, new KitchenOverviewFragment())
                     .commit();
-            setTitle(navItems.get(0).title);
-            spinner.setVisibility(View.GONE);
-
-            // Activate the home button
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-            return;
         }
-        else
-        {
-            final FirebaseUser user = AuthenticationManager.getInstance().getFirebaseUser();
-            Toast.makeText(this, AuthenticationManager.getInstance().getFirebaseUser().getDisplayName(), Toast.LENGTH_SHORT).show();
-            DataManager.getInstance()
-                    .createPerson(
-                            new Person(user.getUid(), user.getDisplayName(), true), new FireBaseCallback<Person>() {
-                                @Override
-                                public void onSuccessCreate(Person entity) {
-                                    DataManager.getInstance().setCurrentPerson(entity);
-                                    getSupportFragmentManager()
-                                            .beginTransaction()
-                                            .add(R.id.drawer_navigation_main_content, new GroupCreationFragment())
-                                            .addToBackStack(null)
-                                            .commit();
-                                }
 
-                                @Override
-                                public void onFailureCreate() {
-                                    Log.e(LoggingTag.ERROR.name(), "Could not create the person... FATAL ERROR");
-                                }
-
-                                @Override
-                                public void onExists(Person entity) {
-                                    DataManager.getInstance().setCurrentPerson(entity);
-                                    if (entity.getKitchens().isEmpty()) {
-                                        // Route to first personal_calendar fragment
-                                        getSupportFragmentManager()
-                                                .beginTransaction()
-                                                .add(R.id.drawer_navigation_main_content, new GroupCreationFragment())
-                                                .addToBackStack(null)
-                                                .commit();
-                                    } else if(entity.getKitchens().size() == 1) {
-                                        String kitchenName = entity.getKitchens().values().iterator().next();
-                                        DataManager.getInstance().getKitchen(kitchenName, new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                Kitchen kitchen = dataSnapshot.getValue(Kitchen.class);
-                                                DataManager.getInstance().setCurrentKitchen(kitchen);
-                                                getSupportFragmentManager()
-                                                        .beginTransaction()
-                                                        .replace(R.id.drawer_navigation_main_content, new KitchenOverviewFragment())
-                                                        .commit();
-                                            }
-
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-
-                                            }
-                                        });
-
-                                    }else{
-                                        // Route to my groups
-                                        Intent intent = new Intent(MainActivity.this, MyGroupsActivity.class);
-                                        startActivity(intent);
-
-                                    }
-
-                                }
-                            });
-        }
+        spinner.setVisibility(View.GONE);
+        // Activate the home button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     /*
@@ -250,9 +224,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(android.view.MenuItem item){
-
         // Handle actionbar button
-        if(mDrawerToggle.onOptionsItemSelected(item)){
+        if(drawerToggle.onOptionsItemSelected(item)){
             return true;
         }
 
@@ -288,13 +261,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+        drawerToggle.syncState();
     }
 
     /**
@@ -305,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.main_activity);
 
         // Setup the drawer toggler
-        mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close){
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close){
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -317,8 +290,8 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-        drawerLayout.setDrawerListener(mDrawerToggle);
+        drawerToggle.setDrawerIndicatorEnabled(true);
+        drawerLayout.setDrawerListener(drawerToggle);
 
         // Populate the Navigtion Drawer with options
         drawerNavigationPane = (RelativeLayout) findViewById(R.id.drawer_navigation_pane);
@@ -338,11 +311,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        String googleId = AuthenticationManager.getInstance().getFirebaseUser().getUid();
-        if(googleId != null) {
             DataManager
                     .getInstance()
-                    .removePersonListener(googleId, personListener);
-        }
+                    .removeCurrentPersonListener(personListener);
+
     }
 }

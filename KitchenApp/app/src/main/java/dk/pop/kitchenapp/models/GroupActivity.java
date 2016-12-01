@@ -1,5 +1,6 @@
 package dk.pop.kitchenapp.models;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
@@ -9,7 +10,7 @@ import dk.pop.kitchenapp.models.enums.ObjectTypeEnum;
  * Created by dickow on 9/21/16.
  */
 
-public abstract class GroupActivity {
+public abstract class GroupActivity implements Serializable{
     private String title;
     private String description;
     private String date;

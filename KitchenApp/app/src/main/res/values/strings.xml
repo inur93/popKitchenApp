@@ -20,4 +20,13 @@
     <string name="kitchen_overview_title">Kitchen Overview</string>
     <string name="activity_creation_title">Create Activity</string>
     <string name="kitchen_overview_calendar_title">@string/kitchen_overview_title</string>
+    <string name="user_profile_username">Name</string>
+    <string name="user_profile_room_no">Room number</string>
+    <string name="user_profile_title">Profile</string>
+    <string name="user_profile_edit_profile">Edit profile</string>
+    <string name="user_profile_picture_url">PROFILE_PICTURE_URL</string>
+    <string name="activity_info_can_be_cancelled_text">Can be cancelled</string>
+    <string name="activity_info_title">Activity info</string>
+    <string name="activity_info_cleaning_status">Status</string>
+    <string name="activity_info_dinner_total">Cost</string>
 </resources>

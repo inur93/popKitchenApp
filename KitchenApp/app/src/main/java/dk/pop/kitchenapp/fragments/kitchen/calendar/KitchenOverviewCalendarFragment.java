@@ -86,7 +86,9 @@ public class KitchenOverviewCalendarFragment extends Fragment {
                 if(!events.isEmpty()){
                     PopupWindow popup = new PopupWindow(getContext());
                     popup.setFocusable(true);
-                    popup.setContentView(new CalendarPopup(date).getView(getContext(), events));
+                    View calendarPopup = new CalendarPopup(date).getView(KitchenOverviewCalendarFragment.this, events, popup);
+
+                    popup.setContentView(calendarPopup);
                     popup.showAtLocation(getView(), Gravity.CENTER, 10, 10);
                 }
             }
