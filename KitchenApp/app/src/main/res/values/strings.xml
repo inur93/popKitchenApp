@@ -29,4 +29,6 @@
     <string name="activity_info_title">Activity info</string>
     <string name="activity_info_cleaning_status">Status</string>
     <string name="activity_info_dinner_total">Cost</string>
+    <string name="activity_info_expense_price">Price</string>
+    <string name="activity_info_expense_responsible">Responsible</string>
 </resources>

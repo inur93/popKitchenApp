@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
             url = PreferenceManager.getDefaultSharedPreferences(this)
                     .getString(getString(R.string.user_profile_picture_url), null);
         }
+
         Bitmap picture = DataManager.getInstance().getProfilePicture();
 
         //first try
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         }//second try. true if image is saved in file
         else if((picture = BitmapHelper.loadBitmap(this, "profilepicture.jpg")) != null){
             ((ImageView) findViewById(R.id.user_profile_image)).setImageBitmap(picture);
-        }else{
+        }else if(url != null){
             // last resort is to try download image
             new DownloadImageTask((ImageView) findViewById(R.id.user_profile_image), this).execute(url);
         }
@@ -155,6 +156,8 @@ public class MainActivity extends AppCompatActivity {
                     .createPerson(
                             new Person(user.getUid(), user.getDisplayName(), true), new UserLoggedInCallback(this));
 
+            spinner.setVisibility(View.GONE);
+
         }
         // if user has selected a kitchen but no fragment is shown we'll give him the kitchen overview
         else if(DataManager.getInstance().getCurrentKitchen() != null
@@ -163,9 +166,10 @@ public class MainActivity extends AppCompatActivity {
                     .beginTransaction()
                     .add(R.id.drawer_navigation_main_content, new KitchenOverviewFragment())
                     .commit();
+
+            spinner.setVisibility(View.GONE);
         }
 
-        spinner.setVisibility(View.GONE);
         // Activate the home button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);

@@ -38,8 +38,8 @@ public class ExpenseGroupActivity extends GroupActivity implements Serializable{
         return responsible;
     }
 
-    public void setResponsible(Person responsible) {
-        this.responsible = responsible.getGoogleId();
+    public void setResponsible(String responsible) {
+        this.responsible = responsible;
     }
 
     public float getPrice() {

@@ -48,7 +48,6 @@ public class ActivityInfoDinnerFragment extends Fragment{
 
         Object o = getActivity().getIntent().getSerializableExtra(ActivityInfoFragment.EXTRA_ACTIVITY_INFO_OBJECT);
 
-        if(o == null) return view;
         if(o instanceof DinnerGroupActivity){
             DinnerGroupActivity a = (DinnerGroupActivity) o;
             this.total.setText(String.valueOf(a.getTotal()));

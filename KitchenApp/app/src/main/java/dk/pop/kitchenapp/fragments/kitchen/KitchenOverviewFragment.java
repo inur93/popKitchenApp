@@ -1,6 +1,7 @@
 package dk.pop.kitchenapp.fragments.kitchen;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,9 +17,12 @@ import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
 
+import dk.pop.kitchenapp.MyGroupsActivity;
 import dk.pop.kitchenapp.R;
 import dk.pop.kitchenapp.adapters.ActivityListAdapter;
 import dk.pop.kitchenapp.data.DataManager;
+import dk.pop.kitchenapp.data.IDataManager;
+import dk.pop.kitchenapp.listeners.ActivityOnItemClickListener;
 import dk.pop.kitchenapp.models.GroupActivity;
 import dk.pop.kitchenapp.models.factories.ActivityFactory;
 
@@ -77,16 +81,13 @@ public class KitchenOverviewFragment extends Fragment{
             }
 
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         };
 
+        this.allActivities.setOnItemClickListener(new ActivityOnItemClickListener(this, activities));
         return view;
     }
 
@@ -94,7 +95,13 @@ public class KitchenOverviewFragment extends Fragment{
     public void onStart(){
         super.onStart();
         spinner.setVisibility(View.VISIBLE);
-        DataManager.getInstance().getActivitiesForKitchen(DataManager.getInstance().getCurrentKitchen(), listener);
+        IDataManager dm = DataManager.getInstance();
+        if(dm.getCurrentKitchen() == null){
+            Intent intent = new Intent(getActivity(), MyGroupsActivity.class);
+            startActivity(intent);
+            return;
+        }
+        dm.getActivitiesForKitchen(dm.getCurrentKitchen(), listener);
         getActivity().setTitle(getString(R.string.kitchen_overview_title));
     }
 

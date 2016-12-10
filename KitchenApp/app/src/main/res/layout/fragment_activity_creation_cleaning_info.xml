@@ -3,6 +3,19 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Switch
+        android:text="Can be cancelled"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_weight="0"
+        android:id="@+id/activity_creation_cleaning_cancellable_switch"
+        android:switchMinWidth="0dp"
+        android:switchPadding="10dp"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium.Inverse"
+        android:textSize="18sp"
+        android:textAllCaps="false"
+        android:textColor="?attr/editTextColor"
+        android:checked="true" />
     <TextView
         android:id="@+id/activity_creation_participant_text"
         android:layout_width="match_parent"

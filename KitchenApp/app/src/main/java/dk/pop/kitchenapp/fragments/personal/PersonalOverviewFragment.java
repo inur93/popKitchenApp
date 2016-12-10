@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.androidquery.AQuery;
 import com.google.firebase.database.ChildEventListener;
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 import dk.pop.kitchenapp.R;
 import dk.pop.kitchenapp.adapters.ActivityListAdapter;
 import dk.pop.kitchenapp.data.DataManager;
+import dk.pop.kitchenapp.listeners.ActivityOnItemClickListener;
 import dk.pop.kitchenapp.models.GroupActivity;
 import dk.pop.kitchenapp.models.factories.ActivityFactory;
 
@@ -102,6 +102,7 @@ public class PersonalOverviewFragment extends Fragment {
             }
         };
 
+        activityList.setOnItemClickListener(new ActivityOnItemClickListener(this, activities));
         return view;
     }
 

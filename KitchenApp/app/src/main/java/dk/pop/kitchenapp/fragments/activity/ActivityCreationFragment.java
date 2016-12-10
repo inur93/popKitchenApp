@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -41,7 +40,6 @@ import dk.pop.kitchenapp.models.ExpenseGroupActivity;
 import dk.pop.kitchenapp.models.Kitchen;
 import dk.pop.kitchenapp.models.Person;
 import dk.pop.kitchenapp.models.enums.CleaningStatusEnum;
-import dk.pop.kitchenapp.viewModels.PersonViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,7 +49,6 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
     private Spinner type;
     private EditText title;
     private EditText description;
-    private AQuery canBeCancelled;
 
     private Calendar calendar;
     private Button datePicker;
@@ -84,8 +81,6 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
         this.title = aq.id(R.id.activity_creation_title_edit).getEditText();
         this.description = aq.id(R.id.activity_creation_description_edit).getEditText();
 
-        // FIX - can't get switch from aquery
-        this.canBeCancelled = aq.id(R.id.activity_creation_cancellable_switch);
         this.datePicker = aq.id(R.id.activity_creation_date_edit).getButton();
 
         this.type.setOnItemSelectedListener(new ActivityTypeSpinnerListener(this));
@@ -118,9 +113,6 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
                 }
             }
         });
-
-
-
         return view;
     }
 
@@ -131,11 +123,10 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
             Log.d(LoggingTag.INFO.name(), "You pressed the next button");
 
             AQuery aq = new AQuery(getView());
-            ActivityType type =(ActivityType) aq.id(R.id.activity_creation_type_spinner).getSpinner().getSelectedItem();
-            String title  = aq.id(R.id.activity_creation_title_edit).getText().toString();
-            String description = aq.id(R.id.activity_creation_description_edit).getText().toString();
-            String dateText = aq.id(R.id.activity_creation_date_edit).getText().toString();
-            boolean isCancellable = aq.id(R.id.activity_creation_cancellable_switch).isChecked();
+            ActivityType type =(ActivityType) this.type.getSelectedItem();
+            String title  = this.title.getText().toString();
+            String description = this.description.getText().toString();
+            String dateText = this.datePicker.getText().toString();
             Date date = null;
             boolean invalidDate = false;
             if(dateText != null && dateText.length() > 0){
@@ -147,10 +138,6 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
                     invalidDate = true;
                 }
             }
-
-            boolean canBeCancelled = aq.id(R.id.activity_creation_cancellable_switch).isChecked();
-
-
 
             String toast = "";
             if(title == null || title.length() == 0) toast += "title can not be empty. ";
@@ -174,6 +161,7 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
                     String priceStr = aq.id(R.id.create_dinner_price_edit).getText().toString();
                     float price = Float.valueOf(priceStr.isEmpty() ? "0" : priceStr);
 
+                    boolean isDinnerCancellable = aq.id(R.id.activity_creation_dinner_cancellable_switch).isChecked();
                     ActivityPersonNameRoomNoAdapter adapterDinner = (ActivityPersonNameRoomNoAdapter) aq.id(R.id.activity_creation_dinner_participant_list).getListView().getAdapter();
                     List<Person> responsiblesDinner = adapterDinner.getSelectedPersons();
                     if(responsiblesDinner == null || responsiblesDinner.size() == 0){
@@ -199,7 +187,7 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
                             date,
                             kitchen,
                             person,
-                            isCancellable,
+                            isDinnerCancellable,
                             price,
                             null,
                             responsiblesDinner
@@ -208,6 +196,7 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
                 case CLEANINGACTIVITY:
                     ActivityPersonNameRoomNoAdapter adapter = (ActivityPersonNameRoomNoAdapter) aq.id(R.id.activity_creation_cleaning_participant_list).getListView().getAdapter();
                     List<Person> responsibles = adapter.getSelectedPersons();
+                    boolean isCleaningCancellable = aq.id(R.id.activity_creation_cleaning_cancellable_switch).isChecked();
                     if(responsibles == null || responsibles.size() == 0){
                         Toast.makeText(getContext(), "You need to select at least one responsible for cleaning", Toast.LENGTH_LONG).show();
                         return;
@@ -218,7 +207,7 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
                             date,
                             kitchen,
                             person,
-                            isCancellable,
+                            isCleaningCancellable,
                             responsibles,
                             CleaningStatusEnum.SCHEDULED));
                     break;
@@ -247,24 +236,10 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
         }
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
         getActivity().setTitle(getString(R.string.activity_creation_title));
-    }
-
-    public List<Person> getPersonList(ListView list){
-        List<Person> selectedParticipants = new ArrayList<>();
-        if(list == null) return selectedParticipants;
-        for(int i = 0; i < list.getCount(); i++){
-            PersonViewModel p = (PersonViewModel) list.getItemAtPosition(i);
-            System.out.println("person list: " + p.getPerson().getRoomNumber() + ";" + p.isSelected());
-            if(p.isSelected()){
-                selectedParticipants.add(p.getPerson());
-            }
-        }
-        return selectedParticipants;
     }
 
     private void updateLabel() {
