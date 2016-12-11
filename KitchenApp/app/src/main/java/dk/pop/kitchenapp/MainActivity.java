@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,10 +32,11 @@ import dk.pop.kitchenapp.data.AuthenticationManager;
 import dk.pop.kitchenapp.data.DataManager;
 import dk.pop.kitchenapp.extensions.BitmapHelper;
 import dk.pop.kitchenapp.firebase.callbacks.UserLoggedInCallback;
-import dk.pop.kitchenapp.fragments.GroupCreationFragment;
+import dk.pop.kitchenapp.fragments.activity.ActivityCreationFragment;
+import dk.pop.kitchenapp.fragments.groups.GroupCreationFragment;
+import dk.pop.kitchenapp.fragments.groups.MyGroupsFragment;
 import dk.pop.kitchenapp.fragments.kitchen.KitchenOverviewFragment;
 import dk.pop.kitchenapp.fragments.kitchen.calendar.KitchenOverviewCalendarFragment;
-import dk.pop.kitchenapp.fragments.activity.ActivityCreationFragment;
 import dk.pop.kitchenapp.fragments.personal.PersonalOverviewFragment;
 import dk.pop.kitchenapp.fragments.personal.PersonalPageFragment;
 import dk.pop.kitchenapp.fragments.personal.UserProfileFragment;
@@ -56,9 +56,8 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout drawerNavigationPane;
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
-    private ValueEventListener personListener;
 
-    private ProgressBar spinner;
+    private ValueEventListener personListener;
 
     private ArrayList<NavItem> navItems = new ArrayList<NavItem>();
 
@@ -77,38 +76,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        navItems.add(new NavItem(NavItem.NAV_ITEM_TYPE.KITCHEN_OVERVIEW,"Kitchen Overview", R.drawable.users));
-        navItems.add(new NavItem(NavItem.NAV_ITEM_TYPE.PERSONAL_OVERVIEW, "Personal Overview", R.drawable.social));
-        navItems.add(new NavItem(NavItem.NAV_ITEM_TYPE.CREATE_ACTIVITY, "Create Activity", R.drawable.create_activity));
-        navItems.add(new NavItem(NavItem.NAV_ITEM_TYPE.EDIT_PERSONAL_INFO, "Edit Personal Information", R.drawable.user));
-        navItems.add(new NavItem(NavItem.NAV_ITEM_TYPE.PERSONAL_CALENDAR, "Personal Calendar", R.drawable.personal_calendar));
-        navItems.add(new NavItem(NavItem.NAV_ITEM_TYPE.KITCHEN_CALENDAR, "Kitchen Calendar", R.drawable.kitchen_calendar));
-        spinner = (ProgressBar)findViewById(R.id.main_activity_spinner);
-        String url = getIntent().getStringExtra(getString(R.string.user_profile_picture_url));
-        if(url != null){
-            PreferenceManager
-                    .getDefaultSharedPreferences(this)
-                    .edit()
-                    .putString(getString(R.string.user_profile_picture_url), url).commit();
-        }else{
-            url = PreferenceManager.getDefaultSharedPreferences(this)
-                    .getString(getString(R.string.user_profile_picture_url), null);
-        }
 
-        Bitmap picture = DataManager.getInstance().getProfilePicture();
+        navItems.add(new NavItem(
+                NavItem.NAV_ITEM_TYPE.KITCHEN_OVERVIEW,getString(R.string.kitchen_overview_title), R.drawable.users));
+        navItems.add(new NavItem(
+                NavItem.NAV_ITEM_TYPE.PERSONAL_OVERVIEW, getString(R.string.personal_overview_title), R.drawable.social));
+        navItems.add(new NavItem(
+                NavItem.NAV_ITEM_TYPE.CREATE_ACTIVITY, getString(R.string.create_activity_title), R.drawable.create_activity));
+        navItems.add(new NavItem(
+                NavItem.NAV_ITEM_TYPE.EDIT_PERSONAL_INFO, getString(R.string.user_profile_edit_title), R.drawable.user));
+        navItems.add(new NavItem(
+                NavItem.NAV_ITEM_TYPE.PERSONAL_CALENDAR, getString(R.string.personal_calendar_title), R.drawable.personal_calendar));
+        navItems.add(new NavItem(
+                NavItem.NAV_ITEM_TYPE.KITCHEN_CALENDAR, getString(R.string.kitchen_calendar_title), R.drawable.kitchen_calendar));
 
-        //first try
-        if(picture != null) { //true if image is in memory
-            ((ImageView) findViewById(R.id.user_profile_image)).setImageBitmap(picture);
-        }//second try. true if image is saved in file
-        else if((picture = BitmapHelper.loadBitmap(this, "profilepicture.jpg")) != null){
-            ((ImageView) findViewById(R.id.user_profile_image)).setImageBitmap(picture);
-        }else if(url != null){
-            // last resort is to try download image
-            new DownloadImageTask((ImageView) findViewById(R.id.user_profile_image), this).execute(url);
-        }
 
-        System.out.println("profile picture: " + url);
+        resolveProfilePicture();
 
         viewProfileText = (TextView) findViewById(R.id.drawer_navigation_view_profile);
         viewProfileText.setOnClickListener(new View.OnClickListener() {
@@ -126,10 +109,44 @@ public class MainActivity extends AppCompatActivity {
         setupDrawer();
     }
 
+    private void resolveProfilePicture() {
+        String newUrl = getIntent().getStringExtra(getString(R.string.user_profile_picture_url));
+        String currentUrl = PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(getString(R.string.user_profile_picture_url), null);
+        boolean useNewUrl = false;
+        if(newUrl != null){
+            if(!newUrl.equals(currentUrl)) {
+                PreferenceManager
+                        .getDefaultSharedPreferences(this)
+                        .edit()
+                        .putString(getString(R.string.user_profile_picture_url), newUrl)
+                        .commit();
+                useNewUrl = true;
+            }
+        }
+
+        // if user has changed profile picture on his google account
+        if(useNewUrl) {
+            // this will also set the profile picture in the datamanager.
+            new DownloadImageTask((ImageView) findViewById(R.id.user_profile_image), this).execute(newUrl);
+        }
+
+        //see if picture already has been loaded
+        Bitmap picture = DataManager.getInstance().getProfilePicture();
+
+        //if picture has been retrieved, we add it to the imageview
+        if(picture != null) { //true if image is in memory
+            ((ImageView) findViewById(R.id.user_profile_image)).setImageBitmap(picture);
+        }
+        // we try to get the saved profile picture and add it to the imageview
+        else if((picture = BitmapHelper.loadBitmap(this, "profilepicture.jpg")) != null){
+            ((ImageView) findViewById(R.id.user_profile_image)).setImageBitmap(picture);
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-        spinner.setVisibility(View.VISIBLE);
 
         // Check if a user is already present via FireBase
         if (AuthenticationManager.getInstance().getFirebaseUser() != null) {
@@ -143,11 +160,10 @@ public class MainActivity extends AppCompatActivity {
             //if not we go to sign in activity and return.
             Intent signInIntent = new Intent(this, SignInActivity.class);
             startActivity(signInIntent);
-            spinner.setVisibility(View.GONE);
             return;
         }
 
-        // if user not logged in properly, we'll do it now
+        // if user has not been set as current person, we'll do it now
         if(DataManager.getInstance().getCurrentPerson() == null) {
             final FirebaseUser user = AuthenticationManager.getInstance().getFirebaseUser();
             Toast.makeText(this, AuthenticationManager.getInstance().getFirebaseUser().getDisplayName(), Toast.LENGTH_SHORT).show();
@@ -155,8 +171,6 @@ public class MainActivity extends AppCompatActivity {
             DataManager.getInstance()
                     .createPerson(
                             new Person(user.getUid(), user.getDisplayName(), true), new UserLoggedInCallback(this));
-
-            spinner.setVisibility(View.GONE);
 
         }
         // if user has selected a kitchen but no fragment is shown we'll give him the kitchen overview
@@ -166,8 +180,6 @@ public class MainActivity extends AppCompatActivity {
                     .beginTransaction()
                     .add(R.id.drawer_navigation_main_content, new KitchenOverviewFragment())
                     .commit();
-
-            spinner.setVisibility(View.GONE);
         }
 
         // Activate the home button
@@ -213,7 +225,6 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.drawer_navigation_main_content, fragment)
                 .addToBackStack(null)
                 .commit();
-
         drawerNavigationList.setItemChecked(position, true);
 
 
@@ -233,30 +244,23 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+        Intent groupsIntent = null;
         // Handle options menu button clicks
         switch (item.getItemId()){
             case R.id.general_options_menu_group_creation:
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.drawer_navigation_main_content, new GroupCreationFragment())
-                        .addToBackStack(null)
-                        .commit();
-                break;
+                groupsIntent = new Intent(this, GroupsActivity.class);
+                groupsIntent.putExtra(GroupsActivity.BUNDLE_KEY_FRAGMENT_TO_SHOW, GroupCreationFragment.class.getName());
             case R.id.general_options_menu_my_groups:
-                Intent myGroupsIntent = new Intent(this, MyGroupsActivity.class);
-                startActivity(myGroupsIntent);
+                if(groupsIntent == null) {
+                    groupsIntent = new Intent(this, GroupsActivity.class);
+                    groupsIntent.putExtra(GroupsActivity.BUNDLE_KEY_FRAGMENT_TO_SHOW, MyGroupsFragment.class.getName());
+                }
+                startActivity(groupsIntent);
                 break;
             case R.id.general_options_menu_logout:
                 AuthenticationManager.getInstance().getFirebaseAuth().signOut();
                 Intent signInIntent = new Intent(this, SignInActivity.class);
                 startActivity(signInIntent);
-                break;
-            case R.id.general_options_menu_personal_info:
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.drawer_navigation_main_content, new PersonalPageFragment())
-                        .addToBackStack(null)
-                        .commit();
                 break;
         }
         return super.onOptionsItemSelected(item);

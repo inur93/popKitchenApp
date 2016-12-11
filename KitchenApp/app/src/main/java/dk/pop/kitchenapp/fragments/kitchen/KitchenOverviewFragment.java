@@ -9,24 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import com.androidquery.AQuery;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 
-import java.util.ArrayList;
-
-import dk.pop.kitchenapp.MyGroupsActivity;
+import dk.pop.kitchenapp.GroupsActivity;
 import dk.pop.kitchenapp.R;
 import dk.pop.kitchenapp.adapters.ActivityListAdapter;
 import dk.pop.kitchenapp.data.DataManager;
 import dk.pop.kitchenapp.data.IDataManager;
 import dk.pop.kitchenapp.listeners.ActivityOnItemClickListener;
 import dk.pop.kitchenapp.listeners.kitchen.KitchenOverviewListener;
-import dk.pop.kitchenapp.models.GroupActivity;
-import dk.pop.kitchenapp.models.factories.ActivityFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,7 +57,7 @@ public class KitchenOverviewFragment extends Fragment{
         super.onStart();
         IDataManager dm = DataManager.getInstance();
         if(dm.getCurrentKitchen() == null){
-            Intent intent = new Intent(getActivity(), MyGroupsActivity.class);
+            Intent intent = new Intent(getActivity(), GroupsActivity.class);
             startActivity(intent);
             return;
         }

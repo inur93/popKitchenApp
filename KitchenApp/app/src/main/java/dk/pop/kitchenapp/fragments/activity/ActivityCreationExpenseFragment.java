@@ -13,7 +13,7 @@ import dk.pop.kitchenapp.R;
  * Created by Runi on 23-10-2016.
  */
 
-public class KitchenOverviewCreationExpenseInfoFragment extends Fragment {
+public class ActivityCreationExpenseFragment extends Fragment {
 
     @Nullable
     @Override

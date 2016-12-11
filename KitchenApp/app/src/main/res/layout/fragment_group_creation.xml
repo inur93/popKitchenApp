@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dk.pop.kitchenapp.fragments.GroupCreationFragment">
+    tools:context="dk.pop.kitchenapp.fragments.groups.GroupCreationFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title="Update Info"
-        android:id="@+id/general_options_menu_personal_info">
-    </item>
-    <item
         android:icon="@drawable/users"
         android:title="Create Groups"
         android:id="@+id/general_options_menu_group_creation"/>

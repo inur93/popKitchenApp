@@ -23,7 +23,7 @@ import dk.pop.kitchenapp.viewModels.PersonViewModel;
  * Created by Runi on 27-10-2016.
  */
 
-public class KitchenOverviewCreationCleaningInfoFragment extends Fragment {
+public class ActivityCreationCleaningFragment extends Fragment {
 
     private ParticipantListViewListener listener;
     @Nullable

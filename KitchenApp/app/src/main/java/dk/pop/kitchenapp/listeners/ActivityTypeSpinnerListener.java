@@ -6,9 +6,9 @@ import android.widget.AdapterView;
 
 import dk.pop.kitchenapp.R;
 import dk.pop.kitchenapp.fragments.activity.ActivityCreationFragment;
-import dk.pop.kitchenapp.fragments.activity.KitchenOverviewCreationCleaningInfoFragment;
-import dk.pop.kitchenapp.fragments.activity.KitchenOverviewCreationDinnerInfoFragment;
-import dk.pop.kitchenapp.fragments.activity.KitchenOverviewCreationExpenseInfoFragment;
+import dk.pop.kitchenapp.fragments.activity.ActivityCreationCleaningFragment;
+import dk.pop.kitchenapp.fragments.activity.ActivityCreationDinnerFragment;
+import dk.pop.kitchenapp.fragments.activity.ActivityCreationExpenseFragment;
 import dk.pop.kitchenapp.models.ActivityType;
 
 /**
@@ -28,15 +28,15 @@ public class ActivityTypeSpinnerListener implements AdapterView.OnItemSelectedLi
         System.out.println("type selected: " + type.name);
         switch (type.type){
             case CLEANINGACTIVITY:
-                fragment = new KitchenOverviewCreationCleaningInfoFragment();
+                fragment = new ActivityCreationCleaningFragment();
                 tag = ActivityCreationFragment.TAG_CLEANING_INFO;
                 break;
             case DINNERACTIVITY:
-                fragment = new KitchenOverviewCreationDinnerInfoFragment();
+                fragment = new ActivityCreationDinnerFragment();
                 tag = ActivityCreationFragment.TAG_DINNER_INFO;
                 break;
             case EXPENSEACTIVITY:
-                fragment = new KitchenOverviewCreationExpenseInfoFragment();
+                fragment = new ActivityCreationExpenseFragment();
                 tag = ActivityCreationFragment.TAG_EXPENSE_INFO;
                 break;
             case KITCHEN:

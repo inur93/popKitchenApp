@@ -2,7 +2,6 @@ package dk.pop.kitchenapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -42,13 +41,8 @@ public class SignInActivity extends AppCompatActivity{
 
                         Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                         String pictureUrl = result.getSignInAccount().getPhotoUrl().toString();
-                        System.out.println("image url: " + pictureUrl);
                         intent.putExtra(getString(R.string.user_profile_picture_url), pictureUrl);
-                        PreferenceManager
-                                .getDefaultSharedPreferences(SignInActivity.this)
-                                .edit()
-                                .putString(getString(R.string.user_profile_picture_url), pictureUrl)
-                                .commit();
+
                         startActivity(intent);
                     }
 
@@ -64,8 +58,11 @@ public class SignInActivity extends AppCompatActivity{
             }
         }else{
 
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(this, MainActivity.class);
+//            startActivity(intent);
+
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(AuthenticationManager.getInstance().getSignClient(this, this, getString(R.string.default_web_client_id)));
+            startActivityForResult(signInIntent, REQUESTCODE);
         }
     }
 

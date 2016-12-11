@@ -80,8 +80,6 @@ public class ActivityInfoFragment extends Fragment {
                 .replace(R.id.activity_info_extra_content, childFragment)
                 .commit();
 
-
-
         return view;
     }
 

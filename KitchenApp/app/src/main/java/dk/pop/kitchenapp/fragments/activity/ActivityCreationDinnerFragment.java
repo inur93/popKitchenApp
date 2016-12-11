@@ -23,7 +23,7 @@ import dk.pop.kitchenapp.viewModels.PersonViewModel;
  * Created by Runi on 27-10-2016.
  */
 
-public class KitchenOverviewCreationDinnerInfoFragment extends Fragment {
+public class ActivityCreationDinnerFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

@@ -1,11 +1,11 @@
-package dk.pop.kitchenapp;
-
+package dk.pop.kitchenapp.fragments.groups;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -17,30 +17,31 @@ import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
 
+import dk.pop.kitchenapp.MainActivity;
+import dk.pop.kitchenapp.R;
 import dk.pop.kitchenapp.adapters.KitchenListAdapter;
 import dk.pop.kitchenapp.data.DataManager;
 import dk.pop.kitchenapp.data.dataPassing.DataPassingEnum;
 import dk.pop.kitchenapp.models.Kitchen;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Created by Runi on 11-12-2016.
  */
-public class MyGroupsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
+
+public class MyGroupsFragment extends Fragment implements AdapterView.OnItemClickListener {
+
     private ListView groupsList;
     private ArrayList<Kitchen> kitchens;
     private ProgressBar spinner;
     ChildEventListener listener;
 
-    public MyGroupsActivity() {
-        // Required empty public constructor
-    }
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_groups);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_my_groups, container, false);
+        AQuery aq = new AQuery(view);
 
-        spinner = (ProgressBar)findViewById(R.id.my_groups_spinner);
+        spinner = aq.id(R.id.my_groups_spinner).getProgressBar();
 
         // Inflate the layout for this fragment
         kitchens = new ArrayList<>();
@@ -49,7 +50,7 @@ public class MyGroupsActivity extends AppCompatActivity implements AdapterView.O
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 spinner.setVisibility(View.GONE);
                 kitchens.add(dataSnapshot.getValue(Kitchen.class));
-                ((KitchenListAdapter)groupsList.getAdapter()).getFilter().filter("");
+                ((KitchenListAdapter) groupsList.getAdapter()).getFilter().filter("");
             }
 
             @Override
@@ -73,19 +74,19 @@ public class MyGroupsActivity extends AppCompatActivity implements AdapterView.O
             }
         };
 
-        AQuery aq = new AQuery(this);
         groupsList = aq.id(R.id.my_groups_list_view).getListView();
-        groupsList.setAdapter(new KitchenListAdapter(kitchens, this));
+        groupsList.setAdapter(new KitchenListAdapter(kitchens, getContext()));
         groupsList.setOnItemClickListener(this);
         DataManager.getInstance().getKitchensForPerson(DataManager.getInstance().getCurrentPerson(), listener);
-
+        return view;
     }
+
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Kitchen clickedKitchen = (Kitchen)groupsList.getAdapter().getItem(position);
         DataManager.getInstance().setCurrentKitchen(clickedKitchen);
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(getContext(), MainActivity.class);
         intent.putExtra(DataPassingEnum.KITCHEN.name(), clickedKitchen);
         intent.putExtra(DataPassingEnum.PERSON.name(), DataManager.getInstance().getCurrentPerson());
         startActivity(intent);
@@ -95,6 +96,7 @@ public class MyGroupsActivity extends AppCompatActivity implements AdapterView.O
     public void onStart(){
         super.onStart();
         spinner.setVisibility(View.VISIBLE);
+        getActivity().setTitle(getString(R.string.my_groups_title));
     }
 
     @Override

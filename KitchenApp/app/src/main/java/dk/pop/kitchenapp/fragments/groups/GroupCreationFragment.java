@@ -1,4 +1,4 @@
-package dk.pop.kitchenapp.fragments;
+package dk.pop.kitchenapp.fragments.groups;
 
 
 import android.content.Intent;

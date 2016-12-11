@@ -8,11 +8,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import dk.pop.kitchenapp.MyGroupsActivity;
+import dk.pop.kitchenapp.GroupsActivity;
 import dk.pop.kitchenapp.R;
 import dk.pop.kitchenapp.data.DataManager;
 import dk.pop.kitchenapp.data.interfaces.FireBaseCallback;
-import dk.pop.kitchenapp.fragments.GroupCreationFragment;
 import dk.pop.kitchenapp.fragments.kitchen.KitchenOverviewFragment;
 import dk.pop.kitchenapp.logging.LoggingTag;
 import dk.pop.kitchenapp.models.Kitchen;
@@ -32,11 +31,10 @@ public class UserLoggedInCallback implements FireBaseCallback<Person> {
     @Override
     public void onSuccessCreate(Person entity) {
         DataManager.getInstance().setCurrentPerson(entity);
-        activity.getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.drawer_navigation_main_content, new GroupCreationFragment())
-                .addToBackStack(null)
-                .commit();
+        if(activity.isDestroyed()) return;
+
+        Intent intent = new Intent(activity, GroupsActivity.class);
+        activity.startActivity(intent);
     }
 
     @Override
@@ -47,14 +45,10 @@ public class UserLoggedInCallback implements FireBaseCallback<Person> {
     @Override
     public void onExists(Person entity) {
         DataManager.getInstance().setCurrentPerson(entity);
-        if (entity.getKitchens().isEmpty()) {
-            // Route to first personal_calendar fragment
-            activity.getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.drawer_navigation_main_content, new GroupCreationFragment())
-                    .addToBackStack(null)
-                    .commit();
-        } else if(entity.getKitchens().size() == 1) {
+        if(activity.isDestroyed()) return;
+
+
+        if(entity.getKitchens().size() == 1) {
             String kitchenName = entity.getKitchens().values().iterator().next();
             DataManager.getInstance().getKitchen(kitchenName, new ValueEventListener() {
                 @Override
@@ -72,7 +66,7 @@ public class UserLoggedInCallback implements FireBaseCallback<Person> {
             });
         }else{
             // Route to my groups
-            Intent intent = new Intent(activity, MyGroupsActivity.class);
+            Intent intent = new Intent(activity, GroupsActivity.class);
             activity.startActivity(intent);
         }
     }
