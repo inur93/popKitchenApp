@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -23,6 +24,7 @@ import dk.pop.kitchenapp.adapters.ActivityListAdapter;
 import dk.pop.kitchenapp.data.DataManager;
 import dk.pop.kitchenapp.data.IDataManager;
 import dk.pop.kitchenapp.listeners.ActivityOnItemClickListener;
+import dk.pop.kitchenapp.listeners.kitchen.KitchenOverviewListener;
 import dk.pop.kitchenapp.models.GroupActivity;
 import dk.pop.kitchenapp.models.factories.ActivityFactory;
 
@@ -31,9 +33,7 @@ import dk.pop.kitchenapp.models.factories.ActivityFactory;
  */
 public class KitchenOverviewFragment extends Fragment{
     private ListView allActivities;
-    private ChildEventListener listener;
-    private ProgressBar spinner;
-    private ArrayList<GroupActivity> activities = new ArrayList<>();
+    private KitchenOverviewListener kitchenListener;
 
     public KitchenOverviewFragment() {
         // Required empty public constructor
@@ -46,69 +46,40 @@ public class KitchenOverviewFragment extends Fragment{
         View view =  inflater.inflate(R.layout.fragment_kitchen_overview, container, false);
 
         AQuery aq = new AQuery(view);
+
+        this.kitchenListener = new KitchenOverviewListener(
+                DataManager.getInstance().getCurrentKitchen(),
+                aq.id(R.id.kitchen_overview_spinner).getProgressBar());
+
+        BaseAdapter adapter = new ActivityListAdapter(getContext(), this.kitchenListener.getItems());
+        this.kitchenListener.setAdapter(adapter);
+
         this.allActivities = aq.id(R.id.kitchen_overview_list_view).getListView();
-        this.allActivities.setAdapter(new ActivityListAdapter(getContext(), activities));
-        spinner = aq.id(R.id.kitchen_overview_spinner).getProgressBar();
-
-        listener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                spinner.setVisibility(View.GONE);
-                activities.add(ActivityFactory.CreateActivity(dataSnapshot));
-                ((ActivityListAdapter)allActivities.getAdapter()).notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                GroupActivity act = ActivityFactory.CreateActivity(dataSnapshot);
-                for (int i = 0; i < activities.size(); i++){
-                    if(activities.get(i).getId().equals(act.getId())){
-                        activities.set(i, act);
-                    }
-                }
-                ((ActivityListAdapter)allActivities.getAdapter()).notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                GroupActivity act = ActivityFactory.CreateActivity(dataSnapshot);
-                for (int i = 0; i < activities.size(); i++){
-                    if(activities.get(i).getId().equals(act.getId())){
-                        activities.remove(i);
-                    }
-                }
-                ((ActivityListAdapter)allActivities.getAdapter()).notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        };
-
-        this.allActivities.setOnItemClickListener(new ActivityOnItemClickListener(this, activities));
+        this.allActivities.setAdapter(adapter);
+        this.allActivities.setOnItemClickListener(new ActivityOnItemClickListener(this, this.kitchenListener.getItems()));
         return view;
     }
 
     @Override
     public void onStart(){
         super.onStart();
-        spinner.setVisibility(View.VISIBLE);
         IDataManager dm = DataManager.getInstance();
         if(dm.getCurrentKitchen() == null){
             Intent intent = new Intent(getActivity(), MyGroupsActivity.class);
             startActivity(intent);
             return;
         }
-        dm.getActivitiesForKitchen(dm.getCurrentKitchen(), listener);
         getActivity().setTitle(getString(R.string.kitchen_overview_title));
+        this.kitchenListener.start();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        DataManager.getInstance().detachActivitiesForKitchen(DataManager.getInstance().getCurrentKitchen(), listener);
-        activities.clear();
+        try {
+            this.kitchenListener.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

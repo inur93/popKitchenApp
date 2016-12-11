@@ -20,6 +20,7 @@ import dk.pop.kitchenapp.R;
 import dk.pop.kitchenapp.adapters.ActivityListAdapter;
 import dk.pop.kitchenapp.data.DataManager;
 import dk.pop.kitchenapp.listeners.ActivityOnItemClickListener;
+import dk.pop.kitchenapp.listeners.personal.PersonalOverviewListener;
 import dk.pop.kitchenapp.models.GroupActivity;
 import dk.pop.kitchenapp.models.factories.ActivityFactory;
 
@@ -27,12 +28,8 @@ import dk.pop.kitchenapp.models.factories.ActivityFactory;
  * A simple {@link Fragment} subclass.
  */
 public class PersonalOverviewFragment extends Fragment {
-
-    private ActivityListAdapter adapter;
     private ListView activityList;
-    private ArrayList<GroupActivity> activities = new ArrayList<>();
-    private ChildEventListener listener;
-    private ProgressBar spinner;
+    PersonalOverviewListener overviewListener;
 
     public PersonalOverviewFragment() {
         // Required empty public constructor
@@ -42,67 +39,17 @@ public class PersonalOverviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_personal_overview, container, false);
-
-        adapter = new ActivityListAdapter(getContext(), activities);
         AQuery aq = new AQuery(view);
+        overviewListener = new PersonalOverviewListener(
+                DataManager.getInstance().getCurrentPerson(),
+                aq.id(R.id.personal_overview_spinner).getProgressBar());
+        ActivityListAdapter adapter = new ActivityListAdapter(getContext(), overviewListener.getItems());
+        overviewListener.setAdapter(adapter);
+
+        // Setup list view
         activityList = aq.id(R.id.personal_overview_listview).getListView();
         activityList.setAdapter(adapter);
-        spinner = aq.id(R.id.personal_overview_spinner).getProgressBar();
-        listener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                GroupActivity act = ActivityFactory.CreateActivity(dataSnapshot);
-                // If the kitchen of the activity does not equal the current kitchen return
-                if(!(act.getKitchen().equals(DataManager.getInstance().getCurrentKitchen().getName()))){
-                    return;
-                }
-
-                for(int i = 0; i < activities.size(); i++){
-                    // If activites already contains the activity return
-                    if(activities.get(i).getId().equals(act.getId())){
-                        return;
-                    }
-                }
-
-                spinner.setVisibility(View.GONE);
-                activities.add(act);
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                GroupActivity act = ActivityFactory.CreateActivity(dataSnapshot);
-                for(int i = 0; i < activities.size(); i++){
-                    if(activities.get(i).getId().equals(act.getId())){
-                        activities.set(i, act);
-                    }
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                GroupActivity act = ActivityFactory.CreateActivity(dataSnapshot);
-                for(int i = 0; i < activities.size(); i++){
-                    if(activities.get(i).getId().equals(act.getId())){
-                        activities.remove(i);
-                    }
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-
-        activityList.setOnItemClickListener(new ActivityOnItemClickListener(this, activities));
+        activityList.setOnItemClickListener(new ActivityOnItemClickListener(this, overviewListener.getItems()));
         return view;
     }
 
@@ -110,14 +57,17 @@ public class PersonalOverviewFragment extends Fragment {
     public void onStart() {
         super.onStart();
         getActivity().setTitle(getString(R.string.personal_overview_title));
-        spinner.setVisibility(View.VISIBLE);
-        DataManager.getInstance().getActivitiesForPerson(DataManager.getInstance().getCurrentPerson(), listener);
+        overviewListener.start();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        DataManager.getInstance().detachActivitiesForPerson(DataManager.getInstance().getCurrentPerson(), listener);
-        activities.clear();
+
+        try {
+            overviewListener.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
