@@ -12,6 +12,7 @@ public class Kitchen implements Serializable{
     private HashMap<String, String> activities;
     private HashMap<String, String> persons;
     private HashMap<String, String> admins;
+    private HashMap<String, String> pendingRequests;
 
     public HashMap<String, String> getPendingRequests() {
         return pendingRequests;
@@ -20,8 +21,6 @@ public class Kitchen implements Serializable{
     public void setPendingRequests(HashMap<String, String> pendingRequests) {
         this.pendingRequests = pendingRequests;
     }
-
-    private HashMap<String, String> pendingRequests;
 
     public void setName(String name) {
         this.name = name;
