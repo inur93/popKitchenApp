@@ -27,6 +27,7 @@ import dk.pop.kitchenapp.adapters.KitchenListAdapter;
 import dk.pop.kitchenapp.data.DataManager;
 import dk.pop.kitchenapp.data.dataPassing.DataPassingEnum;
 import dk.pop.kitchenapp.data.interfaces.FireBaseCallback;
+import dk.pop.kitchenapp.listeners.groups.GroupCreationListener;
 import dk.pop.kitchenapp.models.Kitchen;
 
 /**
@@ -36,11 +37,8 @@ public class GroupCreationFragment extends Fragment implements View.OnClickListe
 
     private AQuery aq;
     private ListView kitchenList;
-    private ChildEventListener listener;
-    private ArrayList<Kitchen> kitchens;
     private View view;
-    private KitchenListAdapter adapter;
-    private ProgressBar spinner;
+    private GroupCreationListener listener;
 
     public GroupCreationFragment() {
     }
@@ -52,52 +50,13 @@ public class GroupCreationFragment extends Fragment implements View.OnClickListe
         this.view = inflater.inflate(R.layout.fragment_group_creation, container, false);
         aq = new AQuery(view);
 
-        spinner = aq.id(R.id.group_creation_spinner).getProgressBar();
-        kitchens = new ArrayList<>();
-
-        // Required empty public constructor
-        listener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                spinner.setVisibility(View.GONE);
-                kitchens.add(dataSnapshot.getValue(Kitchen.class));
-                adapter.getFilter().filter("");
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Kitchen removedKitchen = dataSnapshot.getValue(Kitchen.class);
-                for(int i = 0; i < kitchens.size(); i++){
-                    if(kitchens.get(i).getName().equals(removedKitchen.getName())){
-                        kitchens.remove(i);
-                    }
-                }
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-
+        listener = new GroupCreationListener(aq.id(R.id.group_creation_spinner).getProgressBar());
+        final KitchenListAdapter adapter = new KitchenListAdapter(listener.getItems(), getContext());
+        listener.setAdapter(adapter);
 
         aq.id(R.id.group_creation_create_btn).clicked(this);
         kitchenList = aq.id(R.id.group_creation_list_view).getListView();
         kitchenList.setOnItemClickListener(this);
-
-        // Setup list adapter
-        adapter = new KitchenListAdapter(kitchens, getContext());
-
         kitchenList.setAdapter(adapter);
         adapter.getFilter().filter("");
 
@@ -148,15 +107,18 @@ public class GroupCreationFragment extends Fragment implements View.OnClickListe
     @Override
     public void onStart() {
         super.onStart();
-        spinner.setVisibility(View.VISIBLE);
         getActivity().setTitle(getString(R.string.group_creation_title));
-        DataManager.getInstance().attachKitchenListener(this.listener);
+        listener.start();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        DataManager.getInstance().detachKitchenListener(this.listener);
+        try {
+            this.listener.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

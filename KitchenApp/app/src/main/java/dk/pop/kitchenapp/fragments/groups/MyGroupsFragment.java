@@ -22,6 +22,7 @@ import dk.pop.kitchenapp.R;
 import dk.pop.kitchenapp.adapters.KitchenListAdapter;
 import dk.pop.kitchenapp.data.DataManager;
 import dk.pop.kitchenapp.data.dataPassing.DataPassingEnum;
+import dk.pop.kitchenapp.listeners.groups.MyGroupsListener;
 import dk.pop.kitchenapp.models.Kitchen;
 
 /**
@@ -31,9 +32,7 @@ import dk.pop.kitchenapp.models.Kitchen;
 public class MyGroupsFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private ListView groupsList;
-    private ArrayList<Kitchen> kitchens;
-    private ProgressBar spinner;
-    ChildEventListener listener;
+    private MyGroupsListener listener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,43 +40,15 @@ public class MyGroupsFragment extends Fragment implements AdapterView.OnItemClic
         View view = inflater.inflate(R.layout.fragment_my_groups, container, false);
         AQuery aq = new AQuery(view);
 
-        spinner = aq.id(R.id.my_groups_spinner).getProgressBar();
-
-        // Inflate the layout for this fragment
-        kitchens = new ArrayList<>();
-        listener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                spinner.setVisibility(View.GONE);
-                kitchens.add(dataSnapshot.getValue(Kitchen.class));
-                ((KitchenListAdapter) groupsList.getAdapter()).getFilter().filter("");
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                kitchens.indexOf(dataSnapshot.getValue(Kitchen.class));
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                kitchens.remove(dataSnapshot.getValue(Kitchen.class));
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
+        listener = new MyGroupsListener(
+                DataManager.getInstance().getCurrentPerson(),
+                aq.id(R.id.my_groups_spinner).getProgressBar());
+        KitchenListAdapter adapter = new KitchenListAdapter(listener.getItems(), getContext());
+        listener.setAdapter(adapter);
 
         groupsList = aq.id(R.id.my_groups_list_view).getListView();
-        groupsList.setAdapter(new KitchenListAdapter(kitchens, getContext()));
+        groupsList.setAdapter(adapter);
         groupsList.setOnItemClickListener(this);
-        DataManager.getInstance().getKitchensForPerson(DataManager.getInstance().getCurrentPerson(), listener);
         return view;
     }
 
@@ -95,13 +66,17 @@ public class MyGroupsFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public void onStart(){
         super.onStart();
-        spinner.setVisibility(View.VISIBLE);
         getActivity().setTitle(getString(R.string.my_groups_title));
+        this.listener.start();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        DataManager.getInstance().detachKitchensForPerson(DataManager.getInstance().getCurrentPerson(), listener);
+        try {
+            this.listener.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -8,10 +8,10 @@ import java.util.ArrayList;
  * Created by dickow on 12/11/16.
  */
 
-public interface FireBaseListListener<T> {
+public interface FireBaseListListener<TItem, TAdapter extends BaseAdapter> {
     void start();
 
-    void setAdapter(BaseAdapter adapter);
+    void setAdapter(TAdapter adapter);
 
-    ArrayList<T> getItems();
+    ArrayList<TItem> getItems();
 }

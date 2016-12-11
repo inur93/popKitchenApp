@@ -20,7 +20,7 @@ import dk.pop.kitchenapp.utilities.view.SpinnerWrapper;
  * Created by dickow on 12/11/16.
  */
 
-public class KitchenOverviewListener implements AutoCloseable, FireBaseListListener<GroupActivity> {
+public class KitchenOverviewListener implements AutoCloseable, FireBaseListListener<GroupActivity, BaseAdapter> {
     private Kitchen kitchen;
     private SpinnerWrapper spinnerWrapper;
     private ChildEventListener listener;
