@@ -40,6 +40,7 @@ import dk.pop.kitchenapp.fragments.kitchen.calendar.KitchenOverviewCalendarFragm
 import dk.pop.kitchenapp.fragments.personal.PersonalOverviewFragment;
 import dk.pop.kitchenapp.fragments.personal.PersonalPageFragment;
 import dk.pop.kitchenapp.fragments.personal.UserProfileFragment;
+import dk.pop.kitchenapp.fragments.personal.calendar.PersonalOverviewCalendarFragment;
 import dk.pop.kitchenapp.models.Person;
 import dk.pop.kitchenapp.tasks.DownloadImageTask;
 import dk.pop.kitchenapp.viewModels.NavItem;
@@ -66,7 +67,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TextView usernameText = (TextView) findViewById(R.id.drawer_navigation_username);
-                usernameText.setText(dataSnapshot.getValue(Person.class).getDisplayName());
+                Person person = dataSnapshot.getValue(Person.class);
+                if(person != null){
+                    usernameText.setText(person.getDisplayName());
+                }
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
@@ -89,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
                 NavItem.NAV_ITEM_TYPE.PERSONAL_CALENDAR, getString(R.string.personal_calendar_title), R.drawable.personal_calendar));
         navItems.add(new NavItem(
                 NavItem.NAV_ITEM_TYPE.KITCHEN_CALENDAR, getString(R.string.kitchen_calendar_title), R.drawable.kitchen_calendar));
-
 
         resolveProfilePicture();
 
@@ -204,13 +208,11 @@ public class MainActivity extends AppCompatActivity {
             case KITCHEN_CALENDAR:
                 fragment = new KitchenOverviewCalendarFragment();
                 break;
-
             case KITCHEN_OVERVIEW:
                 fragment = new KitchenOverviewFragment();
                 break;
             case PERSONAL_CALENDAR:
-                //TODO make personal calendar fragment
-                fragment = new KitchenOverviewCalendarFragment();
+                fragment = new PersonalOverviewCalendarFragment();
                 break;
             case PERSONAL_OVERVIEW:
                 fragment = new PersonalOverviewFragment();

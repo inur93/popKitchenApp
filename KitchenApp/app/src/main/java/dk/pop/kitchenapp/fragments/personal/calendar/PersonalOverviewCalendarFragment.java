@@ -119,6 +119,7 @@ public class PersonalOverviewCalendarFragment extends Fragment {
         super.onStart();
         DataManager.getInstance().getActivitiesForPerson(DataManager.getInstance().getCurrentPerson(), listener);
         activities = new ArrayList<>();
+        getActivity().setTitle(getString(R.string.personal_overview_calendar_title));
     }
 
     @Override

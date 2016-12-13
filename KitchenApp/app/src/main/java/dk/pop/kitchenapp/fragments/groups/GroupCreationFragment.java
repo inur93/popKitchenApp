@@ -97,7 +97,7 @@ public class GroupCreationFragment extends Fragment implements View.OnClickListe
 
                     @Override
                     public void onExists(Kitchen entity) {
-                        Toast.makeText(getView().getContext(), String.format("The kitchen %s already existed", entity.getName()), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getView().getContext(), String.format(getString(R.string.group_creation_group_existed), entity.getName()), Toast.LENGTH_LONG).show();
                     }
                 });
                 break;
@@ -128,6 +128,7 @@ public class GroupCreationFragment extends Fragment implements View.OnClickListe
         Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.putExtra(DataPassingEnum.KITCHEN.name(), kitchen);
         intent.putExtra(DataPassingEnum.PERSON.name(), DataManager.getInstance().getCurrentPerson());
+        DataManager.getInstance().setCurrentKitchen(kitchen);
         startActivity(intent);
     }
 }

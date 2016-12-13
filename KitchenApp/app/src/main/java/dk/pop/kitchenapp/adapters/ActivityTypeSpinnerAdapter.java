@@ -22,19 +22,11 @@ import dk.pop.kitchenapp.models.enums.ObjectTypeEnum;
 
 public class ActivityTypeSpinnerAdapter extends ArrayAdapter<ActivityType> {
 
-    private static List<ActivityType> activityTypes;
+    private List<ActivityType> activityTypes;
 
 
-    public ActivityTypeSpinnerAdapter(Context context) {
-        super(context, 0, getList());
-    }
-
-    private static List<ActivityType> getList(){
-        activityTypes = new ArrayList<>();
-        activityTypes.add(new ActivityType(ObjectTypeEnum.CLEANINGACTIVITY, "Cleaning"));
-        activityTypes.add(new ActivityType(ObjectTypeEnum.DINNERACTIVITY, "Dinner"));
-        activityTypes.add(new ActivityType(ObjectTypeEnum.EXPENSEACTIVITY, "Expense"));
-        return activityTypes;
+    public ActivityTypeSpinnerAdapter(Context context, List<ActivityType> activityTypes) {
+        super(context, 0, activityTypes);
     }
 
     @NonNull

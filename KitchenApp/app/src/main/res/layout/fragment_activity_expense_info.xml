@@ -9,5 +9,5 @@
         android:inputType="numberDecimal"
         android:ems="10"
         android:id="@+id/create_expense_price_edit"
-        android:hint="Price" />
+        android:hint="@string/hint_price" />
 </LinearLayout>

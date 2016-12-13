@@ -40,6 +40,7 @@ import dk.pop.kitchenapp.models.ExpenseGroupActivity;
 import dk.pop.kitchenapp.models.Kitchen;
 import dk.pop.kitchenapp.models.Person;
 import dk.pop.kitchenapp.models.enums.CleaningStatusEnum;
+import dk.pop.kitchenapp.models.enums.ObjectTypeEnum;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -84,7 +85,13 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
         this.datePicker = aq.id(R.id.activity_creation_date_edit).getButton();
 
         this.type.setOnItemSelectedListener(new ActivityTypeSpinnerListener(this));
-        aq.id(R.id.activity_creation_type_spinner).getSpinner().setAdapter(new ActivityTypeSpinnerAdapter(getContext()));
+
+        ArrayList<ActivityType> activityTypes = new ArrayList<>();
+        activityTypes.add(new ActivityType(ObjectTypeEnum.CLEANINGACTIVITY, getString(R.string.activity_type_cleaning)));
+        activityTypes.add(new ActivityType(ObjectTypeEnum.DINNERACTIVITY, getString(R.string.activity_type_dinner)));
+        activityTypes.add(new ActivityType(ObjectTypeEnum.EXPENSEACTIVITY, getString(R.string.activity_type_expense)));
+
+        aq.id(R.id.activity_creation_type_spinner).getSpinner().setAdapter(new ActivityTypeSpinnerAdapter(getContext(), activityTypes));
 
         calendar = Calendar.getInstance();
 
@@ -140,8 +147,8 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
             }
 
             String toast = "";
-            if(title == null || title.length() == 0) toast += "title can not be empty. ";
-            if(invalidDate) toast += "you need to select a date. ";
+            if(title == null || title.length() == 0) toast += getString(R.string.activity_creation_toast_title_empty);
+            if(invalidDate) toast += getString(R.string.activity_creation_invalid_date_toast);
 
 
             if(toast.length() > 0) {
@@ -151,9 +158,6 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
 
             Person person = DataManager.getInstance().getCurrentPerson();
             Kitchen kitchen = DataManager.getInstance().getCurrentKitchen();
-
-
-
 
             IDataManager mgm = DataManager.getInstance();
             switch (type.type){
@@ -165,7 +169,7 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
                     ActivityPersonNameRoomNoAdapter adapterDinner = (ActivityPersonNameRoomNoAdapter) aq.id(R.id.activity_creation_dinner_participant_list).getListView().getAdapter();
                     List<Person> responsiblesDinner = adapterDinner.getSelectedPersons();
                     if(responsiblesDinner == null || responsiblesDinner.size() == 0){
-                        Toast.makeText(getContext(), "At least one person must be selected for the dinner", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), R.string.dinner_creation_invalid_person_count, Toast.LENGTH_LONG).show();
                         return;
                     }
                     ExpenseGroupActivity expense = new ExpenseGroupActivity(
@@ -198,7 +202,7 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
                     List<Person> responsibles = adapter.getSelectedPersons();
                     boolean isCleaningCancellable = aq.id(R.id.activity_creation_cleaning_cancellable_switch).isChecked();
                     if(responsibles == null || responsibles.size() == 0){
-                        Toast.makeText(getContext(), "You need to select at least one responsible for cleaning", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), R.string.cleaning_activity_invalid_responsible_count, Toast.LENGTH_LONG).show();
                         return;
                     }
                     mgm.createActivity(new CleaningGroupActivity(null,
@@ -244,7 +248,7 @@ public class ActivityCreationFragment extends Fragment implements View.OnClickLi
 
     private void updateLabel() {
         String myFormat = "dd/MM/yy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.getDefault());
 
         datePicker.setText(sdf.format(calendar.getTime()));
     }

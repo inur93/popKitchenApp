@@ -5,9 +5,8 @@
     android:orientation="vertical"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    tools:context="dk.pop.kitchenapp.fragments.personal.PersonalPageFragment"
-    >
-    <TextView
+    tools:context="dk.pop.kitchenapp.fragments.personal.PersonalPageFragment">
+    <!--<TextView
         android:text="Change Personal Information"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +17,7 @@
         android:textAlignment="center"
         android:textStyle="normal|bold"
         android:textSize="24sp"
-        android:paddingTop="30dp"/>
+        android:paddingTop="30dp"/>-->
 
     <EditText
         android:layout_width="match_parent"

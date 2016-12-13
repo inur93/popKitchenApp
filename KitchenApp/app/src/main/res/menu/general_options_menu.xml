@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:icon="@drawable/users"
-        android:title="Create Groups"
+        android:title="@string/options_menu_create_groups"
         android:id="@+id/general_options_menu_group_creation"/>
     <item
         android:icon="@drawable/users"
-        android:title="My Groups"
+        android:title="@string/options_menu_my_groups"
         android:id="@+id/general_options_menu_my_groups"/>
     <item
         android:icon="@drawable/ic_exit_to_app_black_24dp"
-        android:title="Log out"
+        android:title="@string/options_menu_log_out"
         android:id="@+id/general_options_menu_logout"/>
 </menu>

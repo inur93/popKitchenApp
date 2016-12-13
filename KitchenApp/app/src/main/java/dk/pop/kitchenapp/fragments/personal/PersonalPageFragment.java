@@ -73,9 +73,9 @@ public class PersonalPageFragment extends Fragment implements View.OnClickListen
             DataManager.getInstance().updatePerson(currentPerson.getGoogleId(), newName, newRoom);
 
             if(!currentPerson.getDisplayName().equals(newName))
-                Toast.makeText(getContext(), "name changed to " + newName, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), getString(R.string.personal_update_name_changed) + newName, Toast.LENGTH_LONG).show();
             if(!currentPerson.getRoomNumber().equals(newRoom))
-                Toast.makeText(getContext(), "room number changed to " + newRoom, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), getString(R.string.personal_update_room_update) + newRoom, Toast.LENGTH_LONG).show();
 
             getFragmentManager()
                    .popBackStack();

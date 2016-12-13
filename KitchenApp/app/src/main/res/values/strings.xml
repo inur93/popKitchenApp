@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">KitchenApp</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="personalTabText">personal</string>
     <string name="kitchenTabText">kitchen</string>
     <string name="kitchen_overview_create_activity_btn_text">Create Activity</string>
@@ -19,7 +17,7 @@
     <string name="personal_overview_title">Personal Overview</string>
     <string name="kitchen_overview_title">Kitchen Overview</string>
     <string name="activity_creation_title">Create Activity</string>
-    <string name="kitchen_overview_calendar_title">@string/kitchen_overview_title</string>
+    <string name="kitchen_overview_calendar_title">Kitchen Calendar</string>
     <string name="user_profile_username">Name</string>
     <string name="user_profile_room_no">Room number</string>
     <string name="user_profile_title">Profile</string>
@@ -36,4 +34,27 @@
     <string name="personal_calendar_title">Personal Calendar</string>
     <string name="kitchen_calendar_title">Kitchen Calendar</string>
     <string name="my_groups_title">My Groups</string>
+    <string name="activity_creation_toast_title_empty">title can not be empty.</string>
+    <string name="activity_creation_invalid_date_toast">"you need to select a date. "</string>
+    <string name="dinner_creation_invalid_person_count">At least one person must be selected for the dinner</string>
+    <string name="cleaning_activity_invalid_responsible_count">You need to select at least one responsible for cleaning</string>
+    <string name="group_creation_group_existed" formatted="false">The kitchen %s already existed</string>
+    <string name="personal_update_name_changed">name changed to</string>
+    <string name="personal_update_room_update">room number changed to</string>
+    <string name="personal_overview_calendar_title">Personal Calendar</string>
+    <string name="options_menu_create_groups">Create Groups</string>
+    <string name="options_menu_my_groups">My Groups</string>
+    <string name="options_menu_log_out">Log out</string>
+    <string name="drawer_navigation_view_profile">View Profile</string>
+    <string name="responsible">Responsible</string>
+    <string name="can_be_cancelled">Can be cancelled</string>
+    <string name="hint_price">Price</string>
+    <string name="dinner_creation_participants">Participants</string>
+    <string name="hint_title">Title</string>
+    <string name="hint_description">Description</string>
+    <string name="hint_date">Date</string>
+    <string name="activity_creation_create_btn">Create</string>
+    <string name="activity_type_cleaning">Cleaning</string>
+    <string name="activity_type_dinner">Dinner</string>
+    <string name="activity_type_expense">Expense</string>
 </resources>

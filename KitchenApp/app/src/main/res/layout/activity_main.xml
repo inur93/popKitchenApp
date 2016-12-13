@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_marginTop="4dp"
-                    android:text="View Profile"
+                    android:text="@string/drawer_navigation_view_profile"
                     android:textColor="#fff"
                     android:textSize="12sp" />
             </LinearLayout>

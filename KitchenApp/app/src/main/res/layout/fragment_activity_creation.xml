@@ -4,13 +4,6 @@
     android:layout_height="match_parent"
     tools:context="dk.pop.kitchenapp.fragments.activity.ActivityCreationFragment">
 
-    <!--
-   <FrameLayout
-       android:layout_width="match_parent"
-       android:layout_height="472dp"
-       android:id="@+id/activity_creation_content">
-   </FrameLayout>
-   -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,7 +51,7 @@
                         android:layout_height="50dp"
                         android:inputType="textShortMessage"
                         android:text=""
-                        android:hint="Title"
+                        android:hint="@string/hint_title"
                         android:ems="0"
                         android:id="@+id/activity_creation_title_edit"
                         android:layout_weight="1"
@@ -83,7 +76,7 @@
                         android:layout_width="0dp"
                         android:layout_height="50dp"
                         android:text=""
-                        android:hint="Description"
+                        android:hint="@string/hint_description"
                         android:ems="0"
                         android:id="@+id/activity_creation_description_edit"
                         android:layout_weight="1"
@@ -112,7 +105,7 @@
                         android:id="@+id/activity_creation_date_edit"
                         android:layout_weight="1"
                         android:text=""
-                        android:hint="Date"
+                        android:hint="@string/hint_date"
                         android:gravity="left"
                         android:layout_gravity="left"
                         />
@@ -145,6 +138,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/activity_creation_next_fragment_btn"
-        android:text="Create"
+        android:text="@string/activity_creation_create_btn"
         android:layout_gravity="bottom" />
 </FrameLayout>
